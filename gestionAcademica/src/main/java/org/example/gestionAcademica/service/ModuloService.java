@@ -1,0 +1,75 @@
+package org.example.gestionAcademica.service;
+
+import org.example.gestionAcademica.controller.dto.ModuloDto;
+import org.example.gestionAcademica.controller.mapper.ModuloMapper;
+import org.example.gestionAcademica.modelo.Modulo;
+import org.example.gestionAcademica.repository.CicloRepository;
+import org.example.gestionAcademica.repository.ModuloRepository;
+import org.example.gestionAcademica.repository.ProfesorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class ModuloService {
+    private final ModuloRepository moduloRepository;
+    private final ModuloMapper moduloMapper;
+    private final CicloRepository cicloRepository;
+    private final ProfesorRepository profesorRepository;
+
+    @Autowired
+    public ModuloService(ModuloRepository moduloRepository, ModuloMapper moduloMapper, CicloRepository cicloRepository, ProfesorRepository profesorRepository) {
+        this.moduloRepository = moduloRepository;
+        this.moduloMapper = moduloMapper;
+        this.cicloRepository = cicloRepository;
+        this.profesorRepository = profesorRepository;
+    }
+
+    public List<ModuloDto> getModulos() {
+        Iterable<Modulo> modulos = moduloRepository.findAll();
+        List<ModuloDto> modulosDto = new ArrayList<>();
+
+        for (Modulo modulo : modulos) {
+            modulosDto.add(moduloMapper.getDto(modulo));
+        }
+        return modulosDto;
+    }
+
+    public ModuloDto getModuloById(int id) {
+        Optional<Modulo> modulo = moduloRepository.findById(id);
+        if (modulo.isPresent()){
+            return moduloMapper.getDto(modulo.get());
+        }
+        throw new RuntimeException("Modulo no encontrado");
+    }
+
+    public void saveOrUpdateModulo(Modulo modulo) {
+        moduloRepository.save(modulo);
+    }
+
+    public void deleteModuloById(int id){
+        if (moduloRepository.existsById(id)){
+            moduloRepository.deleteById(id);
+        }
+        else{
+            throw new RuntimeException("Modulo no encontrado");
+        }
+    }
+
+    public Modulo getModuloByDto(ModuloDto moduloDto) {
+        if (cicloRepository.existsCicloByNombre(moduloDto.getNombreCiclo()) && profesorRepository.existsProfesorByEmail(moduloDto.getEmailProfesor())){
+            Modulo modulo = new Modulo();
+            modulo.setIdCiclo(cicloRepository.findCicloByNombre(moduloDto.getNombreCiclo()));
+            modulo.setIdProfesor(profesorRepository.findProfesorByEmail(moduloDto.getEmailProfesor()));
+            modulo.setNombre(moduloDto.getNombre());
+
+            return modulo;
+        }
+        else{
+            throw new RuntimeException("Ciclo y/o profesor no encontrado");
+        }
+    }
+}
