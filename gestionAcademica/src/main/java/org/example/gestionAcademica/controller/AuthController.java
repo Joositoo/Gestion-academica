@@ -16,11 +16,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public ProfesorDto login(@RequestBody ProfesorDto profesorDto) {
-        Optional<Profesor> profesor = authService.getProfesorByEmailAndPassword(profesorDto);
-
-        if (profesor.isPresent()){
-            return authService.getProfesorDtoByEmail(profesorDto.getEmail());
-        }
-        throw new RuntimeException("Credenciales incorrectas.");
+        return authService.getProfesorByEmailAndPassword(profesorDto);
     }
 }

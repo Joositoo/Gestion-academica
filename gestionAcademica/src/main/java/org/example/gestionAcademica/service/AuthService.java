@@ -20,11 +20,12 @@ public class AuthService {
         this.profesorMapper = profesorMapper;
     }
 
-    public Optional<Profesor> getProfesorByEmailAndPassword(ProfesorDto profesorDto) {
-        return profesorRepository.findProfesorByEmailAndPassword(profesorDto.getEmail(), profesorDto.getPassword());
-    }
+    public ProfesorDto getProfesorByEmailAndPassword(ProfesorDto profesorDto) {
+        Optional<Profesor> profesor = profesorRepository.findProfesorByEmailAndPassword(profesorDto.getEmail(), profesorDto.getPassword());
 
-    public ProfesorDto getProfesorDtoByEmail(String email) {
-        return profesorMapper.getDto(profesorRepository.findProfesorByEmail(email));
+        if (profesor.isPresent()){
+            return profesorMapper.getDto(profesorRepository.findProfesorByEmail(profesorDto.getEmail()));
+        }
+        throw new RuntimeException("Credenciales incorrectas.");
     }
 }
