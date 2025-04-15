@@ -50,13 +50,33 @@ public class CalificacionesService {
         throw new RuntimeException("Calificacion no encontrada");
     }
 
-    public void saverOrUpdateCalificacion(Calificacion calificaciones) {
-        validar(calificacionMapper.getDto(calificaciones));
-        //calificacionesRepository.save(calificaciones);
+    public void saveCalificacion(Calificacion calificaciones) {
+        calificacionesRepository.save(calificaciones);
     }
 
-    private void validar(CalificacionDto calificacionDto){
+    public void updateCalificacion(int id, CalificacionDto calificacionDto) {
+        Calificacion calificacion = calificacionesRepository.findById(id).get();
 
+        if (calificacionDto.getEmailAlumno() != null && calificacionDto.getNombreModulo() != null) {
+            if (moduloRepository.existsModuloByNombre(calificacionDto.getNombreModulo()) && alumnoRepository.existsAlumnoByEmail(calificacionDto.getEmailAlumno())) {
+                calificacion.setIdAlumno(alumnoRepository.findAlumnoByEmail(calificacionDto.getEmailAlumno()));
+                calificacion.setIdModulo(moduloRepository.findModuloByNombre(calificacionDto.getNombreModulo()));
+                calificacion.setRa1(calificacionDto.getRa1());
+                calificacion.setRa2(calificacionDto.getRa2());
+                calificacion.setRa3(calificacionDto.getRa3());
+                calificacion.setRa4(calificacionDto.getRa4());
+                calificacion.setRa5(calificacionDto.getRa5());
+                calificacion.setRa6(calificacionDto.getRa6());
+                calificacion.setRa7(calificacionDto.getRa7());
+                calificacion.setRa8(calificacionDto.getRa8());
+                calificacion.setRa9(calificacionDto.getRa9());
+            }
+            else{
+                throw new RuntimeException("Modulo y/o alumno no encontrado");
+            }
+        }
+
+        calificacionesRepository.save(calificacion);
     }
 
     public void deleteCalificacionById(int id) {
@@ -69,12 +89,10 @@ public class CalificacionesService {
     }
 
     public Calificacion getCalificacionByDto(CalificacionDto calificacionDto) {
-        if(moduloRepository.existsModuloByNombre(calificacionDto.getNombreModulo()) && alumnoRepository.existsAlumnoByEmail(calificacionDto.getEmailAlumno())){
-            Alumno alumno = alumnoRepository.findAlumnoByEmail(calificacionDto.getEmailAlumno());
-            Modulo modulo = moduloRepository.findModuloByNombre(calificacionDto.getNombreModulo());
-            Matricula matricula = (Matricula) matriculaRepository.findMatriculaByIdAlumno(alumno);
-
-            /*if (modulo.getIdCiclo().equals(matricula.getIdCiclo())){
+        Alumno alumno = alumnoRepository.findAlumnoByEmail(calificacionDto.getEmailAlumno());
+        Modulo modulo = moduloRepository.findModuloByNombre(calificacionDto.getNombreModulo());
+        if (!calificacionesRepository.existsCalificacionByIdAlumnoAndIdModulo(alumno, modulo)){
+            if(moduloRepository.existsModuloByNombre(calificacionDto.getNombreModulo()) && alumnoRepository.existsAlumnoByEmail(calificacionDto.getEmailAlumno())){
                 Calificacion calificacion = new Calificacion();
                 calificacion.setIdAlumno(alumnoRepository.findAlumnoByEmail(calificacionDto.getEmailAlumno()));
                 calificacion.setIdModulo(moduloRepository.findModuloByNombre(calificacionDto.getNombreModulo()));
@@ -91,41 +109,12 @@ public class CalificacionesService {
                 return calificacion;
             }
             else{
-                throw new RuntimeException("Asignando calificaciones a un alumno que no tiene el modulo " +modulo.getNombre());
-            }*/
-
-            Calificacion calificacion = new Calificacion();
-            calificacion.setIdAlumno(alumnoRepository.findAlumnoByEmail(calificacionDto.getEmailAlumno()));
-            calificacion.setIdModulo(moduloRepository.findModuloByNombre(calificacionDto.getNombreModulo()));
-            calificacion.setRa1(calificacionDto.getRa1());
-            /*calificacion.setRa2(calificacionDto.getRa2());
-            calificacion.setRa3(calificacionDto.getRa3());
-            calificacion.setRa4(calificacionDto.getRa4());
-            calificacion.setRa5(calificacionDto.getRa5());
-            calificacion.setRa6(calificacionDto.getRa6());
-            calificacion.setRa7(calificacionDto.getRa7());
-            calificacion.setRa8(calificacionDto.getRa8());
-            calificacion.setRa9(calificacionDto.getRa9());*/
-
-            return calificacion;
+                throw new RuntimeException("Alumno y/o módulo no encontrado");
+            }
         }
         else{
-            throw new RuntimeException("Alumno y/o módulo no encontrado");
+            throw new RuntimeException("La calificación ya existe en el sistema");
         }
+
     }
 }
-
-/*Calificacion calificacion = new Calificacion();
-            calificacion.setIdAlumno(alumnoRepository.findAlumnoByEmail(calificacionDto.getEmailAlumno()));
-            calificacion.setIdModulo(moduloRepository.findModuloByNombre(calificacionDto.getNombreModulo()));
-            calificacion.setRa1(calificacionDto.getRa1());
-            calificacion.setRa2(calificacionDto.getRa2());
-            calificacion.setRa3(calificacionDto.getRa3());
-            calificacion.setRa4(calificacionDto.getRa4());
-            calificacion.setRa5(calificacionDto.getRa5());
-            calificacion.setRa6(calificacionDto.getRa6());
-            calificacion.setRa7(calificacionDto.getRa7());
-            calificacion.setRa8(calificacionDto.getRa8());
-            calificacion.setRa9(calificacionDto.getRa9());
-
-            return calificacion;*/

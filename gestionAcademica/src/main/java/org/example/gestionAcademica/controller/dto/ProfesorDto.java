@@ -36,6 +36,14 @@ public class ProfesorDto {
         this.rol = rol;
     }
 
+    public ProfesorDto(String nombre, String apellidos, String email, String password, String rol) {
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.email = email;
+        this.password = password;
+        this.rol = rol;
+    }
+
     public ProfesorDto(String email, String password) {
         this.email = email;
         this.password = password;

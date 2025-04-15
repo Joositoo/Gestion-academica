@@ -26,10 +26,17 @@ public class ModuloController {
     }
 
     @PostMapping()
-    public ResponseEntity<Modulo> saveOrUpdateModulo(@RequestBody ModuloDto moduloDto){
+    public ResponseEntity<Modulo> saveModulo(@RequestBody ModuloDto moduloDto){
         Modulo modulo = moduloService.getModuloByDto(moduloDto);
-        moduloService.saveOrUpdateModulo(modulo);
+        moduloService.saveModulo(modulo);
         return ResponseEntity.ok(modulo);
+    }
+
+    @PutMapping("/{id}")
+    public ModuloDto updateModulo(@PathVariable int id, @RequestBody ModuloDto moduloDto){
+        moduloService.updateModulo(id, moduloDto);
+
+        return moduloService.getModuloById(id);
     }
 
     @DeleteMapping("/{id}")

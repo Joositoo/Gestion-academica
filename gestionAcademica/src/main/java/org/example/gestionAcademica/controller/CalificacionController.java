@@ -26,10 +26,18 @@ public class CalificacionController {
     }
 
     @PostMapping()
-    public ResponseEntity<Calificacion> saveOrUpdateCalificacion(@RequestBody CalificacionDto calificacionDto){
+    public ResponseEntity<Calificacion> saveCalificacion(@RequestBody CalificacionDto calificacionDto){
         Calificacion calificacion = calificacionService.getCalificacionByDto(calificacionDto);
-        calificacionService.saverOrUpdateCalificacion(calificacion);
+        calificacionService.saveCalificacion(calificacion);
         return ResponseEntity.ok(calificacion);
+    }
+
+    @PutMapping("/{id}")
+    public CalificacionDto updateCalificacion(@PathVariable int id, @RequestBody CalificacionDto calificacionDto){
+        calificacionDto.setId(id);
+        calificacionService.updateCalificacion(id, calificacionDto);
+
+        return calificacionService.getCalificacionById(id);
     }
 
     @DeleteMapping("/{id}")

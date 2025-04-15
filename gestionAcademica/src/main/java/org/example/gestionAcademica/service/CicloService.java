@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -40,7 +41,27 @@ public class CicloService {
         throw new RuntimeException("No existe el ciclo con el id: " + id);
     }
 
-    public void saveOrUpdateCiclo(Ciclo ciclo) {
+    public void saveCiclo(Ciclo ciclo) {
+        if (!cicloRepository.existsCicloByNombre(ciclo.getNombre())){
+            cicloRepository.save(ciclo);
+        }
+        else{
+            throw new RuntimeException("El ciclo ya existe");
+        }
+    }
+
+    public void updateCiclo(int id, CicloDto cicloDto) {
+        Ciclo ciclo = cicloRepository.findById(id).get();
+
+        if (cicloDto.getNombre() != null) {
+            if (!cicloRepository.existsCicloByNombre(cicloDto.getNombre()) || Objects.equals(cicloDto.getNombre(), ciclo.getNombre())) {
+                ciclo.setNombre(cicloDto.getNombre());
+            }
+            else{
+                throw new RuntimeException("El nombre del ciclo ya existe");
+            }
+        }
+
         cicloRepository.save(ciclo);
     }
 

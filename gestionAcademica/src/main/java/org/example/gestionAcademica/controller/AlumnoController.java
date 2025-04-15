@@ -6,7 +6,6 @@ import org.example.gestionAcademica.service.AlumnoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -27,18 +26,18 @@ public class AlumnoController {
     }
 
     @PostMapping//(consumes = "text/csv")
-    public ResponseEntity<Alumno> saveOrUpdateAlumno(@RequestBody AlumnoDto alumnoDto/*, @RequestBody MultipartFile file*/){
+    public ResponseEntity<Alumno> saveAlumno(@RequestBody AlumnoDto alumnoDto/*, @RequestBody MultipartFile file*/){
         Alumno alumno = alumnoService.getAlumnoByDto(alumnoDto);
-        alumnoService.saveOrUpdateAlumno(alumno);
+        alumnoService.saveAlumno(alumno);
 
         return ResponseEntity.ok(alumno);
     }
 
-    /*@PutMapping("/{id}")
-    public ResponseEntity<Alumno> updateAlumno(@PathVariable int id, @RequestBody AlumnoDto alumnoDto){
-        AlumnoDto alumnoDto = alumnoService.getAlumnoById(id);
-        return ResponseEntity.ok(alumno);
-    }*/
+    @PutMapping("/{id}")
+    public AlumnoDto updateAlumno(@PathVariable int id, @RequestBody AlumnoDto alumnoDto){
+        alumnoService.updateAlumno(id, alumnoDto);
+        return alumnoService.getAlumnoById(id);
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteAlumno(@PathVariable int id){

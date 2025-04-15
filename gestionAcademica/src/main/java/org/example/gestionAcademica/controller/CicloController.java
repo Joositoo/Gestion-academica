@@ -26,9 +26,15 @@ public class CicloController {
     }
 
     @PostMapping()
-    public ResponseEntity<Ciclo> saveOrUpdateCiclo(@RequestBody Ciclo ciclo){
-        cicloService.saveOrUpdateCiclo(ciclo);
+    public ResponseEntity<Ciclo> saveCiclo(@RequestBody Ciclo ciclo){
+        cicloService.saveCiclo(ciclo);
         return ResponseEntity.ok(ciclo);
+    }
+
+    @PutMapping("/{id}")
+    public CicloDto updateCiclo(@PathVariable int id, @RequestBody CicloDto cicloDto){
+        cicloService.updateCiclo(id, cicloDto);
+        return cicloService.getCicloById(id);
     }
 
     @DeleteMapping("/{id}")

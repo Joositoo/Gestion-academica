@@ -53,18 +53,18 @@ public class CalificacionDto {
         this.ra9 = ra9;
     }
 
-    public CalificacionDto(String nombreModulo, String emailAlumno, BigDecimal ra9, BigDecimal ra8, BigDecimal ra7, BigDecimal ra6, BigDecimal ra5, BigDecimal ra4, BigDecimal ra3, BigDecimal ra2, BigDecimal ra1) {
+    public CalificacionDto(String nombreModulo, String emailAlumno, BigDecimal ra1, BigDecimal ra2, BigDecimal ra3, BigDecimal ra4, BigDecimal ra5, BigDecimal ra6, BigDecimal ra7, BigDecimal ra8, BigDecimal ra9) {
         this.nombreModulo = nombreModulo;
         this.emailAlumno = emailAlumno;
-        this.ra9 = ra9;
-        this.ra8 = ra8;
-        this.ra7 = ra7;
-        this.ra6 = ra6;
-        this.ra5 = ra5;
-        this.ra4 = ra4;
-        this.ra3 = ra3;
-        this.ra2 = ra2;
         this.ra1 = ra1;
+        this.ra2 = ra2;
+        this.ra3 = ra3;
+        this.ra4 = ra4;
+        this.ra5 = ra5;
+        this.ra6 = ra6;
+        this.ra7 = ra7;
+        this.ra8 = ra8;
+        this.ra9 = ra9;
     }
 
     public CalificacionDto() {}

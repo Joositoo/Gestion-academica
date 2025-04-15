@@ -3,6 +3,7 @@ package org.example.gestionAcademica.service;
 import org.example.gestionAcademica.controller.dto.AlumnoDto;
 import org.example.gestionAcademica.controller.mapper.AlumnoMapper;
 import org.example.gestionAcademica.modelo.Alumno;
+import org.example.gestionAcademica.modelo.Profesor;
 import org.example.gestionAcademica.repository.AlumnoRepository;
 import org.example.gestionAcademica.repository.ProfesorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -43,9 +45,39 @@ public class AlumnoService {
         throw new RuntimeException("No existe el alumno con id " + id);
     }
 
-    public void saveOrUpdateAlumno(Alumno alumno) {
-            alumnoRepository.save(alumno);
+    public void saveAlumno(Alumno alumno) {
+        alumnoRepository.save(alumno);
+    }
+
+    public void updateAlumno(int id, AlumnoDto alumnoDto) {
+        Alumno alumno = alumnoRepository.findById(id).get();
+
+        if (alumnoDto.getNombre() != null) {
+            alumno.setNombre(alumnoDto.getNombre());
         }
+        if (alumnoDto.getApellidos() != null) {
+            alumno.setApellidos(alumnoDto.getApellidos());
+        }
+        if (alumnoDto.getEmail() != null) {
+            if (!Objects.equals(alumnoDto.getEmail(), alumno.getEmail())) {
+                if (alumnoRepository.existsAlumnoByEmail(alumnoDto.getEmail())) {
+                    throw new RuntimeException("El email ya existe");
+                }
+                alumno.setEmail(alumnoDto.getEmail());
+            }
+        }
+        if (alumnoDto.getEmailProfesor() != null) {
+            if (profesorRepository.existsProfesorByEmail(alumnoDto.getEmailProfesor())) {
+                Profesor profesor = profesorRepository.findProfesorByEmail(alumnoDto.getEmailProfesor());
+                alumno.setIdProfesor(profesor);
+            }
+            else{
+                throw new RuntimeException("El email del profesor no existe ");
+            }
+        }
+
+        alumnoRepository.save(alumno);
+    }
 
     public void deleteAlumnoById(int id) {
         if (alumnoRepository.existsById(id)) {
@@ -57,7 +89,7 @@ public class AlumnoService {
     }
 
     public Alumno getAlumnoByDto(AlumnoDto alumnoDto) {
-        if (profesorRepository.existsProfesorByEmail(alumnoDto.getEmailProfesor())){
+        if (profesorRepository.existsProfesorByEmail(alumnoDto.getEmailProfesor()) && !alumnoRepository.existsAlumnoByEmail(alumnoDto.getEmail())) {
             Alumno alumno = new Alumno();
             alumno.setIdProfesor(profesorRepository.findProfesorByEmail(alumnoDto.getEmailProfesor()));
             alumno.setNombre(alumnoDto.getNombre());
@@ -67,7 +99,7 @@ public class AlumnoService {
             return alumno;
         }
         else{
-            throw new RuntimeException("El email del profesor no existe");
+            throw new RuntimeException("El email del profesor no existe y el del alumno ya está cogido");
         }
     }
 

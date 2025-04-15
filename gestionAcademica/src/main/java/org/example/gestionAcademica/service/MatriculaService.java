@@ -46,7 +46,23 @@ public class MatriculaService {
         throw new RuntimeException("Matricula no encontrada");
     }
 
-    public void saveOrUpdateMatricula(Matricula matricula){
+    public void saveMatricula(Matricula matricula){
+        matriculaRepository.save(matricula);
+    }
+
+    public void updateMatricula(int id, MatriculaDto matriculaDto) {
+        Matricula matricula = matriculaRepository.findById(id).get();
+
+        if (matriculaDto.getEmailAlumno() != null && matriculaDto.getNombreCiclo() != null) {
+            if (cicloRepository.existsCicloByNombre(matriculaDto.getNombreCiclo()) && alumnoRepository.existsAlumnoByEmail(matriculaDto.getEmailAlumno())){
+                matricula.setIdAlumno(alumnoRepository.findAlumnoByEmail(matriculaDto.getEmailAlumno()));
+                matricula.setIdCiclo(cicloRepository.findCicloByNombre(matriculaDto.getNombreCiclo()));
+            }
+            else{
+                throw new RuntimeException("Ciclo y/o alumno no encontrado");
+            }
+        }
+
         matriculaRepository.save(matricula);
     }
 

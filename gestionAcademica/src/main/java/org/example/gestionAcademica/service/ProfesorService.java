@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -32,15 +33,7 @@ public class ProfesorService {
         return profesoresDto;
     }
 
-    public ProfesorDto getProfesorById(int id) {
-        Optional<Profesor> profesor = profesoresRepository.findById(id);
-        if (profesor.isPresent()){
-            return profesorMapper.getDto(profesor.get());
-        }
-        throw new RuntimeException("Profesor no encontrado");
-    }
-
-    public Optional<Profesor> getProfesorByIdd(int id) {
+    public Optional<Profesor> getProfesorById(int id) {
         if (profesoresRepository.existsById(id)){
             Profesor profesor = profesoresRepository.findById(id).get();
             return Optional.of(profesor);
@@ -48,9 +41,47 @@ public class ProfesorService {
         throw new RuntimeException("Profesor no encontrado");
     }
 
-    public void saveOrUpdateprofesor(Profesor profesor) {
-        profesoresRepository.save(profesor);
+    public void saveProfesor(Profesor profesor) {
+        if (!profesoresRepository.existsProfesorByEmail(profesor.getEmail())) {
+            profesoresRepository.save(profesor);
+        }
+        else{
+            throw new RuntimeException("Profesor con email " +profesor.getEmail()+ " ya existe");
+        }
     }
+
+    public void updateProfesor(int id, ProfesorDto profesorDto) {
+        if (profesoresRepository.existsById(id)) {
+            Profesor profesor = profesoresRepository.findById(id).get();
+
+            if (profesorDto.getNombre() != null) {
+                profesor.setNombre(profesorDto.getNombre());
+            }
+            if (profesorDto.getApellidos() != null) {
+                profesor.setApellidos(profesorDto.getApellidos());
+            }
+            if (profesorDto.getEmail() != null) {
+                if (!profesorDto.getEmail().equals(profesor.getEmail())) {
+                    if (profesoresRepository.existsProfesorByEmail(profesorDto.getEmail())) {
+                        throw new RuntimeException("El email le pertenece a otro profesor");
+                    }
+                    profesor.setEmail(profesorDto.getEmail());
+                }
+            }
+            if (profesorDto.getPassword() != null) {
+                profesor.setPassword(profesorDto.getPassword());
+            }
+            if (profesorDto.getRol() != null) {
+                profesor.setRol(profesorDto.getRol());
+            }
+
+            profesoresRepository.save(profesor);
+        } else {
+            throw new RuntimeException("Profesor no encontrado");
+        }
+    }
+
+
 
     public void deleteProfesorById(int id) {
         if (profesoresRepository.existsById(id)){

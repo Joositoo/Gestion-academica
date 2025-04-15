@@ -26,10 +26,18 @@ public class MatriculaController {
     }
 
     @PostMapping()
-    public ResponseEntity<Matricula> saveOrUpdateMatricula(@RequestBody MatriculaDto matriculaDto){
+    public ResponseEntity<Matricula> saveMatricula(@RequestBody MatriculaDto matriculaDto){
         Matricula matricula = matriculaService.getMatriculaByDto(matriculaDto);
-        matriculaService.saveOrUpdateMatricula(matricula);
+        matriculaService.saveMatricula(matricula);
         return ResponseEntity.ok(matricula);
+    }
+
+    @PutMapping("/{id}")
+    public MatriculaDto updateMatricula(@PathVariable int id, @RequestBody MatriculaDto matriculaDto){
+        matriculaDto.setId(id);
+        matriculaService.updateMatricula(id, matriculaDto);
+
+        return matriculaService.getMatriculaById(id);
     }
 
     @DeleteMapping("/{id}")
