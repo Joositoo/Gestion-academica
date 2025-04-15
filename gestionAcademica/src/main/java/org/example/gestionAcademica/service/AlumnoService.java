@@ -110,4 +110,37 @@ public class AlumnoService {
         }
         return alumnos;
     }
+
+    public boolean validaLista(List<AlumnoDto> listaAlumnos){
+        for (AlumnoDto alumnoDto : listaAlumnos) {
+            if (alumnoRepository.existsAlumnoByEmail(alumnoDto.getEmail()) || !profesorRepository.existsProfesorByEmail(alumnoDto.getEmailProfesor())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void saveListaAlumnos(List<AlumnoDto> listaAlumnos) {
+        for (AlumnoDto alumnoDto : listaAlumnos) {
+            Alumno alumno = new Alumno();
+            alumno.setNombre(alumnoDto.getNombre());
+            alumno.setApellidos(alumnoDto.getApellidos());
+            alumno.setEmail(alumnoDto.getEmail());
+            alumno.setIdProfesor(profesorRepository.findProfesorByEmail(alumnoDto.getEmailProfesor()));
+            alumnoRepository.save(alumno);
+        }
+    }
+
+    public List<AlumnoDto> getAlumnosByLista(List<AlumnoDto> listaAlumnos) {
+        List<AlumnoDto> listaAlumnosDto = new ArrayList<>();
+
+        for (AlumnoDto a : listaAlumnos) {
+            Alumno alumno = alumnoRepository.findAlumnoByEmail(a.getEmail());
+            AlumnoDto alumnoDto = alumnoMapper.getDto(alumno);
+
+            listaAlumnosDto.add(alumnoDto);
+        }
+
+        return listaAlumnosDto;
+    }
 }
