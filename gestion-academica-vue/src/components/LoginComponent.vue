@@ -5,7 +5,6 @@ import router from '../router';
 
 const usuarioStore = useUsuarioStore();
 
-const usuarioIniciado = ref(null);
 const usuario = reactive({
 email: "",
 password: ""
@@ -45,25 +44,43 @@ function redirecciona(usuarioIniciado) {
 
 <template>
     <div class="card">
+        <img src="../../public/logo.png" class="logo">
         <form @submit.prevent="handleSubmit" id="loginForm">
-            <input type="text" placeholder="usuario" v-model="usuario.email" />
-            <input type="text" placeholder="contraseña" v-model="usuario.password" />
+            <input type="text" placeholder="email" v-model="usuario.email" />
+            <input type="password" placeholder="contraseña" v-model="usuario.password" />
             <button type="submit">Iniciar sesión</button>
 
             <p class="error" style="display: none;" id="errorLogin">Rellene todos los campos, por favor</p>
             <p class="error" style="display: none;" id="errorCredentials">Credenciales incorrectas</p>
         </form>
-
-        <p v-if="usuarioIniciado">{{ usuarioIniciado }}</p>
     </div>
 </template>
 
 <style>
+body{
+    margin: 0;
+    background-color: rgb(219, 233, 255);
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+}
+
+h1{
+    text-align: center;
+}
+
 .card{
-    border: 1px solid white;
+    background-color: #a9d4ff;
+    width: fit-content;
+    border: 1px solid black;
     border-radius: 2em;
     padding: 4em;
-    box-shadow: 10px 10px 10px rgb(255, 255, 255, 0.5);
+    box-shadow: 8px 8px 8px #74777c;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 form{
@@ -80,9 +97,26 @@ button{
     border: none;
     border: 1px solid black;
     border-radius: 50px;
+    background-color: rgb(219, 233, 255);
+    font-size: 1.2em;
+}
+
+button{
+    background-color: rgba(49, 142, 201, 0.8);
+}
+
+button:hover{
+    background-color: #59c1ff;
+    cursor: pointer;
+}
+
+.logo{
+    margin-bottom: 1.8em;
+    width: 280px;
 }
 
 .error{
-    color: red
+    color: #EF4444;
+    font-size: 1.3em;
 }
 </style>
