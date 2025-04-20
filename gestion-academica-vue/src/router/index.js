@@ -2,6 +2,13 @@ import { createRouter, createWebHistory } from "vue-router";
 import LoginPage from "../pages/LoginPage.vue";
 import IndexProfPage from "../pages/IndexProfPage.vue";
 import IndexAdminPage from "../pages/IndexAdminPage.vue";
+import AccountPage from "../pages/AccountPage.vue";
+import ProfesoresPage from "../pages/ProfesoresPage.vue";
+import AlumnosPage from "../pages/AlumnosPage.vue";
+import CiclosPage from "../pages/CiclosPage.vue";
+import ModulosPage from "../pages/ModulosPage.vue";
+import MatriculasPage from "../pages/MatriculasPage.vue";
+import CalificacionesPage from "../pages/CalificacionesPage.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -20,6 +27,41 @@ const router = createRouter({
             path: "/indexadmin",
             name: "IndexAdmin",
             component: IndexAdminPage
+        },
+        {
+            path: "/account",
+            name: "Account",
+            component: AccountPage
+        },
+        {
+            path: "/profesores",
+            name: "Profesores",
+            component: ProfesoresPage
+        },
+        {
+            path: "/alumnos",
+            name: "AlumnosPage",
+            component: AlumnosPage
+        },
+        {
+            path: "/ciclos",
+            name: "CiclosPage",
+            component: CiclosPage
+        },
+        {
+            path: "/modulos",
+            name: "ModulosPage",
+            component: ModulosPage
+        },
+        {
+            path: "/matriculas",
+            name: "MatriculasPage",
+            component: MatriculasPage
+        },
+        {
+            path: "/calificaciones",
+            name: "CalificacionesPage",
+            component: CalificacionesPage
         }
     ]
 })

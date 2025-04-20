@@ -13,6 +13,12 @@ export const useUsuarioStore = defineStore("usuario", () => {
         }
     );
 
+    const usuarioStored = sessionStorage.getItem("usuario");
+    if (usuarioStored) {
+        const usuarioJson = JSON.parse(usuarioStored);
+        Object.assign(usuario, usuarioJson);
+    }
+
     const getUsuario = async (usuarioData) => {
         const API_URL = "http://localhost:8080/auth/login";
 

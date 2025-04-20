@@ -43,21 +43,23 @@ function redirecciona(usuarioIniciado) {
 </script>
 
 <template>
-    <div class="card">
-        <img src="../../public/logo.png" class="logo">
-        <form @submit.prevent="handleSubmit" id="loginForm">
-            <input type="text" placeholder="email" v-model="usuario.email" />
-            <input type="password" placeholder="contraseña" v-model="usuario.password" />
-            <button type="submit">Iniciar sesión</button>
+    <div class="container">
+        <div class="card">
+            <img src="../../public/logo.png" class="logo">
+            <form @submit.prevent="handleSubmit" id="loginForm">
+                <input type="text" placeholder="email" v-model="usuario.email" />
+                <input type="password" placeholder="contraseña" v-model="usuario.password" />
+                <button type="submit">Iniciar sesión</button>
 
-            <p class="error" style="display: none;" id="errorLogin">Rellene todos los campos, por favor</p>
-            <p class="error" style="display: none;" id="errorCredentials">Credenciales incorrectas</p>
-        </form>
+                <p class="error" style="display: none;" id="errorLogin">Rellene todos los campos, por favor</p>
+                <p class="error" style="display: none;" id="errorCredentials">Credenciales incorrectas</p>
+            </form>
+        </div>
     </div>
 </template>
 
-<style>
-body{
+<style scoped>
+.container{
     margin: 0;
     background-color: rgb(219, 233, 255);
     display: flex;
@@ -65,22 +67,6 @@ body{
     justify-content: center;
     align-items: center;
     font-family: sans-serif;
-}
-
-h1{
-    text-align: center;
-}
-
-.card{
-    background-color: #a9d4ff;
-    width: fit-content;
-    border: 1px solid black;
-    border-radius: 2em;
-    padding: 4em;
-    box-shadow: 8px 8px 8px #74777c;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 form{

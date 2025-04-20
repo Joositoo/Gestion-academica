@@ -1,5 +1,14 @@
-<script setup></script>
+<script setup>
+import BodyAdminComponent from '../components/BodyAdminComponent.vue';
+import FooterComponent from '../components/FooterComponent.vue';
+import HeaderComponent from '../components/HeaderComponent.vue';
 
-<template>Index admin page</template>
+</script>
+
+<template>
+    <HeaderComponent />
+    <BodyAdminComponent />
+    <FooterComponent />
+</template>
 
 <style></style>
