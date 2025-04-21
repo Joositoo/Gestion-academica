@@ -48,9 +48,20 @@ export const useUsuarioStore = defineStore("usuario", () => {
         return data;
     }
 
+    const logout = () => {
+        usuario.id = null;
+        usuario.nombre = "";
+        usuario.apellidos = "";
+        usuario.email = "";
+        usuario.password = "";
+        usuario.rol  = "";
+        sessionStorage.removeItem("usuario");
+    }
+
 
     return {
         usuario,
-        getUsuario
+        getUsuario,
+        logout
     }
 })

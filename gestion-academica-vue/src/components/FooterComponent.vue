@@ -9,22 +9,22 @@ let isAdmin = false;
 if (usuario.rol == "admin"){
     isAdmin = true;
 }
-console.log(isAdmin)
+
 const categorias = ["Profesores", "Alumnos", "Ciclos", "Módulos", "Matrículas", "Calificaciones"];
 const paths = ["/profesores", "/alumnos", "/ciclos", "/modulos", "/matriculas", "/calificaciones"];
 </script>
 
 <template>
     <div class="footer">
-        <div v-if="isAdmin">            //MODIFICAR CONDICIÓN PARA QUE SE MUESTRE CORRECTAMENTE
+        <div v-if="!isAdmin">      
             <router-link to="/indexprof">
-                <img src="../../public/logo.png">
+                <img src="../../logo.png">
             </router-link>
         </div>
         <div v-else>
             <div class="admin-container">
                     <router-link to="/indexadmin">
-                    <img src="../../public/logo.png">
+                    <img src="../../logo.png">
                 </router-link>
 
                 <div class="grid-container">
@@ -45,6 +45,7 @@ const paths = ["/profesores", "/alumnos", "/ciclos", "/modulos", "/matriculas", 
     border-top: 1px solid black;
     margin: 0;
     padding: 4em 2em;
+
 }
 
 .admin-container{

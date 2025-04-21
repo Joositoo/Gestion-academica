@@ -16,18 +16,18 @@ if (usuario.rol == "admin"){
     <div class="header">
         <div v-if="isAdmin">
             <router-link to="/indexadmin">
-                <img src="../../public/logo.png">
+                <img src="../../logo.png">
             </router-link>
         </div>
         <div v-else>
             <router-link to="/indexprof">
-                <img src="../../public/logo.png">
+                <img src="../../logo.png">
             </router-link>
         </div>
             
         <div class="flex-item">
             <router-link to="/account">
-                <img src="../../public/iconoUsuario.png" class="iconoUsuario">
+                <img src="../../iconoUsuario.png" class="iconoUsuario">
             </router-link>
         </div>
     </div>
