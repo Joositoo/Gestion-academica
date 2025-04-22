@@ -43,9 +43,8 @@ const paths = ["/profesores", "/alumnos", "/ciclos", "/modulos", "/matriculas", 
 .footer{
     background-color: #a9d4ff;
     border-top: 1px solid black;
-    margin: 0;
+    margin: 6em 0 0 0;
     padding: 4em 2em;
-
 }
 
 .admin-container{

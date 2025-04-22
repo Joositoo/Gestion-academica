@@ -1,5 +1,14 @@
-<script setup></script>
+<script setup>
+import FooterComponent from "../components/FooterComponent.vue";
+import HeaderComponent from "../components/HeaderComponent.vue";
+import CalificacionesComponent from "../components/CalificacionesComponent.vue";
+</script>
 
-<template>Calificaciones page</template>
+<template>
+    <HeaderComponent />
+    <CalificacionesComponent />
+    <FooterComponent />
+
+</template>
 
 <style></style>

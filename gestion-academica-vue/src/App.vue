@@ -1,22 +1,31 @@
+
+
+
 <script setup>
 import { RouterView } from 'vue-router';
 </script>
 
 <template>
-  <RouterView />
+  <div id="app">
+    <RouterView />
+  </div>
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+<style>
+html, body {
+  height: 100%;
+  margin: 0;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+
+/* Asegúrate de que el contenido principal pueda crecer */
+#app > *:first-child {
+  flex: 1;
 }
 </style>
+

@@ -1,12 +1,15 @@
 <script setup>
 import FooterComponent from '../components/FooterComponent.vue';
 import HeaderComponent from '../components/HeaderComponent.vue';
-
+import CalificacionesComponent from '../components/CalificacionesComponent.vue';
 import { onMounted, ref } from 'vue';
 import { useCalificacionStore } from '../stores/calificacionStore';
+import { useUsuarioStore } from '../stores/usuarioStore';
+
+const usuarioStore = useUsuarioStore();
+const usuario = usuarioStore.usuario;
 
 const calificacionesStore = useCalificacionStore();
-
 const calificaciones = ref([]);
 
 onMounted(async () => {
@@ -20,7 +23,7 @@ onMounted(async () => {
 
 <template>
     <HeaderComponent />
-    <p>{{ calificaciones }}</p>
+    <CalificacionesComponent />
     <FooterComponent />
 </template>
 

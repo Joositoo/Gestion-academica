@@ -14,6 +14,8 @@ const handleLogin = () => {
 </script>
 
 <template>
+    <h1>Información de {{ usuario.nombre }}:</h1>
+
     <div class="container">
         <div class="card">
         <div class="item">
@@ -52,6 +54,11 @@ p{
     margin: 1.5em 1.5em;
 }
 
+h1{
+    margin: 1.2em 2em;
+    padding: 21.em;
+}
+
 button{
     color: #EF4444;
     background-color: rgba(49, 142, 201, 0.8);
@@ -73,9 +80,11 @@ img{
     height: auto;
 }
 
-.item{
+.item {
     display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
+    flex-direction: row; 
+    margin: 0 1.5em;
+    margin-bottom: 1.5em;   
 }
+
 </style>
