@@ -1,5 +1,14 @@
-<script setup></script>
+<script setup>
+import FooterComponent from '../components/FooterComponent.vue';
+import HeaderComponent from '../components/HeaderComponent.vue';
+import ModulosComponent from '../components/ModulosComponent.vue';
 
-<template>Módulos page</template>
+</script>
+
+<template>
+    <HeaderComponent />
+    <ModulosComponent />
+    <FooterComponent />
+</template>
 
 <style></style>

@@ -15,7 +15,7 @@ const paths = ["/profesores", "/alumnos", "/ciclos", "/modulos", "/matriculas", 
     <div class="grid-container">
         <div class="card" v-for="(categoria, index) in categorias" :key="index"> 
             <router-link :to="paths[index]">
-                <img :src="'../../public/' +imgs[index]" >
+                <img :src="imgs[index]" >
                 <p>{{ categoria }}</p>
             </router-link>
         </div>
