@@ -9,6 +9,7 @@ let profesor = reactive({});
 let profesorId = ref(0);
 
 onMounted(async () => {
+    await profesorStore.getProfesores();
     listaProfesores.value = await profesorStore.getProfesores();
 });
 
@@ -16,7 +17,7 @@ const handleClick = () => {
     router.push("/profesores/crear");
 }
 
-const openModal = (prof) => {
+const openModal = async(prof) => {
     profesor.nombre = prof.nombre;
     profesor.apellidos = prof.apellidos;
 
@@ -29,7 +30,7 @@ const handleEdit = (prof) => {
 }
 
 const handleDelete = async () => {
-    profesorStore.deleteProfesor(profesorId.value);
+    await profesorStore.deleteProfesor(profesorId.value);
     window.location.reload();
 }
 

@@ -101,8 +101,5 @@ button:hover{
     width: 280px;
 }
 
-.error{
-    color: #EF4444;
-    font-size: 1.3em;
-}
+
 </style>

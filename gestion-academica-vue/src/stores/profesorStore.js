@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 
 export const useProfesroStore = defineStore("profesor", () => {
     const profesores = ref([]);
@@ -18,6 +18,28 @@ export const useProfesroStore = defineStore("profesor", () => {
             console.error("Error al obtener profesores:", error);
         }
     };
+
+    const saveProfesor = async (profesor) => {
+        try {
+            const response = await fetch("http://localhost:8080/profesores", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(profesor),
+            });
+
+            if (!response.ok) {
+                throw new Error("Error al guardar el profesor");
+            }
+
+            await getProfesores();
+
+        } catch (error) {
+            console.error("Error al guardar el profesor:", error);
+        }
+    }
+
     const deleteProfesor = async (id) => {
         try {
             const response = await fetch(`http://localhost:8080/profesores/${id}`, {
@@ -28,7 +50,7 @@ export const useProfesroStore = defineStore("profesor", () => {
                 throw new Error("Error al eliminar el profesor");
             }
 
-            
+            await getProfesores();
     
             console.log(`Profesor con ID ${id} eliminado correctamente.`);
         } catch (error) {
@@ -39,6 +61,7 @@ export const useProfesroStore = defineStore("profesor", () => {
     return {
         profesores,
         getProfesores,
+        saveProfesor,
         deleteProfesor
     }
 });
