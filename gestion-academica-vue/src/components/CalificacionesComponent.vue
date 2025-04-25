@@ -30,12 +30,19 @@ const isAdmin = ref(false);
 if (usuario.rol == "admin"){
     isAdmin.value = true;
 }
+
+const handleclick = () => {
+    console.log(11);
+}
 </script>
 
 <template>
     <div v-if="isAdmin">
         <h2>Historial de calificaciones: </h2>
         <div class="table-container">
+            <div class="crear">
+                <button @click="handleclick"> + Crear</button>
+            </div>
             <table class="content-table">
                 <thead>
                     <tr>
@@ -86,6 +93,9 @@ if (usuario.rol == "admin"){
         <div v-else>
             <div class="table-container">
             <h2 class="bienvenida">Bienvenido, {{ usuario.nombre }} {{ usuario.apellidos }}. &#128075;</h2>
+            <div class="crear">
+                <button @click="handleclick"> + Crear</button>
+            </div>
             <table class="content-table">
                 <thead>
                     <tr>
@@ -120,7 +130,7 @@ if (usuario.rol == "admin"){
                         <td>{{ calificacion.ra7 }}</td>
                         <td>{{ calificacion.ra8 }}</td>
                         <td>{{ calificacion.ra9 }}</td>
-                        <td>Modificar | Eliminar</td>
+                        <td><img src="../../modificar.png" class="accion">  <img src="../../eliminar.png" class="accion"></td>
                     </tr>
                 </tbody>
             </table>

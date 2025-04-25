@@ -43,9 +43,9 @@ function redirecciona(usuarioIniciado) {
 </script>
 
 <template>
-    <div class="container">
+    <div class="login-container">
         <div class="card">
-            <img src="../../public/logo.png" class="logo">
+            <img src="../../logo.png" class="logo">
             <form @submit.prevent="handleSubmit" id="loginForm">
                 <input type="text" placeholder="email" v-model="usuario.email" />
                 <input type="password" placeholder="contraseña" v-model="usuario.password" />
@@ -59,7 +59,7 @@ function redirecciona(usuarioIniciado) {
 </template>
 
 <style scoped>
-.container{
+.login-container{
     margin: 0;
     background-color: rgb(219, 233, 255);
     display: flex;

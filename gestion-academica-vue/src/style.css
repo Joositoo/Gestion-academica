@@ -25,6 +25,7 @@ p{
   margin: 4em;
   display: flex;
   justify-content: center;
+  flex-direction: column;
 }
 
 .content-table{
@@ -61,6 +62,31 @@ p{
 .content-table tbody tr:last-of-type{
   border-bottom: 2px solid transparent
 }
+
+.accion{
+  width: 25px;
+  margin: 0 10px;
+}
+
+.crear{
+  display: flex;
+  justify-content: right;
+  margin-right: 2.5em;
+}
+
+.crear button{
+  background-color: #a9d4ff;
+  padding: 10px;
+  border: none;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.crear button:hover{
+  background-color: #a9d4ff;
+  cursor: pointer;
+}
+
 
 
 /*:root {

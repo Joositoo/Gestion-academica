@@ -16,7 +16,7 @@ const handleLogin = () => {
 <template>
     <h1>Información de {{ usuario.nombre }}:</h1>
 
-    <div class="container">
+    <div class="login-container">
         <div class="card">
         <div class="item">
             <img src="../../avatar.png">
@@ -39,7 +39,7 @@ const handleLogin = () => {
 </template>
 
 <style scoped>
-.container{
+.login-container{
     display: flex;
     justify-content: center;
     margin: 3em;

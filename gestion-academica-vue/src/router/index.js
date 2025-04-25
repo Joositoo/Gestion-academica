@@ -9,6 +9,7 @@ import CiclosPage from "../pages/CiclosPage.vue";
 import ModulosPage from "../pages/ModulosPage.vue";
 import MatriculasPage from "../pages/MatriculasPage.vue";
 import CalificacionesPage from "../pages/CalificacionesPage.vue";
+import CrearProfesorPage from "../pages/CrearProfesorPage.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -37,6 +38,11 @@ const router = createRouter({
             path: "/profesores",
             name: "Profesores",
             component: ProfesoresPage
+        },
+        {
+            path: "/profesores/crear",
+            name: "CrearProfesor",
+            component: CrearProfesorPage
         },
         {
             path: "/alumnos",
