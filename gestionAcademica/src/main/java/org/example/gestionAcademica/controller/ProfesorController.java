@@ -30,8 +30,15 @@ public class ProfesorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Profesor>> getProfesorById(@PathVariable int id){
-        return ResponseEntity.ok(profesorService.getProfesorById(id));
+    public ResponseEntity<ProfesorDto> getProfesorById(@PathVariable int id){
+        Optional<Profesor> profesorOptional = profesorService.getProfesorById(id);
+
+        if (profesorOptional.isPresent()) {
+            ProfesorDto dto = profesorMapper.getDto(profesorOptional.get());
+            return ResponseEntity.ok(dto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping()
