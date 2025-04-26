@@ -19,6 +19,19 @@ export const useProfesroStore = defineStore("profesor", () => {
         }
     };
 
+    const getProfesorById = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:8080/profesores/${id}`);
+            if (!response.ok) {
+                throw new Error("Error al obtener el profesor");
+            }
+            const profesor = await response.json();
+            return profesor;
+        } catch (error) {
+            console.error("Error al obtener el profesor:", error);
+        }
+    }
+
     const saveProfesor = async (profesor) => {
         try {
             const response = await fetch("http://localhost:8080/profesores", {
@@ -39,6 +52,28 @@ export const useProfesroStore = defineStore("profesor", () => {
             console.error("Error al guardar el profesor:", error);
         }
     }
+
+    const updateProfesor = async (profesor, id) => {
+        try {
+            const response = await fetch(`http://localhost:8080/profesores/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(profesor),
+            });
+    
+            if (!response.ok) {
+                throw new Error("Error al actualizar el profesor");
+            }
+    
+            await getProfesores(); 
+            console.log(`Profesor con ID ${profesor.id} actualizado correctamente.`);
+    
+        } catch (error) {
+            console.error("Error al actualizar el profesor:", error);
+        }
+    };
 
     const deleteProfesor = async (id) => {
         try {
@@ -61,6 +96,8 @@ export const useProfesroStore = defineStore("profesor", () => {
     return {
         profesores,
         getProfesores,
+        getProfesorById,
+        updateProfesor,
         saveProfesor,
         deleteProfesor
     }

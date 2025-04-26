@@ -25,8 +25,7 @@ const openModal = async(prof) => {
 }
 
 const handleEdit = (prof) => {
-    console.log(prof.id);
-    
+    router.push(`/profesores/${prof.id}`);
 }
 
 const handleDelete = async () => {

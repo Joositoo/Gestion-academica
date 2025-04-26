@@ -10,6 +10,7 @@ import ModulosPage from "../pages/ModulosPage.vue";
 import MatriculasPage from "../pages/MatriculasPage.vue";
 import CalificacionesPage from "../pages/CalificacionesPage.vue";
 import CrearProfesorPage from "../pages/CrearProfesorPage.vue";
+import EditarProfesorPage from "../pages/EditarProfesorPage.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -38,6 +39,11 @@ const router = createRouter({
             path: "/profesores",
             name: "Profesores",
             component: ProfesoresPage
+        },
+        {
+            path: "/profesores/:id",
+            name: "ProfesorDetails",
+            component: EditarProfesorPage
         },
         {
             path: "/profesores/crear",
