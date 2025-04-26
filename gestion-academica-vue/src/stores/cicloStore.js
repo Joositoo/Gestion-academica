@@ -1,0 +1,103 @@
+import { defineStore } from "pinia";
+import { ref } from "vue";
+
+export const useCicloStore = defineStore("ciclo", () => {
+    const ciclos = ref([]);
+
+    const getCiclos = async () => {
+        try {
+            const response = await fetch("http://localhost:8080/ciclos");
+            if (!response.ok) {
+                throw new Error("Ha ocurrido un error");
+            }
+            const data = await response.json();
+            ciclos.value = data;
+
+            return data;
+        } catch (error) {
+            console.error("Error al obtener ciclos:", error);
+        }
+    };
+
+    const getCicloById = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:8080/ciclos/${id}`);
+            if (!response.ok) {
+                throw new Error("Error al obtener el ciclo");
+            }
+            const ciclo = await response.json();
+            return ciclo;
+        } catch (error) {
+            console.error("Error al obtener el ciclo:", error);
+        }
+    }
+
+    const saveCiclo = async (ciclo) => {
+        try {
+            const response = await fetch("http://localhost:8080/ciclos", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(ciclo),
+            });
+
+            if (!response.ok) {
+                throw new Error("Error al guardar el ciclo");
+            }
+
+            await getCiclos();
+
+        } catch (error) {
+            console.error("Error al guardar el ciclo:", error);
+        }
+    }
+
+    const updateCiclo = async (ciclo, id) => {
+        try {
+            const response = await fetch(`http://localhost:8080/ciclos/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(ciclo),
+            });
+    
+            if (!response.ok) {
+                throw new Error("Error al actualizar el ciclo");
+            }
+    
+            await getCiclos();    
+            console.log(`Ciclo actualizado correctamente.`);
+        } catch (error) {
+            console.error("Error al actualizar el ciclo:", error);
+        }
+    };
+
+    const deleteCiclo = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:8080/ciclos/${id}`, {
+                method: 'DELETE',
+            });
+    
+            if (!response.ok) {
+                throw new Error("Error al eliminar el ciclo");
+            }
+
+            await getCiclos();
+    
+            console.log(`Ciclo eliminado correctamente.`);
+        } catch (error) {
+            console.error("Error al eliminar el profesor:", error);
+        }
+    };
+
+    return {
+        ciclos,
+        getCiclos,
+        getCicloById,
+        saveCiclo,
+        updateCiclo,
+        deleteCiclo
+    }
+})
