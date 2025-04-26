@@ -77,7 +77,7 @@ else{
                         </select>
                     </div>
                     <div class="grid-item">
-                        <button type="submit" class="crear-editar-button">Registrar</button>
+                        <button type="submit" class="crear-editar-button">Modificar</button>
                     </div>
                 </div>
             </form>
