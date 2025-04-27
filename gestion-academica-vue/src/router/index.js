@@ -13,8 +13,11 @@ import CrearProfesorPage from "../pages/CrearProfesorPage.vue";
 import EditarProfesorPage from "../pages/EditarProfesorPage.vue";
 import EditarCicloPage from "../pages/EditarCicloPage.vue";
 import EditarModuloPage from "../pages/EditarModuloPage.vue";
+import EditarAlumnoPage from "../pages/EditarAlumnoPage.vue";
+import CrearAlumnoPage from "../pages/CrearAlumnoPage.vue";
 import CrearCicloPage from "../pages/CrearCicloPage.vue";
 import CrearModuloPage from "../pages/CrearModuloPage.vue";
+
 
 const router = createRouter({
     history: createWebHistory(),
@@ -58,6 +61,16 @@ const router = createRouter({
             path: "/alumnos",
             name: "AlumnosPage",
             component: AlumnosPage
+        },
+        {
+            path: "/alumnos/:id",
+            name: "AlumnoDetails",
+            component: EditarAlumnoPage
+        },
+        {
+            path: "/alumnos/crear",
+            name: "CrearAlumno",
+            component: CrearAlumnoPage
         },
         {
             path: "/ciclos",
