@@ -133,6 +133,13 @@ select{
   background-color: rgb(219, 233, 255);
   padding: 0.5em 1em;
 }
+
+i {
+  cursor: pointer;
+  width: 50px;
+  font-size: 18px;
+  margin: 0 0.5em;
+}
 /*:root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

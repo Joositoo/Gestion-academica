@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
 import { useModuloStore } from '../stores/moduloStore';
-import {useCicloStore} from '../stores/cicloStore';
+import { useCicloStore } from '../stores/cicloStore';
 import { useRouter } from 'vue-router';
 
 let listaModulos = ref([]);
@@ -19,7 +19,7 @@ onMounted(async () => {
     listaCiclos.value = await cicloStore.getCiclos();
 });
 
-const handleClick = () => {    
+const handleClick = () => {
     router.push("/modulos/crear");
 }
 
@@ -38,11 +38,10 @@ const handleDelete = async () => {
 }
 
 const handleFilter = (e) => {
-    console.log(e.target.value);
-    if (e.target.value == 0){
+    if (e.target.value == 0) {
         listaFiltrada.value = listaModulos.value;
     }
-    else{
+    else {
         listaFiltrada.value = listaModulos.value.filter(m => m.cicloDto.nombre == e.target.value);
     }
 }
@@ -50,51 +49,51 @@ const handleFilter = (e) => {
 </script>
 
 <template>
-        <h2>Historial de módulos: </h2>
-        <div class="table-container">
-            <div class="crear">
-                <div>
+    <h2>Historial de módulos: </h2>
+    <div class="table-container">
+        <div class="crear">
+            <div>
                 <p>Filtrar por ciclo: </p>
                 <select @change="handleFilter">
                     <option value="0">No filtrar</option>
                     <option v-for="ciclo in listaCiclos" :value="ciclo.nombre">{{ ciclo.nombre }}</option>
                 </select>
             </div>
-                <div><button @click="handleClick"> + Crear</button></div>
-            </div>
-
-            <table class="content-table" v-if="listaFiltrada.length > 0">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Ciclo</th>
-                        <th>Módulo</th>
-                        <th>Profesor</th>
-                        <th>Email del profesor</th>                        
-                        <th>Acción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="modulo in listaFiltrada" :key="modulo.id">
-                        <td>{{ modulo.id }}</td>
-                        <td>{{ modulo.cicloDto.nombre }}</td>
-                        <td>{{ modulo.nombre }}</td>
-                        <td> {{ modulo.profesorDto.nombre }}  {{ modulo.profesorDto.apellidos }}</td>
-                        <td>{{ modulo.profesorDto.email }}</td>
-                        
-                        <td><i class="bi bi-pencil" @click="handleEdit(modulo)"></i>
-                        |
-                        <i class="bi bi-trash" @click="openModal(modulo)" data-bs-toggle="modal"
-                            data-bs-target="#myModal"></i></td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h2 v-else>No hay asignaturas asignadas a este ciclo</h2>
+            <div><button @click="handleClick"> + Crear</button></div>
         </div>
 
+        <table class="content-table" v-if="listaFiltrada.length > 0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Ciclo</th>
+                    <th>Módulo</th>
+                    <th>Profesor</th>
+                    <th>Email del profesor</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="modulo in listaFiltrada" :key="modulo.id">
+                    <td>{{ modulo.id }}</td>
+                    <td>{{ modulo.cicloDto.nombre }}</td>
+                    <td>{{ modulo.nombre }}</td>
+                    <td> {{ modulo.profesorDto.nombre }} {{ modulo.profesorDto.apellidos }}</td>
+                    <td>{{ modulo.profesorDto.email }}</td>
+                    <td><i class="bi bi-pencil" @click="handleEdit(modulo)"></i>
+                        |
+                        <i class="bi bi-trash" @click="openModal(modulo)" data-bs-toggle="modal"
+                            data-bs-target="#myModal"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-        <div class="modal" id="myModal">
+        <h2 v-else>No hay asignaturas asignadas a este módulo</h2>
+    </div>
+
+
+    <div class="modal" id="myModal">
         <div class="modal-dialog">
             <div class="modal-content">
 
@@ -130,7 +129,7 @@ h2 {
     justify-content: space-between;
 }
 
-.crear div{
+.crear div {
     display: flex;
     align-items: center;
 }
@@ -148,7 +147,7 @@ i {
     margin: 0 0.5em;
 }
 
-.table-container h2{
+.table-container h2 {
     text-decoration: none;
 }
 </style>
