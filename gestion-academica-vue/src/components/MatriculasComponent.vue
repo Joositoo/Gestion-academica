@@ -27,6 +27,7 @@ onMounted(async () => {
                         <th>ID</th>
                         <th>Ciclo</th>
                         <th>Alumno</th>
+                        <th>Email del alumno</th>
                         <th>Acción</th>
                     </tr>
                 </thead>
@@ -34,7 +35,8 @@ onMounted(async () => {
                     <tr v-for="matricula in listaMatriculas" :key="matricula.id">
                         <td>{{ matricula.id }}</td>
                         <td>{{ matricula.cicloDto.nombre }}</td>
-                        <td>{{ matricula.alumnoDto.nombre }} {{ matricula.alumnoDto.apellidos }} <br> {{matricula.alumnoDto.email }}</td>
+                        <td>{{ matricula.alumnoDto.nombre }} {{ matricula.alumnoDto.apellidos }}</td>
+                        <td>{{ matricula.alumnoDto.email }}</td>
                         <td>Modificar | Eliminar</td>
                     </tr>
                 </tbody>

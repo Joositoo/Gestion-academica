@@ -1,16 +1,22 @@
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
 import { useModuloStore } from '../stores/moduloStore';
+import {useCicloStore} from '../stores/cicloStore';
 import { useRouter } from 'vue-router';
 
 let listaModulos = ref([]);
+let listaCiclos = ref([]);
+let listaFiltrada = ref([]);
 let modulo = reactive({});
 let moduloId = ref(0);
 const moduloStore = useModuloStore();
+const cicloStore = useCicloStore();
 const router = useRouter();
 
 onMounted(async () => {
     listaModulos.value = await moduloStore.getModulos();
+    listaFiltrada.value = listaModulos.value;
+    listaCiclos.value = await cicloStore.getCiclos();
 });
 
 const handleClick = () => {    
@@ -31,15 +37,33 @@ const handleDelete = async () => {
     window.location.reload();
 }
 
+const handleFilter = (e) => {
+    console.log(e.target.value);
+    if (e.target.value == 0){
+        listaFiltrada.value = listaModulos.value;
+    }
+    else{
+        listaFiltrada.value = listaModulos.value.filter(m => m.cicloDto.nombre == e.target.value);
+    }
+}
+
 </script>
 
 <template>
-            <h2>Historial de módulos: </h2>
+        <h2>Historial de módulos: </h2>
         <div class="table-container">
             <div class="crear">
-            <button @click="handleClick"> + Crear</button>
-        </div>    
-            <table class="content-table">
+                <div>
+                <p>Filtrar por ciclo: </p>
+                <select @change="handleFilter">
+                    <option value="0">No filtrar</option>
+                    <option v-for="ciclo in listaCiclos" :value="ciclo.nombre">{{ ciclo.nombre }}</option>
+                </select>
+            </div>
+                <div><button @click="handleClick"> + Crear</button></div>
+            </div>
+
+            <table class="content-table" v-if="listaFiltrada.length > 0">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -51,7 +75,7 @@ const handleDelete = async () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="modulo in listaModulos" :key="modulo.id">
+                    <tr v-for="modulo in listaFiltrada" :key="modulo.id">
                         <td>{{ modulo.id }}</td>
                         <td>{{ modulo.cicloDto.nombre }}</td>
                         <td>{{ modulo.nombre }}</td>
@@ -65,6 +89,8 @@ const handleDelete = async () => {
                     </tr>
                 </tbody>
             </table>
+
+            <h2 v-else>No hay asignaturas asignadas a este ciclo</h2>
         </div>
 
 
@@ -101,6 +127,18 @@ h2 {
 
 .crear {
     margin-right: 3.5em;
+    justify-content: space-between;
+}
+
+.crear div{
+    display: flex;
+    align-items: center;
+}
+
+.crear div p {
+    margin: 0;
+    padding-right: 0.5em;
+    margin-left: 1.9em;
 }
 
 i {
@@ -108,5 +146,9 @@ i {
     width: 50px;
     font-size: 18px;
     margin: 0 0.5em;
+}
+
+.table-container h2{
+    text-decoration: none;
 }
 </style>

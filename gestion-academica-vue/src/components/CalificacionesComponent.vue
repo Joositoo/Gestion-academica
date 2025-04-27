@@ -32,7 +32,6 @@ if (usuario.rol == "admin"){
 }
 
 const handleclick = () => {
-    console.log(11);
 }
 </script>
 
