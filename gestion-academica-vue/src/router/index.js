@@ -12,7 +12,9 @@ import CalificacionesPage from "../pages/CalificacionesPage.vue";
 import CrearProfesorPage from "../pages/CrearProfesorPage.vue";
 import EditarProfesorPage from "../pages/EditarProfesorPage.vue";
 import EditarCicloPage from "../pages/EditarCicloPage.vue";
+import EditarModuloPage from "../pages/EditarModuloPage.vue";
 import CrearCicloPage from "../pages/CrearCicloPage.vue";
+import CrearModuloPage from "../pages/CrearModuloPage.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -64,7 +66,7 @@ const router = createRouter({
         },
         {
             path: "/ciclos/:id",
-            name: "CicloDetaiils",
+            name: "CicloDetails",
             component: EditarCicloPage
         },
         {
@@ -76,6 +78,16 @@ const router = createRouter({
             path: "/modulos",
             name: "ModulosPage",
             component: ModulosPage
+        },
+        {
+            path: "/modulos/:id",
+            name: "ModuloDetails",
+            component: EditarModuloPage
+        },
+        {
+            path: "/modulos/crear",
+            name: "CrearModulo",
+            component: CrearModuloPage
         },
         {
             path: "/matriculas",
