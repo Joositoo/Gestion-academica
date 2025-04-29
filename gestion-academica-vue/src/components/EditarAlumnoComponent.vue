@@ -81,7 +81,6 @@ const handleSubmit = async () => {
             <p class="error" style="display: none;">Rellene todos los campos, por favor</p>
         </div>
     </div>
-    {{ alumno }}
 </template>
 
 <style scoped>
