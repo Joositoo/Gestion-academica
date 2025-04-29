@@ -43,10 +43,10 @@ public class AlumnoMapper {
 
                 if (datos.length == 4) {
                     AlumnoDto alumnoDto = new AlumnoDto();
-                    alumnoDto.setNombre(datos[0]);
-                    alumnoDto.setApellidos(datos[1]);
-                    alumnoDto.setEmail(datos[2]);
-                    alumnoDto.setEmailProfesor(datos[3]);
+                    alumnoDto.setNombre(datos[0].trim());
+                    alumnoDto.setApellidos(datos[1].trim());
+                    alumnoDto.setEmail(datos[2].trim());
+                    alumnoDto.setEmailProfesor(datos[3].trim());
 
                     listaAlumnos.add(alumnoDto);
                 }
