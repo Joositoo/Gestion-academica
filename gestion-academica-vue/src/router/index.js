@@ -17,6 +17,8 @@ import EditarAlumnoPage from "../pages/EditarAlumnoPage.vue";
 import CrearAlumnoPage from "../pages/CrearAlumnoPage.vue";
 import CrearCicloPage from "../pages/CrearCicloPage.vue";
 import CrearModuloPage from "../pages/CrearModuloPage.vue";
+import CrearMatriculaPage from "../pages/CrearMatriculaPage.vue";
+import EditarMatriculaPage from "../pages/EditarMatriculaPage.vue";
 
 
 const router = createRouter({
@@ -106,6 +108,16 @@ const router = createRouter({
             path: "/matriculas",
             name: "MatriculasPage",
             component: MatriculasPage
+        },
+        {
+            path: "/matriculas/crear",
+            name: "CrearMatricula",
+            component: CrearMatriculaPage
+        },
+        {
+            path: "/matriculas/:id",
+            name:"MatriculaDetails",
+            component: EditarMatriculaPage
         },
         {
             path: "/calificaciones",

@@ -30,7 +30,7 @@ export const useModuloStore = defineStore("modulo", () =>{
         } catch (error) {
             console.error("Error al obtener el módulo:", error);
         }
-    }
+    };
 
     //ESTE METODO TIENE QUE ENVIAR UN FICHERO
     const saveModulo = async (modulo) => {
