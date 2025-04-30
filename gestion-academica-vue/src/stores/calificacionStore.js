@@ -31,9 +31,88 @@ export const useCalificacionStore = defineStore("calificacion", () => {
         return data;
     }
 
+    const getCalificacionById = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:8080/calificaciones/${id}`);
+            if (!response.ok) {
+                throw new Error("Error al obtener la calificación");
+            }
+            const calificacion = await response.json();
+            return calificacion;
+        } catch (error) {
+            console.error("Error al obtener la calificacion:", error);
+        }
+    };
+
+    ///TIENE QUE ENVIAR UN FICHERO  
+    const saveCalificacion = async (file) => {
+        try {
+            const formData = new FormData();
+            formData.append("file", file)
+
+            const response = await fetch("http://localhost:8080/calificaciones", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error("Error al guardar las calificaciones");
+            }
+
+            await getCalificaciones();
+
+        } catch (error) {
+            console.error("Error al guardar las calificaciones:", error);
+        }
+    };
+
+    const updateCalificacion = async (calificacion, id) => {
+        try {
+            const response = await fetch(`http://localhost:8080/calificaciones/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(calificacion),
+            });
+    
+            if (!response.ok) {
+                throw new Error("Error al actualizar la calificación");
+            }
+    
+            await getCalificaciones(); 
+            console.log(`Calificación actualizado correctamente.`);
+    
+        } catch (error) {
+            console.error("Error al actualizar la calificación:", error);
+        }
+    };
+
+    const deleteCalificacion = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:8080/calificaciones/${id}`, {
+                method: 'DELETE',
+            });
+    
+            if (!response.ok) {
+                throw new Error("Error al eliminar la calificación");
+            }
+
+            await getCalificaciones();
+    
+            console.log(`Calificación con ID ${id} eliminado correctamente.`);
+        } catch (error) {
+            console.error("Error al eliminar la calificacióon:", error);
+        }
+    };
+
     return {
         calificaciones,
-        getCalificaciones
+        getCalificaciones,
+        getCalificacionById,
+        saveCalificacion,
+        updateCalificacion,
+        deleteCalificacion
     }
 
 })

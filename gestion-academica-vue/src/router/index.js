@@ -19,6 +19,8 @@ import CrearCicloPage from "../pages/CrearCicloPage.vue";
 import CrearModuloPage from "../pages/CrearModuloPage.vue";
 import CrearMatriculaPage from "../pages/CrearMatriculaPage.vue";
 import EditarMatriculaPage from "../pages/EditarMatriculaPage.vue";
+import EditarCalificacionPage from "../pages/EditarCalificacionPage.vue";
+import CrearCalificacionPage from "../pages/CrearCalificacionPage.vue";
 
 
 const router = createRouter({
@@ -123,6 +125,16 @@ const router = createRouter({
             path: "/calificaciones",
             name: "CalificacionesPage",
             component: CalificacionesPage
+        },
+        {
+            path: "/calificaciones/crear",
+            name: "CrearCalificacion",
+            component: CrearCalificacionPage
+        },
+        {
+            path: "/calificaciones/:id",
+            name: "CalificacionDetails",
+            component: EditarCalificacionPage
         }
     ]
 })
