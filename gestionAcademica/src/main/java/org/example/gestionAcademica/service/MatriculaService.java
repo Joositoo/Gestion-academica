@@ -87,4 +87,23 @@ public class MatriculaService {
             throw new RuntimeException("Email del alumno y/o ciclo no encontrado");
         }
     }
+
+    public boolean validaLista(List<MatriculaDto> listaMatriculas){
+        for (MatriculaDto matriculaDto : listaMatriculas) {
+            if (!alumnoRepository.existsAlumnoByEmail(matriculaDto.getEmailAlumno()) || !cicloRepository.existsCicloByNombre(matriculaDto.getNombreCiclo())){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void saveListaMatriculas(List<MatriculaDto> listaMatriculas){
+        for (MatriculaDto matriculaDto : listaMatriculas) {
+            Matricula matricula = new Matricula();
+            matricula.setIdAlumno(alumnoRepository.findAlumnoByEmail(matriculaDto.getEmailAlumno()));
+            matricula.setIdCiclo(cicloRepository.findCicloByNombre(matriculaDto.getNombreCiclo()));
+
+            matriculaRepository.save(matricula);
+        }
+    }
 }
