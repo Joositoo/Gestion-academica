@@ -33,7 +33,7 @@ export const useMatriculaStore = defineStore("matricula", () => {
     };
 
     //ESTE METODO TIENE QUE ENVIAR UN FICHERO
-    const saveMatrícula = async (matricula) => {
+    /*const saveMatrícula = async (matricula) => {
         try {
             const response = await fetch("http://localhost:8080/matrículas", {
                 method: "POST",
@@ -51,6 +51,27 @@ export const useMatriculaStore = defineStore("matricula", () => {
 
         } catch (error) {
             console.error("Error al guardar la matrícula:", error);
+        }
+    };*/
+
+    const saveMatricula = async (file) => {
+        try {
+            const formData = new FormData();
+            formData.append("file", file)
+
+            const response = await fetch("http://localhost:8080/matriculas", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error("Error al guardar las matrículas");
+            }
+
+            await getMatriculas();
+
+        } catch (error) {
+            console.error("Error al guardar las matrículas:", error);
         }
     };
 
@@ -97,7 +118,7 @@ export const useMatriculaStore = defineStore("matricula", () => {
         matriculas,
         getMatriculas,
         getMatriculaById,
-        saveMatrícula,
+        saveMatricula,
         updateMatricula,
         deleteMatricula
     }
