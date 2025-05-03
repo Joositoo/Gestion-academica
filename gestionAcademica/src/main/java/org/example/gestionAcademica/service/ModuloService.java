@@ -75,12 +75,10 @@ public class ModuloService {
             }
 
             if (moduloDto.getNombre() != null){
-                if (!moduloRepository.existsModuloByNombre(moduloDto.getNombre()) || Objects.equals(moduloDto.getNombreCiclo(), modulo.getNombre())) {
-                    modulo.setNombre(moduloDto.getNombre());
-                }
-                else{
-                    throw new RuntimeException("El módulo ya existe");
-                }
+                modulo.setNombre(moduloDto.getNombre());
+            }
+            else{
+                throw new RuntimeException("Indica el nombre del módulo");
             }
 
         }
@@ -96,6 +94,45 @@ public class ModuloService {
             throw new RuntimeException("Modulo no encontrado");
         }
     }
+
+    public boolean validaLista(List<ModuloDto> listaModulos){
+        for (ModuloDto moduloDto : listaModulos) {
+            if (!profesorRepository.existsProfesorByEmail(moduloDto.getEmailProfesor()) || !cicloRepository.existsCicloByNombre(moduloDto.getNombreCiclo())){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void saveListaModulos (List<ModuloDto> listaModulos){
+        for (ModuloDto moduloDto : listaModulos) {
+            Modulo modulo = new Modulo();
+            modulo.setIdCiclo(cicloRepository.findCicloByNombre(moduloDto.getNombreCiclo()));
+            modulo.setIdProfesor(profesorRepository.findProfesorByEmail(moduloDto.getEmailProfesor()));
+            modulo.setNombre(moduloDto.getNombre());
+
+            moduloRepository.save(modulo);
+        }
+    }
+
+    public List<ModuloDto> getModulosByLista (List<ModuloDto> listaModulos){
+        List<ModuloDto> listaModulosDto = new ArrayList<>();
+
+        for (ModuloDto moduloDto : listaModulos) {
+            Modulo modulo = moduloRepository.findModuloByNombre(moduloDto.getNombre());
+            ModuloDto moduloDtoDto = moduloMapper.getDto(modulo);
+
+            listaModulosDto.add(moduloDtoDto);
+        }
+        return listaModulosDto;
+    }
+
+
+
+
+
+
+
 
     public Modulo getModuloByDto(ModuloDto moduloDto) {
         if (cicloRepository.existsCicloByNombre(moduloDto.getNombreCiclo()) && profesorRepository.existsProfesorByEmail(moduloDto.getEmailProfesor())){
