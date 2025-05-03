@@ -3,12 +3,15 @@ import { onMounted, reactive, ref } from 'vue';
 import { useModuloStore } from '../stores/moduloStore';
 import { useRouter } from 'vue-router';
 import { useProfesroStore } from '../stores/profesorStore';
+import { useCicloStore } from '../stores/cicloStore'
 
 const moduloStore = useModuloStore();
 const profesorStore = useProfesroStore();
+const cicloStore = useCicloStore();
 const router = useRouter();
 let data = null;
 const listaProfesores = ref([]);
+const listaCiclos = ref([]);
 
 const props = defineProps({
     id: Number
@@ -16,7 +19,8 @@ const props = defineProps({
 
 onMounted(async () => {
     listaProfesores.value = await profesorStore.getProfesores();
-    
+    listaCiclos.value = await cicloStore.getCiclos();
+
     data = await moduloStore.getModuloById(props.id);
 
     modulo.nombreCiclo = data.cicloDto.nombre;
@@ -51,7 +55,9 @@ const handleSubmit = async () => {
                 <div class="grid-container">
                     <div class="grid-item">
                         <label>Nombre del ciclo: </label>
-                        <input type="text" v-model="modulo.nombreCiclo" class="crear-editar-input" />
+                        <select v-model="modulo.nombreCiclo">
+                            <option v-for="ciclo in listaCiclos" :value="ciclo.nombre">{{ ciclo.nombre }}</option>
+                        </select>
                     </div>
                     <div class="grid-item">
                         <label>Nombre del módulo: </label>

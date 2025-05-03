@@ -32,27 +32,26 @@ export const useModuloStore = defineStore("modulo", () =>{
         }
     };
 
-    //ESTE METODO TIENE QUE ENVIAR UN FICHERO
-    const saveModulo = async (modulo) => {
+    const saveModulo = async (file) => {
         try {
+            const formData = new FormData();
+            formData.append("file", file)
+
             const response = await fetch("http://localhost:8080/modulos", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(modulo),
+                body: formData,
             });
 
             if (!response.ok) {
-                throw new Error("Error al guardar el modulo");
+                throw new Error("Error al guardar el módulo");
             }
 
             await getModulos();
 
         } catch (error) {
-            console.error("Error al guardar el ciclo:", error);
+            console.error("Error al guardar el módulo:", error.message);
         }
-    }
+    };
 
     const updateModulo = async (modulo, id) => {
         try {
