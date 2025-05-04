@@ -43,7 +43,8 @@ public class ProfesorController {
 
     @PostMapping()
     public ResponseEntity<ProfesorDto> saveProfesor(@RequestBody Profesor profesor){
-        profesorService.saveProfesor(profesor);
+        Profesor profesorPasswordEncript = profesorService.encriptaPassword(profesor);
+        profesorService.saveProfesor(profesorPasswordEncript);
         Profesor profesorCreado = profesorRepository.findProfesorByEmail(profesor.getEmail());
         return ResponseEntity.ok(profesorMapper.getDto(profesorCreado));
     }
