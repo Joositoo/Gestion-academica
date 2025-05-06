@@ -4,12 +4,12 @@ import org.example.gestionAcademica.controller.dto.ProfesorDto;
 import org.example.gestionAcademica.controller.mapper.ProfesorMapper;
 import org.example.gestionAcademica.modelo.Profesor;
 import org.example.gestionAcademica.repository.ProfesorRepository;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -69,7 +69,8 @@ public class ProfesorService {
                 }
             }
             if (profesorDto.getPassword() != null) {
-                profesor.setPassword(profesorDto.getPassword());
+                String passwordEncriptado = BCrypt.hashpw(profesorDto.getPassword(), BCrypt.gensalt());
+                profesor.setPassword(passwordEncriptado);
             }
             if (profesorDto.getRol() != null) {
                 profesor.setRol(profesorDto.getRol());
@@ -81,8 +82,6 @@ public class ProfesorService {
         }
     }
 
-
-
     public void deleteProfesorById(int id) {
         if (profesoresRepository.existsById(id)){
             profesoresRepository.deleteById(id);
@@ -90,5 +89,12 @@ public class ProfesorService {
         else{
             throw new RuntimeException("Profesor no encontrado");
         }
+    }
+
+    public Profesor encriptaPassword(Profesor profesor) {
+        String passwordEncriptado = BCrypt.hashpw(profesor.getPassword(), BCrypt.gensalt());
+        profesor.setPassword(passwordEncriptado);
+
+        return profesor;
     }
 }
