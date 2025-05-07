@@ -1,4 +1,4 @@
-.card{
+.card {
   background-color: #a9d4ff;
   width: fit-content;
   border: 1px solid black;
@@ -8,6 +8,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: transform 0.3s ease-in-out; /* Añadido para animar el cambio de tamaño */
+}
+
+.card:hover {
+  transform: scale(1.05); /* Aumenta el tamaño al 105% al pasar el ratón */
 }
 
 .card-container{

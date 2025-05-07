@@ -21,6 +21,7 @@ import CrearMatriculaPage from "../pages/CrearMatriculaPage.vue";
 import EditarMatriculaPage from "../pages/EditarMatriculaPage.vue";
 import EditarCalificacionPage from "../pages/EditarCalificacionPage.vue";
 import CrearCalificacionPage from "../pages/CrearCalificacionPage.vue";
+import PorcentajesPage from "../pages/PorcentajesPage.vue";
 
 
 const router = createRouter({
@@ -120,6 +121,11 @@ const router = createRouter({
             path: "/matriculas/:id",
             name:"MatriculaDetails",
             component: EditarMatriculaPage
+        },
+        {
+            path: "/porcentajes",
+            name: "PorcentajesPage",
+            component: PorcentajesPage
         },
         {
             path: "/calificaciones",
