@@ -21,12 +21,12 @@ onMounted(async () => {
 
 const openModal = async(p) => {
     porcentaje.nombre = p.moduloDto.nombre;
-    porcentajeId = p.id;
+    porcentajeId.value = p.id;
 }
 
 const handleDelete = async () => {
     await porcentajesStore.deletePorcentaje(porcentajeId.value);
-    router.push("/porcentajes");
+    window.location.reload();
 }
 
 const handleFilter = (e) => {

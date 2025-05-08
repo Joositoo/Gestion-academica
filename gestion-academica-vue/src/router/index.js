@@ -22,6 +22,8 @@ import EditarMatriculaPage from "../pages/EditarMatriculaPage.vue";
 import EditarCalificacionPage from "../pages/EditarCalificacionPage.vue";
 import CrearCalificacionPage from "../pages/CrearCalificacionPage.vue";
 import PorcentajesPage from "../pages/PorcentajesPage.vue";
+import CrearPorcentajePage from "../pages/CrearPorcentajePage.vue";
+import EditarPorcentajePage from "../pages/EditarPorcentajePage.vue";
 
 
 const router = createRouter({
@@ -126,6 +128,16 @@ const router = createRouter({
             path: "/porcentajes",
             name: "PorcentajesPage",
             component: PorcentajesPage
+        },
+        {
+            path: "/porcentajes/crear",
+            name: "CrearPorcentaje",
+            component: CrearPorcentajePage
+        },
+        {
+            path: "/porcentajes/:id",
+            name: "PorcentajeDetails",
+            component: EditarPorcentajePage
         },
         {
             path: "/calificaciones",

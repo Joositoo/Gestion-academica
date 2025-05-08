@@ -64,7 +64,7 @@ const handleSubmit = async () => {
                         <input type="text" v-model="modulo.nombre" class="crear-editar-input" />
                     </div>
                     <div class="grid-item">
-                        <label>Email del profesor: </label>
+                        <label>Nombre del profesor: </label>
                         <select v-model="modulo.emailProfesor" class="editar-crear-input">
                             <option v-for="profesor in listaProfesores" :value="profesor.email">{{ profesor.nombre }} {{ profesor.apellidos }}</option>
                         </select>

@@ -68,7 +68,7 @@ export const usePorcentajeStore = defineStore("porcentaje", () => {
             }
     
             await getPorcentajes(); 
-            console.log(`Porcentaje con ID ${porcentaje.id} actualizado correctamente.`);
+            console.log(`Porcentaje actualizado correctamente.`);
     
         } catch (error) {
             console.error("Error al actualizar el porcentaje:", error);
