@@ -25,7 +25,7 @@ const handleSubmit = async () => {
         return;
     }
 
-    await calificacionStore.saveCalificacion(calificacionStore.value);
+    await calificacionStore.saveCalificacion(calificaciones.value);
     router.push("/calificaciones");
 }
 </script>
@@ -39,7 +39,7 @@ const handleSubmit = async () => {
                 <div>
                     <p>Asegúrate de que el archivo csv contenga la información en este orden: </p>
                     <hr>
-                    <img src="../../registroAlumnos.png">
+                    <img src="../../registroCalificaciones.png">
                 </div>
                 <div>
                     <form @submit.prevent="handleSubmit">
