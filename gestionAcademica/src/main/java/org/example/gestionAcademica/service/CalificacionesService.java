@@ -61,15 +61,16 @@ public class CalificacionesService {
             if (moduloRepository.existsModuloByNombre(calificacionDto.getNombreModulo()) && alumnoRepository.existsAlumnoByEmail(calificacionDto.getEmailAlumno())) {
                 calificacion.setIdAlumno(alumnoRepository.findAlumnoByEmail(calificacionDto.getEmailAlumno()));
                 calificacion.setIdModulo(moduloRepository.findModuloByNombre(calificacionDto.getNombreModulo()));
-                calificacion.setRa1(calificacionDto.getRa1());
-                calificacion.setRa2(calificacionDto.getRa2());
-                calificacion.setRa3(calificacionDto.getRa3());
-                calificacion.setRa4(calificacionDto.getRa4());
-                calificacion.setRa5(calificacionDto.getRa5());
-                calificacion.setRa6(calificacionDto.getRa6());
-                calificacion.setRa7(calificacionDto.getRa7());
-                calificacion.setRa8(calificacionDto.getRa8());
-                calificacion.setRa9(calificacionDto.getRa9());
+
+                if (calificacionDto.getRa1() != null) calificacion.setRa1(calificacionDto.getRa1());
+                if (calificacionDto.getRa2() != null) calificacion.setRa2(calificacionDto.getRa2());
+                if (calificacionDto.getRa3() != null) calificacion.setRa3(calificacionDto.getRa3());
+                if (calificacionDto.getRa4() != null) calificacion.setRa4(calificacionDto.getRa4());
+                if (calificacionDto.getRa5() != null) calificacion.setRa5(calificacionDto.getRa5());
+                if (calificacionDto.getRa6() != null) calificacion.setRa6(calificacionDto.getRa6());
+                if (calificacionDto.getRa7() != null) calificacion.setRa7(calificacionDto.getRa7());
+                if (calificacionDto.getRa8() != null) calificacion.setRa8(calificacionDto.getRa8());
+                if (calificacionDto.getRa9() != null) calificacion.setRa9(calificacionDto.getRa9());
             }
             else{
                 throw new RuntimeException("Modulo y/o alumno no encontrado");
