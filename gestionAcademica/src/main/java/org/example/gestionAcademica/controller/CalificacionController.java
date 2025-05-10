@@ -1,11 +1,14 @@
 package org.example.gestionAcademica.controller;
 
 import org.example.gestionAcademica.controller.dto.CalificacionDto;
+import org.example.gestionAcademica.controller.mapper.CalificacionMapper;
 import org.example.gestionAcademica.modelo.Calificacion;
 import org.example.gestionAcademica.service.CalificacionesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -15,6 +18,8 @@ import java.util.List;
 public class CalificacionController {
     @Autowired
     private CalificacionesService calificacionService;
+    @Autowired
+    private CalificacionMapper calificacionMapper;
 
     @GetMapping
     public ResponseEntity<List<CalificacionDto>> getAll(){
@@ -26,11 +31,24 @@ public class CalificacionController {
         return ResponseEntity.ok(calificacionService.getCalificacionById(id));
     }
 
-    @PostMapping()
+    /*@PostMapping()
     public ResponseEntity<Calificacion> saveCalificacion(@RequestBody CalificacionDto calificacionDto){
         Calificacion calificacion = calificacionService.getCalificacionByDto(calificacionDto);
         calificacionService.saveCalificacion(calificacion);
         return ResponseEntity.ok(calificacion);
+    }*/
+
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public List<CalificacionDto> saveCalificacion(@RequestParam("file") MultipartFile file){
+        List<CalificacionDto> listaCalificaciones = calificacionMapper.getCalificacionesByFile(file);
+
+        if (calificacionService.validaLista(listaCalificaciones)){
+            calificacionService.saveListaCalificaciones(listaCalificaciones);
+            return calificacionService.getCalificacionesByLista(listaCalificaciones);
+        }
+        else{
+            throw new RuntimeException("El archivo contiene emails de alumnos que no existen y/o de módulos que no existen y/0 calificaciones ya registrados");
+        }
     }
 
     @PutMapping("/{id}")

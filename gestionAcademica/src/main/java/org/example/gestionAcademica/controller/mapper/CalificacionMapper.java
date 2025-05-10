@@ -3,6 +3,15 @@ package org.example.gestionAcademica.controller.mapper;
 import org.example.gestionAcademica.controller.dto.CalificacionDto;
 import org.example.gestionAcademica.modelo.Calificacion;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CalificacionMapper {
@@ -27,7 +36,57 @@ public class CalificacionMapper {
                 calificacion.getRa6(),
                 calificacion.getRa7(),
                 calificacion.getRa8(),
-                calificacion.getRa8()
+                calificacion.getRa9()
         );
+    }
+
+    public List<CalificacionDto> getCalificacionesByFile(MultipartFile file) {
+        List<CalificacionDto> listaCalificaciones = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))){
+            String linea;
+            boolean cabecera = true;
+            while ((linea = br.readLine()) != null) {
+                if (cabecera) {
+                    cabecera = false;
+                    continue;
+                }
+
+                String[] datos = linea.split(",");
+
+                if (datos.length == 11) {
+                    CalificacionDto calificacionDto = new CalificacionDto();
+                    calificacionDto.setNombreModulo(datos[0].trim());
+                    calificacionDto.setEmailAlumno(datos[1].trim());
+                    calificacionDto.setRa1(parseBigDecimal(datos[2]));
+                    calificacionDto.setRa2(parseBigDecimal(datos[3]));
+                    calificacionDto.setRa3(parseBigDecimal(datos[4]));
+                    calificacionDto.setRa4(parseBigDecimal(datos[5]));
+                    calificacionDto.setRa5(parseBigDecimal(datos[6]));
+                    calificacionDto.setRa6(parseBigDecimal(datos[7]));
+                    calificacionDto.setRa7(parseBigDecimal(datos[8]));
+                    calificacionDto.setRa8(parseBigDecimal(datos[9]));
+                    calificacionDto.setRa9(parseBigDecimal(datos[10]));
+
+                    listaCalificaciones.add(calificacionDto);
+                }
+                else{
+                    throw new RuntimeException("El archivo debe tener 11 columnas (nombreModulo, emailAlumno, ra1, ra2, ra3, ra4, ra5, ra6, ra7, ra8, ra9)");
+                }}
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return  listaCalificaciones;
+    }
+
+    private BigDecimal parseBigDecimal(String valor) {
+        if (valor != null) {
+            valor = valor.trim();
+            if (!valor.equalsIgnoreCase("null") && !valor.isEmpty()) {
+                return new BigDecimal(valor);
+            }
+        }
+        return null;
     }
 }

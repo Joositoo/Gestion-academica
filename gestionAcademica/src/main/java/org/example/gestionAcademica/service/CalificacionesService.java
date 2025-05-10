@@ -118,4 +118,54 @@ public class CalificacionesService {
         }
 
     }
+
+    public boolean validaLista(List<CalificacionDto> listaCalificaciones) {
+        for (CalificacionDto calificacionDto : listaCalificaciones) {
+            if(!moduloRepository.existsModuloByNombre(calificacionDto.getNombreModulo()) ||
+               !alumnoRepository.existsAlumnoByEmail(calificacionDto.getEmailAlumno())){
+                return false;
+            }
+
+            Alumno alumno = alumnoRepository.findAlumnoByEmail(calificacionDto.getEmailAlumno());
+            Modulo modulo = moduloRepository.findModuloByNombre(calificacionDto.getNombreModulo());
+            if (calificacionesRepository.existsCalificacionByIdAlumnoAndIdModulo(alumno, modulo)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void saveListaCalificaciones(List<CalificacionDto> listaCalificaciones) {
+        for (CalificacionDto calificacionDto : listaCalificaciones) {
+            Calificacion calificacion = new Calificacion();
+            calificacion.setIdModulo(moduloRepository.findModuloByNombre(calificacionDto.getNombreModulo()));
+            calificacion.setIdAlumno(alumnoRepository.findAlumnoByEmail(calificacionDto.getEmailAlumno()));
+            calificacion.setRa1(calificacionDto.getRa1());
+            calificacion.setRa2(calificacionDto.getRa2());
+            calificacion.setRa3(calificacionDto.getRa3());
+            calificacion.setRa4(calificacionDto.getRa4());
+            calificacion.setRa5(calificacionDto.getRa5());
+            calificacion.setRa6(calificacionDto.getRa6());
+            calificacion.setRa7(calificacionDto.getRa7());
+            calificacion.setRa8(calificacionDto.getRa8());
+            calificacion.setRa9(calificacionDto.getRa9());
+
+            calificacionesRepository.save(calificacion);
+        }
+    }
+
+    public List<CalificacionDto> getCalificacionesByLista(List<CalificacionDto> listaCalificaciones) {
+        List<CalificacionDto> listaCalificacionesDto = new ArrayList<>();
+
+        for (CalificacionDto calificacionDto : listaCalificaciones) {
+            Alumno alumno = alumnoRepository.findAlumnoByEmail(calificacionDto.getEmailAlumno());
+            Modulo modulo = moduloRepository.findModuloByNombre(calificacionDto.getNombreModulo());
+            Calificacion calificacion = calificacionesRepository.findCalificacionByIdAlumnoAndIdModulo(alumno, modulo);
+            CalificacionDto calif = calificacionMapper.getDto(calificacion);
+
+            listaCalificacionesDto.add(calif);
+        }
+
+        return listaCalificacionesDto;
+    }
 }

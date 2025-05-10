@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CalificacionRepository extends CrudRepository<Calificacion, Integer> {
     boolean existsCalificacionByIdAlumnoAndIdModulo(@NotNull Alumno idAlumno, @NotNull Modulo idModulo);
+
+    Calificacion findCalificacionByIdAlumnoAndIdModulo(@NotNull Alumno idAlumno, @NotNull Modulo idModulo);
 }
