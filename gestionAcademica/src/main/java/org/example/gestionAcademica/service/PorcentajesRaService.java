@@ -37,8 +37,10 @@ public class PorcentajesRaService {
     }
 
     public PorcentajesRaDto getPorcentajesRaById(int id) {
-        Optional<PorcentajesRa> optPorcentajesRa = porcentajesRaRepository.findById(id);
-        if (porcentajesRaRepository.existsById(id)) {
+        Modulo modulo = moduloRepository.findById(id).get();
+        Optional<PorcentajesRa> optPorcentajesRa = Optional.ofNullable(porcentajesRaRepository.findPorcentajesRaByModulo(modulo));
+        //Optional<PorcentajesRa> optPorcentajesRa = porcentajesRaRepository.findById(id);
+        if (porcentajesRaRepository.existsById(optPorcentajesRa.get().getId())) {
             return porcentajesRaMapper.getDto(optPorcentajesRa.get());
         }
         else{
