@@ -1,39 +1,39 @@
 <script setup>
 import { ref } from 'vue';
-import { useAlumnoStore } from '../stores/alumnoStore';
 import { useRouter } from 'vue-router';
+import { useCalificacionStore } from '../stores/calificacionStore';
 
-const alumnoStore = useAlumnoStore();
+const calificacionStore = useCalificacionStore();;
 const router = useRouter();
-let alumnos = ref(null);
+let calificaciones = ref(null);
 
 const handleChange = (e) => {
-    alumnos.value = e.target.files[0];
+    calificaciones.value = e.target.files[0];
 }
 
 const handleSubmit = async () => {
     let pVacio = document.getElementById("vacio");
     let pWrong = document.getElementById("wrongFile");
 
-    if (!alumnos.value){
+    if (!calificaciones.value){
         pVacio.style.display = "block";
         return;
     }
-    else if (alumnos.value.type != "text/csv" && !alumnos.value.name.toLowerCase().endsWith(".csv")){
+    else if (calificaciones.value.type != "text/csv" && !calificaciones.value.name.toLowerCase().endsWith(".csv")){
         pVacio.style.display = "none";
         pWrong.style.display = "block";
         return;
     }
 
-    await alumnoStore.saveAlumno(alumnos.value);
-    router.push("/alumnos");
+    await calificacionStore.saveCalificacion(calificacionStore.value);
+    router.push("/calificaciones");
 }
 </script>
 
 <template>
     <div class="card-container">
         <div class="card">
-            <h2>Registro de usuarios</h2>
+            <h2>Registro de calificaciones</h2>
 
             <div class="flex-container">
                 <div>

@@ -1,4 +1,5 @@
 <script setup>
+import CrearCalificacionComponent from '../components/CrearCalificacionComponent.vue';
 import FooterComponent from '../components/FooterComponent.vue';
 import HeaderComponent from '../components/HeaderComponent.vue';
 
@@ -6,6 +7,7 @@ import HeaderComponent from '../components/HeaderComponent.vue';
 
 <template>
     <HeaderComponent />
+    <CrearCalificacionComponent />
     <FooterComponent />
 </template>
 

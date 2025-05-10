@@ -44,7 +44,6 @@ export const useCalificacionStore = defineStore("calificacion", () => {
         }
     };
 
-    ///TIENE QUE ENVIAR UN FICHERO  
     const saveCalificacion = async (file) => {
         try {
             const formData = new FormData();
