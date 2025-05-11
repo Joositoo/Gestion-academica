@@ -5,6 +5,7 @@ import CalificacionesComponent from '../components/CalificacionesComponent.vue';
 import { onMounted, ref } from 'vue';
 import { useCalificacionStore } from '../stores/calificacionStore';
 import { useUsuarioStore } from '../stores/usuarioStore';
+import BodyProfComponent from '../components/BodyProfComponent.vue';
 
 const usuarioStore = useUsuarioStore();
 const usuario = usuarioStore.usuario;
@@ -23,7 +24,7 @@ onMounted(async () => {
 
 <template>
     <HeaderComponent />
-    <CalificacionesComponent />
+    <BodyProfComponent />
     <FooterComponent />
 </template>
 

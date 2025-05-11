@@ -55,9 +55,10 @@ const handleSubmit = async () => {
                 <div class="grid-container">
                     <div class="grid-item">
                         <label>Nombre del ciclo: </label>
-                        <select v-model="modulo.nombreCiclo">
+                        <!--<select v-model="modulo.nombreCiclo">
                             <option v-for="ciclo in listaCiclos" :value="ciclo.nombre">{{ ciclo.nombre }}</option>
-                        </select>
+                        </select>-->
+                        <p>{{ modulo.nombreCiclo }}</p>
                     </div>
                     <div class="grid-item">
                         <label>Nombre del módulo: </label>
@@ -96,5 +97,9 @@ const handleSubmit = async () => {
     justify-content: center;
     font-size: 1.2em;
     border-radius: 8px;
+}
+
+p{
+    margin-top: 1em;
 }
 </style>

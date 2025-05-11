@@ -14,6 +14,7 @@ const calificacionesStore = useCalificacionStore();
 const calificaciones = ref([]);
 const calificacionesProfesor = ref([]);
 const listaModulos = ref([]);
+const listaModulosProf = ref([]);
 
 let calificacionesFiltradas = ref([]);
 let hasCalificaciones = ref(false);
@@ -29,6 +30,8 @@ onMounted(async () => {
     const data = await calificacionesStore.getCalificaciones();
     listaModulos.value = await moduloStore.getModulos();
 
+    listaModulosProf.value = listaModulos.value.filter(m => m.profesorDto.id == usuario.id);
+
     calificaciones.value = data;
     calificacionesFiltradas.value = calificaciones.value;
 
@@ -43,9 +46,6 @@ if (usuario.rol == "admin") {
     isAdmin.value = true;
 }
 
-const handleclick = () => {
-}
-
 const handleFilter = async (e) => {
     if (e.target.value == 0) {
         calificacionesFiltradas.value = calificaciones.value;
@@ -55,7 +55,16 @@ const handleFilter = async (e) => {
     }
 }
 
-const openModal = async(c) => {
+const handleFilterProf = async (e) => {
+    if (e.target.value == 0) {
+        calificacionesProfesor.value = calificaciones.value.filter(c => c.moduloDto.profesorDto.id == usuario.id);
+    }
+    else {
+        calificacionesProfesor.value = calificaciones.value.filter(c => c.moduloDto.nombre == e.target.value);
+    }
+}
+
+const openModal = async (c) => {
     calificacionId.value = c.id;
 
     calificacion.nombre = c.alumnoDto.nombre;
@@ -63,7 +72,7 @@ const openModal = async(c) => {
     calificacion.modulo = c.moduloDto.nombre
 }
 
-const handleDelete = async() => {
+const handleDelete = async () => {
     await calificacionesStore.deleteCalificacion(calificacionId.value);
     window.location.reload();
 }
@@ -144,27 +153,28 @@ const handleClick = () => {
 
 
         <div class="modal" id="myModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-dialog">
+                <div class="modal-content">
 
-                <div class="modal-header">
-                    <h4 class="modal-title">Eliminar calificación</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <div class="modal-header">
+                        <h4 class="modal-title">Eliminar calificación</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        ¿Estás seguro de eliminar la calificación de {{ calificacion.nombre }} {{ calificacion.apellidos
+                        }} en {{ calificacion.modulo }}?
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" @click="handleDelete" class="btn btn-success"
+                            data-bs-dismiss="modal">Sí</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+
                 </div>
-
-                <div class="modal-body">
-                    ¿Estás seguro de eliminar la calificación de {{ calificacion.nombre }} {{ calificacion.apellidos }} en {{ calificacion.modulo }}?
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" @click="handleDelete" class="btn btn-success"
-                        data-bs-dismiss="modal">Sí</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                </div>
-
             </div>
         </div>
-    </div>
     </div>
 
     <div v-else>
@@ -173,17 +183,27 @@ const handleClick = () => {
                 calificaciones asignadas</h2>
         </div>
         <div v-else>
+            <h2>Historial de calificaciones: </h2>
             <div class="table-container">
-                <h2 class="bienvenida">Bienvenido, {{ usuario.nombre }} {{ usuario.apellidos }}. &#128075;</h2>
                 <div class="crear">
-                    <button @click="handleclick"> + Crear</button>
+                    <div>
+                        <p>Filtrar por módulo: </p>
+                        <select @change="handleFilterProf">
+                            <option value="0">No filtrar</option>
+                            <option v-for="modulo in listaModulosProf" :value="modulo.nombre">{{ modulo.nombre }}</option>
+                        </select>
+                    </div>
+                    <div><button @click="handleClick"> + Crear</button></div>
                 </div>
-                <table class="content-table">
+
+
+                <table class="content-table" v-if="calificacionesProfesor.length > 0">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Ciclo</th>
                             <th>Módulo</th>
+                            <!--<th>Profesor</th>-->
                             <th>Alumno</th>
                             <th>RA 1</th>
                             <th>RA 2</th>
@@ -202,8 +222,9 @@ const handleClick = () => {
                             <td>{{ calificacion.id }}</td>
                             <td>{{ calificacion.moduloDto.cicloDto.nombre }}</td>
                             <td>{{ calificacion.moduloDto.nombre }}</td>
-                            <td>{{ calificacion.alumnoDto.nombre }} {{ calificacion.alumnoDto.apellidos }} <br> {{
-                                calificacion.alumnoDto.email }}</td>
+                            <!--<td>{{ calificacion.moduloDto.profesorDto.nombre }} {{
+                            calificacion.moduloDto.profesorDto.apellidos }}</td>-->
+                            <td>{{ calificacion.alumnoDto.nombre }} {{ calificacion.alumnoDto.apellidos }}</td>
                             <td>{{ calificacion.ra1 }}</td>
                             <td>{{ calificacion.ra2 }}</td>
                             <td>{{ calificacion.ra3 }}</td>
@@ -213,11 +234,42 @@ const handleClick = () => {
                             <td>{{ calificacion.ra7 }}</td>
                             <td>{{ calificacion.ra8 }}</td>
                             <td>{{ calificacion.ra9 }}</td>
-                            <td><img src="../../modificar.png" class="accion"> <img src="../../eliminar.png"
-                                    class="accion"></td>
+                            <td><i class="bi bi-pencil" @click="handleEdit(calificacion)"></i>
+                                |
+                                <i class="bi bi-trash" @click="openModal(calificacion)" data-bs-toggle="modal"
+                                    data-bs-target="#myModal"></i>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
+
+                <h2 v-else>No hay calificaciones en este módulo</h2>
+            </div>
+
+
+            <div class="modal" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h4 class="modal-title">Eliminar calificación</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            ¿Estás seguro de eliminar la calificación de {{ calificacion.nombre }} {{
+                                calificacion.apellidos
+                            }} en {{ calificacion.modulo }}?
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" @click="handleDelete" class="btn btn-success"
+                                data-bs-dismiss="modal">Sí</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>

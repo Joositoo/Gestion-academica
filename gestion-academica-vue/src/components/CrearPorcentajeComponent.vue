@@ -56,39 +56,39 @@ const handleSubmit = async() => {
                         </select>
                     </div>
                     <div class="grid-item">
-                        <label>Resultado de aprendizaje 1 (RA 1):</label>
+                        <label>Resultado de Aprendizaje 1 (RA 1):</label>
                         <input type="text" class="crear-editar-input" v-model.number="porcentaje.ra1" />
                     </div>
                     <div class="grid-item">
-                        <label>Resultado de aprendizaje 2 (RA 2):</label>
+                        <label>Resultado de Aprendizaje 2 (RA 2):</label>
                         <input type="text" class="crear-editar-input" v-model.number="porcentaje.ra2" />
                     </div>
                     <div class="grid-item">
-                        <label>Resultado de aprendizaje 3 (RA 3):</label>
+                        <label>Resultado de Aprendizaje 3 (RA 3):</label>
                         <input type="text" class="crear-editar-input" v-model.number="porcentaje.ra3" />
                     </div>
                     <div class="grid-item">
-                        <label>Resultado de aprendizaje 4 (RA 4):</label>
+                        <label>Resultado de Aprendizaje 4 (RA 4):</label>
                         <input type="text" class="crear-editar-input" v-model.number="porcentaje.ra4" />
                     </div>
                     <div class="grid-item">
-                        <label>Resultado de aprendizaje 5 (RA 5):</label>
+                        <label>Resultado de Aprendizaje 5 (RA 5):</label>
                         <input type="text" class="crear-editar-input" v-model.number="porcentaje.ra5" />
                     </div>
                     <div class="grid-item">
-                        <label>Resultado de aprendizaje 6 (RA 6):</label>
+                        <label>Resultado de Aprendizaje 6 (RA 6):</label>
                         <input type="text" class="crear-editar-input" v-model.number="porcentaje.ra6" />
                     </div>
                     <div class="grid-item">
-                        <label>Resultado de aprendizaje 7 (RA 7):</label>
+                        <label>Resultado de Aprendizaje 7 (RA 7):</label>
                         <input type="text" class="crear-editar-input" v-model.number="porcentaje.ra7" />
                     </div>
                     <div class="grid-item">
-                        <label>Resultado de aprendizaje 8 (RA 8):</label>
+                        <label>Resultado de Aprendizaje 8 (RA 8):</label>
                         <input type="text" class="crear-editar-input" v-model.number="porcentaje.ra8" />
                     </div>
                     <div class="grid-item">
-                        <label>Resultado de aprendizaje 9 (RA 9):</label>
+                        <label>Resultado de Aprendizaje 9 (RA 9):</label>
                         <input type="text" class="crear-editar-input" v-model.number="porcentaje.ra9" />
                     </div>
 

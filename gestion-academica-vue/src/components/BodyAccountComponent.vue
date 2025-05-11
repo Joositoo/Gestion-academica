@@ -14,7 +14,7 @@ const handleLogin = () => {
 </script>
 
 <template>
-    <h1>Información de {{ usuario.nombre }}:</h1>
+    <h2>Información de {{ usuario.nombre }}:</h2>
 
     <div class="login-container">
         <div class="card">
