@@ -179,6 +179,12 @@ const handleClick = () => {
 
     <div v-else>
         <div v-if="!hasCalificaciones" class="sin-calificaciones">
+            <h2>Historial de calificaciones: </h2>
+            <div class="btn-container">
+                <div class="crear btn-wrapper">
+                    <div><button @click="handleClick"> + Crear</button></div>
+                </div>
+            </div>
             <h2 class="no-calificaciones"> Lo sentimos, {{ usuario.nombre }} {{ usuario.apellidos }}. Todavía no tienes
                 calificaciones asignadas</h2>
         </div>
@@ -190,7 +196,8 @@ const handleClick = () => {
                         <p>Filtrar por módulo: </p>
                         <select @change="handleFilterProf">
                             <option value="0">No filtrar</option>
-                            <option v-for="modulo in listaModulosProf" :value="modulo.nombre">{{ modulo.nombre }}</option>
+                            <option v-for="modulo in listaModulosProf" :value="modulo.nombre">{{ modulo.nombre }}
+                            </option>
                         </select>
                     </div>
                     <div><button @click="handleClick"> + Crear</button></div>
@@ -284,9 +291,12 @@ h2 {
 
 .sin-calificaciones {
     display: flex;
+    flex-direction: column;
+    gap: 3.5em;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 50vh;
+    margin-bottom: 2em;
 }
 
 .table-container {
@@ -324,5 +334,17 @@ h2 {
 
 .table-container h2 {
     text-decoration: none;
+}
+
+.btn-container {
+    display: flex;
+    justify-content: flex-end; 
+    width: 100%;
+    padding-right: 3.5em; 
+}
+
+.btn-wrapper {
+    display: flex;
+    align-items: center;
 }
 </style>
