@@ -28,6 +28,10 @@ const handleEdit = (c) => {
     router.push(`/ciclos/${c.id}`);
 }
 
+const handleDetails = (c) => {
+    router.push(`/ciclos/details/${c.id}`);
+}
+
 const handleDelete = async () => {
     await ciclosStore.deleteCiclo(cicloId.value);
     window.location.reload();
@@ -53,7 +57,9 @@ const handleDelete = async () => {
                 <tr v-for="ciclo in listaCiclos" :key="ciclo.id">
                     <td>{{ ciclo.id }}</td>
                     <td>{{ ciclo.nombre }}</td>
-                    <td><i class="bi bi-pencil" @click="handleEdit(ciclo)"></i>
+                    <td><i class="bi bi-card-list" @click="handleDetails(ciclo)"></i>
+                        |
+                        <i class="bi bi-pencil" @click="handleEdit(ciclo)"></i>
                         |
                         <i class="bi bi-trash" @click="openModal(ciclo)" data-bs-toggle="modal"
                             data-bs-target="#myModal"></i>
@@ -96,7 +102,7 @@ h2 {
 }
 
 .crear {
-    margin-right: 11em;
+    margin-right: 15em;
 }
 
 i {
