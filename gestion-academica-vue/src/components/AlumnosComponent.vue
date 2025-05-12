@@ -33,6 +33,10 @@ const handleEdit = (a) => {
     router.push(`/alumnos/${a.id}`);
 }
 
+const handleDetails = (a) => {
+    router.push(`/alumnos/details/${a.id}`);
+}
+
 const handleDelete = async () => {
     await alumnoStore.deleteAlumno(alumnoId.value)
     window.location.reload();
@@ -83,7 +87,9 @@ const handleFilter = (e) => {
                     <td>{{ alumno.email }}</td>
                     <td>{{ alumno.profesorDto.nombre }} {{ alumno.profesorDto.apellidos }}</td>
                     <td>{{ alumno.profesorDto.email }}</td>
-                    <td><i class="bi bi-pencil" @click="handleEdit(alumno)"></i>
+                    <td><i class="bi bi-card-list" @click="handleDetails(alumno)"></i>
+                        |
+                        <i class="bi bi-pencil" @click="handleEdit(alumno)"></i>
                         |
                         <i class="bi bi-trash" @click="openModal(alumno)" data-bs-toggle="modal"
                             data-bs-target="#myModal"></i>
