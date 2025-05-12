@@ -24,6 +24,7 @@ import CrearCalificacionPage from "../pages/CrearCalificacionPage.vue";
 import PorcentajesPage from "../pages/PorcentajesPage.vue";
 import CrearPorcentajePage from "../pages/CrearPorcentajePage.vue";
 import EditarPorcentajePage from "../pages/EditarPorcentajePage.vue";
+import DetallesProfesorPage from "../pages/DetallesProfesorPage.vue";
 
 
 const router = createRouter({
@@ -56,8 +57,13 @@ const router = createRouter({
         },
         {
             path: "/profesores/:id",
-            name: "ProfesorDetails",
+            name: "UpdateProfesor",
             component: EditarProfesorPage
+        },
+        {
+            path: "/profesores/details/:id",
+            name: "ProfesorDetails",
+            component: DetallesProfesorPage
         },
         {
             path: "/profesores/crear",

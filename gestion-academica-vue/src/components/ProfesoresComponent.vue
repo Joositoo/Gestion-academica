@@ -33,6 +33,9 @@ const handleDelete = async () => {
     window.location.reload();
 }
 
+const handleDetails = (prof) => {
+    router.push(`/profesores/details/${prof.id}`);
+}
 </script>
 
 <template>
@@ -59,7 +62,9 @@ const handleDelete = async () => {
                     <td>{{ profesor.apellidos }}</td>
                     <td>{{ profesor.email }}</td>
                     <td>{{ profesor.rol }}</td>
-                    <td><i class="bi bi-pencil" @click="handleEdit(profesor)"></i>
+                    <td><i class="bi bi-card-list" @click="handleDetails(profesor)"></i>
+                        |
+                        <i class="bi bi-pencil" @click="handleEdit(profesor)"></i>
                         |
                         <i class="bi bi-trash" @click="openModal(profesor)" data-bs-toggle="modal"
                             data-bs-target="#myModal"></i>
@@ -102,7 +107,7 @@ h2 {
 }
 
 .crear {
-    margin-right: 6em;
+    margin-right: 8.5em;
 }
 
 i {
