@@ -28,18 +28,34 @@ const handleSubmit = async () => {
     await alumnoStore.saveAlumno(alumnos.value);
     router.push("/alumnos");
 }
+
+const generateCSV = () => {
+    const encabezado = ["nombre", "apellidos", "email", "emailProfesor"];
+    const contenidoCSV = encabezado.join(",")+ "\n";
+
+    const blob = new Blob([contenidoCSV], {type: "text/csv;charset=utf-8"});
+    const url = URL.createObjectURL(blob);
+
+    const enlace = document.createElement("a");
+    enlace.href = url;
+    enlace.download = "altaAlumnos.csv";
+    document.body.appendChild(enlace);
+    enlace.click();
+    document.body.removeChild(enlace);
+}
 </script>
 
 <template>
     <div class="card-container">
         <div class="card">
-            <h2>Registro de usuarios</h2>
+            <h2>Registro de Alumnos</h2>
 
             <div class="flex-container">
                 <div>
                     <p>Asegúrate de que el archivo csv contenga la información en este orden: </p>
                     <hr>
                     <img src="../../registroAlumnos.png">
+                    <p><button class="crear-editar-input" @click="generateCSV">Generar CSV</button></p>
                 </div>
                 <div>
                     <form @submit.prevent="handleSubmit">

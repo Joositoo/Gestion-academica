@@ -27,6 +27,21 @@ const handleSubmit = async() => {
     await moduloStore.saveModulo(modulos.value);
     router.push("/modulos");
 }
+
+const generateCSV = () => {
+    const encabezado = ["nombreCiclo", "emailProfesor", "nombreModulo"];
+    const contenidoCSV = encabezado.join(",")+ "\n";
+
+    const blob = new Blob([contenidoCSV], {type: "text/csv;charset=utf-8"});
+    const url = URL.createObjectURL(blob);
+
+    const enlace = document.createElement("a");
+    enlace.href = url;
+    enlace.download = "altaModulos.csv";
+    document.body.appendChild(enlace);
+    enlace.click();
+    document.body.removeChild(enlace);
+}
 </script>
 
 <template>
@@ -39,6 +54,7 @@ const handleSubmit = async() => {
                     <p>Asegúrate de que el archivo csv contenga la información en este orden: </p>
                     <hr>
                     <img src="../../registroModulos.png">
+                    <p><button class="crear-editar-input" @click="generateCSV">Generar CSV</button></p>
                 </div>
                 <div>
                     <form @submit.prevent="handleSubmit">
