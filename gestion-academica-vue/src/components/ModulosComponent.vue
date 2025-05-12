@@ -32,6 +32,10 @@ const handleEdit = (m) => {
     router.push(`/modulos/${m.id}`);
 }
 
+const handleDetails = (m) => {
+    router.push(`/modulos/details/${m.id}`);
+}
+
 const handleDelete = async () => {
     await moduloStore.deleteModulo(moduloId.value);
     window.location.reload();
@@ -80,7 +84,9 @@ const handleFilter = (e) => {
                     <td>{{ modulo.nombre }}</td>
                     <td> {{ modulo.profesorDto.nombre }} {{ modulo.profesorDto.apellidos }}</td>
                     <td>{{ modulo.profesorDto.email }}</td>
-                    <td><i class="bi bi-pencil" @click="handleEdit(modulo)"></i>
+                    <td><i class="bi bi-card-list" @click="handleDetails(modulo)"></i>
+                        |
+                        <i class="bi bi-pencil" @click="handleEdit(modulo)"></i>
                         |
                         <i class="bi bi-trash" @click="openModal(modulo)" data-bs-toggle="modal"
                             data-bs-target="#myModal"></i>
@@ -125,7 +131,7 @@ h2 {
 }
 
 .crear {
-    margin-right: 3.5em;
+    margin-right: 5em;
     justify-content: space-between;
 }
 
