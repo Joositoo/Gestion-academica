@@ -49,6 +49,10 @@ const handleFilter = (e) => {
     }
 }
 
+const handleDetails = (p) => {
+    router.push(`/porcentajes/details/${p.moduloDto.id}`);
+}
+
 const handleEdit = (p) => {
     router.push(`/porcentajes/${p.id}`);
 }
@@ -105,7 +109,8 @@ const handleClick = () => {
                         <td>{{ porcentaje.ra7 }}</td>
                         <td>{{ porcentaje.ra8 }}</td>
                         <td>{{ porcentaje.ra9 }}</td>
-                        <td>
+                        <td><i class="bi bi-card-list" @click="handleDetails(porcentaje)"></i>
+                            |   
                             <i class="bi bi-pencil" @click="handleEdit(porcentaje)"></i>
                             |
                             <i class="bi bi-trash" @click="openModal(porcentaje)" data-bs-toggle="modal"
@@ -182,7 +187,8 @@ const handleClick = () => {
                         <td>{{ porcentaje.ra7 }}</td>
                         <td>{{ porcentaje.ra8 }}</td>
                         <td>{{ porcentaje.ra9 }}</td>
-                        <td>
+                        <td><i class="bi bi-card-list" @click="handleDetails(porcentaje)"></i>
+                            | 
                             <i class="bi bi-pencil" @click="handleEdit(porcentaje)"></i>
                             |
                             <i class="bi bi-trash" @click="openModal(porcentaje)" data-bs-toggle="modal"

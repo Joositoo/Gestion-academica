@@ -29,6 +29,7 @@ import DetallesAlumnoPage from "../pages/DetallesAlumnoPage.vue";
 import DetallesCiclosPage from "../pages/DetallesCiclosPage.vue";
 import DetallesModuloPage from "../pages/DetallesModuloPage.vue";
 import DetalllesMatriculaPage from "../pages/DetallesMatriculaPage.vue";
+import DetallesPorcentajesPage from "../pages/DetallesPorcentajesPage.vue";
 
 
 const router = createRouter({
@@ -165,8 +166,13 @@ const router = createRouter({
             component: CrearPorcentajePage
         },
         {
-            path: "/porcentajes/:id",
+            path: "/porcentajes/details/:id",
             name: "PorcentajeDetails",
+            component: DetallesPorcentajesPage
+        },
+        {
+            path: "/porcentajes/:id",
+            name: "updatePorcentajes",
             component: EditarPorcentajePage
         },
         {
