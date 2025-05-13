@@ -41,6 +41,10 @@ const handleEdit = (m) => {
     router.push(`/matriculas/${m.id}`)
 }
 
+const handleDetails = (m) => {
+    router.push(`/matriculas/details/${m.id}`);
+}
+
 const handleDelete = async () => {
     await matriculaStore.deleteMatricula(matriculaId.value);
     window.location.reload();
@@ -79,7 +83,9 @@ const handleDelete = async () => {
                     <td>{{ matricula.cicloDto.nombre }}</td>
                     <td>{{ matricula.alumnoDto.nombre }} {{ matricula.alumnoDto.apellidos }}</td>
                     <td>{{ matricula.alumnoDto.email }}</td>
-                    <td><i class="bi bi-pencil" @click="handleEdit(matricula)"></i>
+                    <td><i class="bi bi-card-list" @click="handleDetails(matricula)"></i>
+                        |
+                        <i class="bi bi-pencil" @click="handleEdit(matricula)"></i>
                         |
                         <i class="bi bi-trash" @click="openModal(matricula)" data-bs-toggle="modal"
                             data-bs-target="#myModal"></i>

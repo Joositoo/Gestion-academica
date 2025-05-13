@@ -28,6 +28,7 @@ import DetallesProfesorPage from "../pages/DetallesProfesorPage.vue";
 import DetallesAlumnoPage from "../pages/DetallesAlumnoPage.vue";
 import DetallesCiclosPage from "../pages/DetallesCiclosPage.vue";
 import DetallesModuloPage from "../pages/DetallesModuloPage.vue";
+import DetalllesMatriculaPage from "../pages/DetallesMatriculaPage.vue";
 
 
 const router = createRouter({
@@ -118,7 +119,7 @@ const router = createRouter({
             name: "ModulosPage",
             component: ModulosPage
         },
-                {
+        {
             path: "/modulos/details/:id",
             name: "ModuloDetails",
             component: DetallesModuloPage
@@ -139,13 +140,18 @@ const router = createRouter({
             component: MatriculasPage
         },
         {
+            path: "/matriculas/details/:id",
+            name: "MatriculaDetails",
+            component: DetalllesMatriculaPage
+        },
+        {
             path: "/matriculas/crear",
             name: "CrearMatricula",
             component: CrearMatriculaPage
         },
         {
             path: "/matriculas/:id",
-            name:"MatriculaDetails",
+            name:"updaterMatriculas",
             component: EditarMatriculaPage
         },
         {
