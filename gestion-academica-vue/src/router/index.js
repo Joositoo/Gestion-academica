@@ -30,6 +30,7 @@ import DetallesCiclosPage from "../pages/DetallesCiclosPage.vue";
 import DetallesModuloPage from "../pages/DetallesModuloPage.vue";
 import DetalllesMatriculaPage from "../pages/DetallesMatriculaPage.vue";
 import DetallesPorcentajesPage from "../pages/DetallesPorcentajesPage.vue";
+import DetallesCalificacionesPage from "../pages/DetallesCalificacionesPage.vue";
 
 
 const router = createRouter({
@@ -187,8 +188,13 @@ const router = createRouter({
         },
         {
             path: "/calificaciones/:id",
-            name: "CalificacionDetails",
+            name: "updateCalificaciones",
             component: EditarCalificacionPage
+        },
+        {
+            path: "/calificaciones/details/:id",
+            name: "CalificacionDetails",
+            component: DetallesCalificacionesPage
         }
     ]
 })

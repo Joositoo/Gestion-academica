@@ -81,6 +81,10 @@ const handleEdit = (c) => {
     router.push(`/calificaciones/${c.id}`)
 }
 
+const handleDetails = (c) => {
+    router.push(`/calificaciones/details/${c.id}`);
+}
+
 const handleClick = () => {
     router.push("/calificaciones/crear");
 }
@@ -139,7 +143,9 @@ const handleClick = () => {
                         <td>{{ calificacion.ra7 }}</td>
                         <td>{{ calificacion.ra8 }}</td>
                         <td>{{ calificacion.ra9 }}</td>
-                        <td><i class="bi bi-pencil" @click="handleEdit(calificacion)"></i>
+                        <td><i class="bi bi-card-list" @click="handleDetails(calificacion)"></i>
+                            |
+                            <i class="bi bi-pencil" @click="handleEdit(calificacion)"></i>
                             |
                             <i class="bi bi-trash" @click="openModal(calificacion)" data-bs-toggle="modal"
                                 data-bs-target="#myModal"></i>
@@ -241,7 +247,9 @@ const handleClick = () => {
                             <td>{{ calificacion.ra7 }}</td>
                             <td>{{ calificacion.ra8 }}</td>
                             <td>{{ calificacion.ra9 }}</td>
-                            <td><i class="bi bi-pencil" @click="handleEdit(calificacion)"></i>
+                            <td><i class="bi bi-card-list" @click="handleDetails(calificacion)"></i>
+                                |
+                                <i class="bi bi-pencil" @click="handleEdit(calificacion)"></i>
                                 |
                                 <i class="bi bi-trash" @click="openModal(calificacion)" data-bs-toggle="modal"
                                     data-bs-target="#myModal"></i>

@@ -37,7 +37,7 @@ onMounted(async () => {
     console.log(modulo.id);
     console.log(id);
     
-    const data = await porcentajeStore.getPorcentajeById(id.id);
+    const data = await porcentajeStore.getPorcentajeById(modulo.id);
     porcentajes.id = data.id;
     porcentajes.modulo = data.moduloDto.nombre;
     porcentajes.ciclo = data.moduloDto.cicloDto.nombre;
@@ -80,31 +80,31 @@ onMounted(async () => {
                     <p><strong>Email del profesor:</strong> {{ porcentajes.emailProfesor }}</p>
                 </div>
                 <div>
-                    <p><strong>Resultado de aprendizaje 1 (RA 1): </strong> {{ porcentajes.ra1 }} <span v-if="porcentajes.ra1">%</span></p>
+                    <p><strong>Resultado de aprendizaje 1 (RA 1): </strong> {{ porcentajes.ra1 }}<span v-if="porcentajes.ra1">%</span></p>
                 </div>
                 <div>
-                    <p><strong>Resultado de aprendizaje 2 (RA 2): </strong> {{ porcentajes.ra2 }} <span v-if="porcentajes.ra2">%</span></p>
+                    <p><strong>Resultado de aprendizaje 2 (RA 2): </strong> {{ porcentajes.ra2 }}<span v-if="porcentajes.ra2">%</span></p>
                 </div>
                 <div>
-                    <p><strong>Resultado de aprendizaje 3 (RA 3): </strong> {{ porcentajes.ra3 }} <span v-if="porcentajes.ra3">%</span></p>
+                    <p><strong>Resultado de aprendizaje 3 (RA 3): </strong> {{ porcentajes.ra3 }}<span v-if="porcentajes.ra3">%</span></p>
                 </div>
                 <div>
-                    <p><strong>Resultado de aprendizaje 4 (RA 4): </strong> {{ porcentajes.ra4 }} <span v-if="porcentajes.ra4">%</span></p>
+                    <p><strong>Resultado de aprendizaje 4 (RA 4): </strong> {{ porcentajes.ra4 }}<span v-if="porcentajes.ra4">%</span></p>
                 </div>
                 <div>
-                    <p><strong>Resultado de aprendizaje 5 (RA 5): </strong> {{ porcentajes.ra5 }} <span v-if="porcentajes.ra5">%</span></p>
+                    <p><strong>Resultado de aprendizaje 5 (RA 5): </strong> {{ porcentajes.ra5 }}<span v-if="porcentajes.ra5">%</span></p>
                 </div>
                 <div>
-                    <p><strong>Resultado de aprendizaje 6 (RA 6): </strong> {{ porcentajes.ra6 }} <span v-if="porcentajes.ra6">%</span></p>
+                    <p><strong>Resultado de aprendizaje 6 (RA 6): </strong> {{ porcentajes.ra6 }}<span v-if="porcentajes.ra6">%</span></p>
                 </div>
                 <div>
-                    <p><strong>Resultado de aprendizaje 7 (RA 7): </strong> {{ porcentajes.ra7 }} <span v-if="porcentajes.ra7">%</span></p>
+                    <p><strong>Resultado de aprendizaje 7 (RA 7): </strong> {{ porcentajes.ra7 }}<span v-if="porcentajes.ra7">%</span></p>
                 </div>
                 <div>
-                    <p><strong>Resultado de aprendizaje 8 (RA 8): </strong> {{ porcentajes.ra8 }} <span v-if="porcentajes.ra8">%</span></p>
+                    <p><strong>Resultado de aprendizaje 8 (RA 8): </strong> {{ porcentajes.ra8 }}<span v-if="porcentajes.ra8">%</span></p>
                 </div>
                 <div>
-                    <p><strong>Resultado de aprendizaje 9 (RA 9): </strong> {{ porcentajes.ra9 }} <span v-if="porcentajes.ra9">%</span></p>
+                    <p><strong>Resultado de aprendizaje 9 (RA 9): </strong> {{ porcentajes.ra9 }}<span v-if="porcentajes.ra9">%</span></p>
                 </div>
             </div>
         </div>
