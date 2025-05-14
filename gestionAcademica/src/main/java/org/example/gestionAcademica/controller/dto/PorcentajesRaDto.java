@@ -1,28 +1,59 @@
 package org.example.gestionAcademica.controller.dto;
 
+import jakarta.validation.constraints.*;
+
 public class PorcentajesRaDto {
     private int id;
 
+    @NotEmpty(message = "El nombre del módulo no puede quedar vacío")
+    @Pattern(regexp = "^[\\wñÑ ]{5,}$", message = "El nombre del módulo debe tener mínimo 5 caracteres alfanuméricos")
     private String nombreModulo;
 
     private ModuloDto moduloDto;
 
+    @NotNull(message = "El valor no puede ser nulo")
+    @Min(value = 0, message = "El valor debe ser al menos 0")
+    @Max(value = 100, message = "El valor no puede ser mayor a 100")
     private Byte ra1;
 
+    @NotNull(message = "El valor no puede ser nulo")
+    @Min(value = 0, message = "El valor debe ser al menos 0")
+    @Max(value = 100, message = "El valor no puede ser mayor a 100")
     private Byte ra2;
 
+    @NotNull(message = "El valor no puede ser nulo")
+    @Min(value = 0, message = "El valor debe ser al menos 0")
+    @Max(value = 100, message = "El valor no puede ser mayor a 100")
     private Byte ra3;
 
+    @NotNull(message = "El valor no puede ser nulo")
+    @Min(value = 0, message = "El valor debe ser al menos 0")
+    @Max(value = 100, message = "El valor no puede ser mayor a 100")
     private Byte ra4;
 
+    @NotNull(message = "El valor no puede ser nulo")
+    @Min(value = 0, message = "El valor debe ser al menos 0")
+    @Max(value = 100, message = "El valor no puede ser mayor a 100")
     private Byte ra5;
 
+    @NotNull(message = "El valor no puede ser nulo")
+    @Min(value = 0, message = "El valor debe ser al menos 0")
+    @Max(value = 100, message = "El valor no puede ser mayor a 100")
     private Byte ra6;
 
+    @NotNull(message = "El valor no puede ser nulo")
+    @Min(value = 0, message = "El valor debe ser al menos 0")
+    @Max(value = 100, message = "El valor no puede ser mayor a 100")
     private Byte ra7;
 
+    @NotNull(message = "El valor no puede ser nulo")
+    @Min(value = 0, message = "El valor debe ser al menos 0")
+    @Max(value = 100, message = "El valor no puede ser mayor a 100")
     private Byte ra8;
 
+    @NotNull(message = "El valor no puede ser nulo")
+    @Min(value = 0, message = "El valor debe ser al menos 0")
+    @Max(value = 100, message = "El valor no puede ser mayor a 100")
     private Byte ra9;
 
     public PorcentajesRaDto(String nombreModulo, Byte ra1, Byte ra2, Byte ra3, Byte ra4, Byte ra5, Byte ra6, Byte ra7, Byte ra8, Byte ra9) {

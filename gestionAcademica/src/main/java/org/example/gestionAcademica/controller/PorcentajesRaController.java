@@ -1,5 +1,6 @@
 package org.example.gestionAcademica.controller;
 
+import jakarta.validation.Valid;
 import org.example.gestionAcademica.controller.dto.PorcentajesRaDto;
 import org.example.gestionAcademica.controller.mapper.PorcentajesRaMapper;
 import org.example.gestionAcademica.modelo.PorcentajesRa;
@@ -31,7 +32,7 @@ public class PorcentajesRaController {
     }
 
     @PostMapping
-    public boolean savePorcentajesRa(@RequestBody PorcentajesRaDto porcentajesRaDto) {
+    public boolean savePorcentajesRa(@Valid @RequestBody PorcentajesRaDto porcentajesRaDto) {
         if (porcentajesRaService.existeModulo(porcentajesRaDto)){
             if (!porcentajesRaService.existePorcentaje(porcentajesRaDto)){
                 PorcentajesRa porcentajesRa = porcentajesRaMapper.getPorcentajesByDto(porcentajesRaDto);
@@ -48,7 +49,7 @@ public class PorcentajesRaController {
     }
 
     @PutMapping("/{id}")
-    public boolean updatePorcentajesRa(@PathVariable int id, @RequestBody PorcentajesRaDto porcentajesRaDto) {
+    public boolean updatePorcentajesRa(@PathVariable int id,@Valid @RequestBody PorcentajesRaDto porcentajesRaDto) {
         porcentajesRaService.updatePorcentajeRa(id, porcentajesRaDto);
         return true;
     }

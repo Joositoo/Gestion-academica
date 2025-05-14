@@ -1,7 +1,9 @@
 package org.example.gestionAcademica.modelo;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.util.LinkedHashSet;
@@ -16,8 +18,10 @@ public class Ciclo {
     private Integer id;
 
     @Size(max = 100)
-    @NotNull
     @Column(name = "nombre", nullable = false, length = 100)
+    @NotNull(message = "El nombre del ciclo no puede estar vacío")
+    @NotEmpty(message = "El nombre del ciclo no puede ser nulo")
+    @Pattern(regexp = "^[\\wñ ]{5,}$", message = "El nombre del ciclo debe tener mínimo 5 caracteres alfanuméricos")
     private String nombre;
 
     @OneToMany(mappedBy = "idCiclo")

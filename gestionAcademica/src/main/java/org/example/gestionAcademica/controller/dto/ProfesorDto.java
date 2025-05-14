@@ -12,25 +12,25 @@ public class ProfesorDto {
     @Size(max = 100)
     @NotNull(message = "El nombre no puede ser nulo")
     @NotEmpty(message = "El nombre no puede estar vacío")
-    @Pattern(regexp = "^[a-zA-Z ]{3,}$", message = "El nombre solo debe contener letras y espacios")
+    @Pattern(regexp = "^[a-zA-ZñÑ ]{3,}$", message = "El nombre solo debe contener letras y espacios")
     private String nombre;
 
     @Size(max = 150)
     @NotNull(message = "Los apellidos no pueden ser nulos")
     @NotEmpty(message = "Los apellidos no pueden estar vacíos")
-    @Pattern(regexp = "^[a-zA-Z ]{3,}$", message = "El apellido solo debe contener letras y espacios")
+    @Pattern(regexp = "^[a-zA-ZñÑ ]{3,}$", message = "El apellido solo debe contener letras y espacios")
     private String apellidos;
 
     @Size(max = 255)
     @NotNull(message = "El correo no puede ser nulo")
     @NotEmpty(message = "El correo no puede estar vacío")
-    @Pattern(regexp = "^[\\w._%+-]{5,30}@gmail\\.com$", message = "El email debe ser una dirección de Gmail válida y contar con mínimo 5 y máximo 30 caracteres antes del dominio")
+    @Pattern(regexp = "^[\\wñÑ._%+-]{5,30}@gmail\\.com$", message = "El email debe ser una dirección de Gmail válida y contar con mínimo 5 y máximo 30 caracteres antes del dominio")
     private String email;
 
     @Size(max = 255)
     @NotNull(message = "La contraseña no puede ser nula")
     @NotEmpty(message = "La contraseña no puede estar vacía")
-    @Pattern(regexp = "^[\\w.-]{5,}$", message = "La contraseña debe tener caracteres alfanuméricos y mínimo 5 caracteres")
+    @Pattern(regexp = "^[\\wñÑ.-]{5,}$", message = "La contraseña debe tener caracteres alfanuméricos y mínimo 5 caracteres")
     private String password;
 
     @Lob

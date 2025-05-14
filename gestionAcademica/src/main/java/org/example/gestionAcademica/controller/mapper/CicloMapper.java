@@ -12,4 +12,11 @@ public class CicloMapper {
                 ciclo.getNombre()
         );
     }
+
+    public Ciclo getCicloByDto( CicloDto cicloDto) {
+        Ciclo ciclo = new Ciclo();
+        ciclo.setNombre(cicloDto.getNombre());
+
+        return ciclo;
+    }
 }
