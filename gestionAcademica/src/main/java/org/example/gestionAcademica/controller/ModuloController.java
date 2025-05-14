@@ -1,5 +1,6 @@
 package org.example.gestionAcademica.controller;
 
+import jakarta.validation.Valid;
 import org.example.gestionAcademica.controller.dto.ModuloDto;
 import org.example.gestionAcademica.controller.mapper.ModuloMapper;
 import org.example.gestionAcademica.modelo.Modulo;
@@ -45,7 +46,7 @@ public class ModuloController {
     }
 
     @PutMapping("/{id}")
-    public ModuloDto updateModulo(@PathVariable int id, @RequestBody ModuloDto moduloDto){
+    public ModuloDto updateModulo(@PathVariable int id,@Valid @RequestBody ModuloDto moduloDto){
         moduloService.updateModulo(id, moduloDto);
 
         return moduloService.getModuloById(id);

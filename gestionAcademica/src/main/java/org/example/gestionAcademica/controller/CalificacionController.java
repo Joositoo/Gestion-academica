@@ -1,5 +1,6 @@
 package org.example.gestionAcademica.controller;
 
+import jakarta.validation.Valid;
 import org.example.gestionAcademica.controller.dto.CalificacionDto;
 import org.example.gestionAcademica.controller.mapper.CalificacionMapper;
 import org.example.gestionAcademica.modelo.Calificacion;
@@ -52,7 +53,7 @@ public class CalificacionController {
     }
 
     @PutMapping("/{id}")
-    public CalificacionDto updateCalificacion(@PathVariable int id, @RequestBody CalificacionDto calificacionDto){
+    public CalificacionDto updateCalificacion(@PathVariable int id,@Valid @RequestBody CalificacionDto calificacionDto){
         calificacionDto.setId(id);
         calificacionService.updateCalificacion(id, calificacionDto);
 
