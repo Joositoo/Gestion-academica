@@ -1,7 +1,9 @@
 package org.example.gestionAcademica.controller.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -12,19 +14,27 @@ public class AlumnoDto {
     private ProfesorDto profesorDto;
 
     @Size(max = 100)
-    @NotNull
+    @NotNull(message = "El nombre no puede ser nulo")
+    @NotEmpty(message = "El nombre no puede estar vacío")
+    @Pattern(regexp = "^[a-zA-ZñÑ ]{3,}$", message = "El nombre solo debe contener letras y espacios")
     private String nombre;
 
     @Size(max = 150)
-    @NotNull
+    @NotNull(message = "Los apellidos no pueden ser nulos")
+    @NotEmpty(message = "Los apellidos no pueden estar vacíos")
+    @Pattern(regexp = "^[a-zA-ZñÑ ]{3,}$", message = "El apellido solo debe contener letras y espacios")
     private String apellidos;
 
     @Size(max = 255)
-    @NotNull
+    @NotNull(message = "El correo no puede ser nulo")
+    @NotEmpty(message = "El correo no puede estar vacío")
+    @Pattern(regexp = "^[\\wñÑ._%+-]{5,30}@gmail\\.com$", message = "El email debe ser una dirección de Gmail válida y contar con mínimo 5 y máximo 30 caracteres antes del dominio")
     private String email;
 
     @Size(max = 255)
-    @NotNull
+    @NotNull(message = "El correo no puede ser nulo")
+    @NotEmpty(message = "El correo no puede estar vacío")
+    @Pattern(regexp = "^[\\wñÑ._%+-]{5,30}@gmail\\.com$", message = "El email debe ser una dirección de Gmail válida y contar con mínimo 5 y máximo 30 caracteres antes del dominio")
     private String emailProfesor;
 
     public AlumnoDto(Integer id, ProfesorDto profesorDto, String nombre, String apellidos, String email) {
