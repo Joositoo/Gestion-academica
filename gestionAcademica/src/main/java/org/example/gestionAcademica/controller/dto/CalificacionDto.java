@@ -1,41 +1,61 @@
 package org.example.gestionAcademica.controller.dto;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 
 public class CalificacionDto {
     private Integer id;
 
-    @NotNull
     private ModuloDto moduloDto;
 
-    @NotNull
     private AlumnoDto alumnoDto;
 
-
+    @Min(value = 0, message = "ra1 no puede ser menor que 0")
+    @Max(value = 10, message = "ra1 no puede ser mayor que 10")
     private BigDecimal ra1;
 
+    @Min(value = 0, message = "ra2 no puede ser menor que 0")
+    @Max(value = 10, message = "ra2 no puede ser mayor que 10")
     private BigDecimal ra2;
 
+    @Min(value = 0, message = "ra3 no puede ser menor que 0")
+    @Max(value = 10, message = "ra3 no puede ser mayor que 10")
     private BigDecimal ra3;
 
+    @Min(value = 0, message = "ra4 no puede ser menor que 0")
+    @Max(value = 10, message = "ra4 no puede ser mayor que 10")
     private BigDecimal ra4;
 
+    @Min(value = 0, message = "ra5 no puede ser menor que 0")
+    @Max(value = 10, message = "ra5 no puede ser mayor que 10")
     private BigDecimal ra5;
 
+    @Min(value = 0, message = "ra6 no puede ser menor que 0")
+    @Max(value = 10, message = "ra6 no puede ser mayor que 10")
     private BigDecimal ra6;
 
+    @Min(value = 0, message = "ra7 no puede ser menor que 0")
+    @Max(value = 10, message = "ra7 no puede ser mayor que 10")
     private BigDecimal ra7;
 
+    @Min(value = 0, message = "ra8 no puede ser menor que 0")
+    @Max(value = 10, message = "ra8 no puede ser mayor que 10")
     private BigDecimal ra8;
 
+    @Min(value = 0, message = "ra9 no puede ser menor que 0")
+    @Max(value = 10, message = "ra9 no puede ser mayor que 10")
     private BigDecimal ra9;
 
-    @NotNull
-    private String nombreModulo;
+    @Size(max = 100)
+    @NotNull(message = "El nombre del módulo no puede ser nulo")
+    @NotEmpty(message = "El nombre del módulo no puede estar vacío")
+    @Pattern(regexp = "^[a-zA-ZñÑ ]{3,}$", message = "El nombre solo debe contener letras y espacios")    private String nombreModulo;
 
-    @NotNull
+    @Size(max = 255)
+    @NotNull(message = "El correo no puede ser nulo")
+    @NotEmpty(message = "El correo no puede estar vacío")
+    @Pattern(regexp = "^[\\wñÑ._%+-]{5,30}@gmail\\.com$", message = "El email debe ser una dirección de Gmail válida y contar con mínimo 5 y máximo 30 caracteres antes del dominio")
     private String emailAlumno;
 
     public CalificacionDto(Integer id, ModuloDto moduloDto, AlumnoDto alumnoDto, BigDecimal ra1, BigDecimal ra2, BigDecimal ra3, BigDecimal ra4, BigDecimal ra5, BigDecimal ra6, BigDecimal ra7, BigDecimal ra8, BigDecimal ra9) {

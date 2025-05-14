@@ -11,50 +11,51 @@ public class PorcentajesRaDto {
 
     private ModuloDto moduloDto;
 
-    @NotNull(message = "El valor no puede ser nulo")
-    @Min(value = 0, message = "El valor debe ser al menos 0")
-    @Max(value = 100, message = "El valor no puede ser mayor a 100")
+    @NotNull(message = "El valor de ra1 no puede ser nulo")
+    @Min(value = 0, message = "El valor de ra1 debe ser al menos 0")
+    @Max(value = 100, message = "El valor de ra1 no puede ser mayor a 100")
     private Byte ra1;
 
-    @NotNull(message = "El valor no puede ser nulo")
-    @Min(value = 0, message = "El valor debe ser al menos 0")
-    @Max(value = 100, message = "El valor no puede ser mayor a 100")
+    @NotNull(message = "El valor de ra2 no puede ser nulo")
+    @Min(value = 0, message = "El valor de ra2 debe ser al menos 0")
+    @Max(value = 100, message = "El valor de ra2 no puede ser mayor a 100")
     private Byte ra2;
 
-    @NotNull(message = "El valor no puede ser nulo")
-    @Min(value = 0, message = "El valor debe ser al menos 0")
-    @Max(value = 100, message = "El valor no puede ser mayor a 100")
+    @NotNull(message = "El valor de ra3 no puede ser nulo")
+    @Min(value = 0, message = "El valor de ra3 debe ser al menos 0")
+    @Max(value = 100, message = "El valor de ra3 no puede ser mayor a 100")
     private Byte ra3;
 
-    @NotNull(message = "El valor no puede ser nulo")
-    @Min(value = 0, message = "El valor debe ser al menos 0")
-    @Max(value = 100, message = "El valor no puede ser mayor a 100")
+    @NotNull(message = "El valor de ra4 no puede ser nulo")
+    @Min(value = 0, message = "El valor de ra4 debe ser al menos 0")
+    @Max(value = 100, message = "El valor de ra4 no puede ser mayor a 100")
     private Byte ra4;
 
-    @NotNull(message = "El valor no puede ser nulo")
-    @Min(value = 0, message = "El valor debe ser al menos 0")
-    @Max(value = 100, message = "El valor no puede ser mayor a 100")
+    @NotNull(message = "El valor de ra5 no puede ser nulo")
+    @Min(value = 0, message = "El valor de ra5 debe ser al menos 0")
+    @Max(value = 100, message = "El valor de ra5 no puede ser mayor a 100")
     private Byte ra5;
 
-    @NotNull(message = "El valor no puede ser nulo")
-    @Min(value = 0, message = "El valor debe ser al menos 0")
-    @Max(value = 100, message = "El valor no puede ser mayor a 100")
+    @NotNull(message = "El valor de ra6 no puede ser nulo")
+    @Min(value = 0, message = "El valor de ra6 debe ser al menos 0")
+    @Max(value = 100, message = "El valor de ra6 no puede ser mayor a 100")
     private Byte ra6;
 
-    @NotNull(message = "El valor no puede ser nulo")
-    @Min(value = 0, message = "El valor debe ser al menos 0")
-    @Max(value = 100, message = "El valor no puede ser mayor a 100")
+    @NotNull(message = "El valor de ra7 no puede ser nulo")
+    @Min(value = 0, message = "El valor de ra7 debe ser al menos 0")
+    @Max(value = 100, message = "El valor de ra7 no puede ser mayor a 100")
     private Byte ra7;
 
-    @NotNull(message = "El valor no puede ser nulo")
-    @Min(value = 0, message = "El valor debe ser al menos 0")
-    @Max(value = 100, message = "El valor no puede ser mayor a 100")
+    @NotNull(message = "El valor de ra8 no puede ser nulo")
+    @Min(value = 0, message = "El valor de ra8 debe ser al menos 0")
+    @Max(value = 100, message = "El valor de ra8 no puede ser mayor a 100")
     private Byte ra8;
 
-    @NotNull(message = "El valor no puede ser nulo")
-    @Min(value = 0, message = "El valor debe ser al menos 0")
-    @Max(value = 100, message = "El valor no puede ser mayor a 100")
+    @NotNull(message = "El valor de ra9 no puede ser nulo")
+    @Min(value = 0, message = "El valor de ra9 debe ser al menos 0")
+    @Max(value = 100, message = "El valor de ra9 no puede ser mayor a 100")
     private Byte ra9;
+
 
     public PorcentajesRaDto(String nombreModulo, Byte ra1, Byte ra2, Byte ra3, Byte ra4, Byte ra5, Byte ra6, Byte ra7, Byte ra8, Byte ra9) {
         this.nombreModulo = nombreModulo;

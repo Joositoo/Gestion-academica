@@ -1,7 +1,12 @@
 package org.example.gestionAcademica.controller.mapper;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
+import org.example.gestionAcademica.controller.dto.AlumnoDto;
 import org.example.gestionAcademica.controller.dto.CalificacionDto;
 import org.example.gestionAcademica.modelo.Calificacion;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,11 +17,15 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CalificacionMapper {
     private ModuloMapper moduloMapper;
     private AlumnoMapper alumnoMapper;
+
+    @Autowired
+    private Validator validator;
 
     public CalificacionMapper(ModuloMapper moduloMapper, AlumnoMapper alumnoMapper) {
         this.moduloMapper = moduloMapper;
@@ -45,6 +54,7 @@ public class CalificacionMapper {
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))){
             String linea;
+            int numLinea = 1;
             boolean cabecera = true;
             while ((linea = br.readLine()) != null) {
                 if (cabecera) {
@@ -67,6 +77,22 @@ public class CalificacionMapper {
                     calificacionDto.setRa7(parseBigDecimal(datos[8]));
                     calificacionDto.setRa8(parseBigDecimal(datos[9]));
                     calificacionDto.setRa9(parseBigDecimal(datos[10]));
+
+                    Set<ConstraintViolation<CalificacionDto>> errores = validator.validate(calificacionDto);
+
+                    if (!errores.isEmpty()) {
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("Error en línea " +numLinea+ ": ").append(numLinea).append(": ");
+
+                        for (ConstraintViolation<CalificacionDto> error : errores) {
+                            sb.append(error.getPropertyPath())
+                                    .append(" - ")
+                                    .append(error.getMessage())
+                                    .append(". ");
+                        }
+
+                        throw new ConstraintViolationException(sb.toString(), errores);
+                    }
 
                     listaCalificaciones.add(calificacionDto);
                 }
