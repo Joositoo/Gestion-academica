@@ -1,5 +1,6 @@
 package org.example.gestionAcademica.controller;
 
+import jakarta.validation.Valid;
 import org.example.gestionAcademica.controller.dto.ProfesorDto;
 import org.example.gestionAcademica.controller.mapper.ProfesorMapper;
 import org.example.gestionAcademica.modelo.Profesor;
@@ -42,7 +43,8 @@ public class ProfesorController {
     }
 
     @PostMapping()
-    public ResponseEntity<ProfesorDto> saveProfesor(@RequestBody Profesor profesor){
+    public ResponseEntity<ProfesorDto> saveProfesor(@Valid @RequestBody ProfesorDto profesorDto){
+        Profesor profesor = profesorMapper.getProfesorByDto(profesorDto);
         Profesor profesorPasswordEncript = profesorService.encriptaPassword(profesor);
         profesorService.saveProfesor(profesorPasswordEncript);
         Profesor profesorCreado = profesorRepository.findProfesorByEmail(profesor.getEmail());
@@ -50,7 +52,7 @@ public class ProfesorController {
     }
 
     @PutMapping("/{id}")
-    public Optional<Profesor> updateProfesor(@PathVariable int id, @RequestBody ProfesorDto profesorDto){
+    public Optional<Profesor> updateProfesor(@PathVariable int id, @Valid @RequestBody ProfesorDto profesorDto){
         profesorDto.setId(id);
         profesorService.updateProfesor(id, profesorDto);
         return profesorService.getProfesorById(id);

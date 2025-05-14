@@ -15,4 +15,15 @@ public class ProfesorMapper {
                 profesor.getPassword(),
                 profesor.getRol());
     }
+
+    public Profesor getProfesorByDto(ProfesorDto profesorDto) {
+        Profesor profesor = new Profesor();
+        profesor.setNombre(profesorDto.getNombre());
+        profesor.setApellidos(profesorDto.getApellidos());
+        profesor.setEmail(profesorDto.getEmail());
+        profesor.setPassword(profesorDto.getPassword());
+        profesor.setRol(profesorDto.getRol());
+
+        return profesor;
+    }
 }

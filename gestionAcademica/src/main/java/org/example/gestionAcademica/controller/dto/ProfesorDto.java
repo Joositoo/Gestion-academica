@@ -1,30 +1,42 @@
 package org.example.gestionAcademica.controller.dto;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public class ProfesorDto {
     private Integer id;
 
     @Size(max = 100)
-    @NotNull
+    @NotNull(message = "El nombre no puede ser nulo")
+    @NotEmpty(message = "El nombre no puede estar vacío")
+    @Pattern(regexp = "^[a-zA-Z ]{3,}$", message = "El nombre solo debe contener letras y espacios")
     private String nombre;
 
     @Size(max = 150)
-    @NotNull
+    @NotNull(message = "Los apellidos no pueden ser nulos")
+    @NotEmpty(message = "Los apellidos no pueden estar vacíos")
+    @Pattern(regexp = "^[a-zA-Z ]{3,}$", message = "El apellido solo debe contener letras y espacios")
     private String apellidos;
 
     @Size(max = 255)
-    @NotNull
+    @NotNull(message = "El correo no puede ser nulo")
+    @NotEmpty(message = "El correo no puede estar vacío")
+    @Pattern(regexp = "^[\\w._%+-]{5,30}@gmail\\.com$", message = "El email debe ser una dirección de Gmail válida y contar con mínimo 5 y máximo 30 caracteres antes del dominio")
     private String email;
 
     @Size(max = 255)
-    @NotNull
+    @NotNull(message = "La contraseña no puede ser nula")
+    @NotEmpty(message = "La contraseña no puede estar vacía")
+    @Pattern(regexp = "^[\\w.-]{5,}$", message = "La contraseña debe tener caracteres alfanuméricos y mínimo 5 caracteres")
     private String password;
 
-    @NotNull
     @Lob
+    @NotNull(message = "El rol no puede ser nulo")
+    @NotEmpty(message = "El rol no puede estar vacío")
+    @Pattern(regexp = "^(Admin|Profesor)$", message = "El rol debe ser 'Admin' o 'Profesor'")
     private String rol;
 
     public ProfesorDto(Integer id, String nombre, String apellidos, String email, String password, String rol) {
