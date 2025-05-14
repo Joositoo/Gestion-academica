@@ -1,22 +1,30 @@
 package org.example.gestionAcademica.controller.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MatriculaDto {
     private Integer id;
 
-    @NotNull
     private CicloDto cicloDto;
 
-    @NotNull
     private AlumnoDto alumnoDto;
 
-    @NotNull
+    @Size(max = 100)
+    @NotNull(message = "El nombre del ciclo no puede estar vacío")
+    @NotEmpty(message = "El nombre del ciclo no puede ser nulo")
+    @Pattern(regexp = "^[\\wñ ]{5,}$", message = "El nombre del ciclo debe tener mínimo 5 caracteres alfanuméricos")
     private String nombreCiclo;
 
-    @NotNull
+    @Size(max = 255)
+    @NotNull(message = "El correo no puede ser nulo")
+    @NotEmpty(message = "El correo no puede estar vacío")
+    @Pattern(regexp = "^[\\wñÑ._%+-]{5,30}@gmail\\.com$", message = "El email debe ser una dirección de Gmail válida y contar con mínimo 5 y máximo 30 caracteres antes del dominio")
     private String emailAlumno;
 
     public MatriculaDto(Integer id, CicloDto cicloDto, AlumnoDto alumnoDto) {

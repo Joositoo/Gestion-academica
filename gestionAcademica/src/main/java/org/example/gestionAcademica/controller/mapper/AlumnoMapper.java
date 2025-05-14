@@ -73,7 +73,6 @@ public class AlumnoMapper {
                         throw new ConstraintViolationException(sb.toString(), errores);
                     }
 
-
                     listaAlumnos.add(alumnoDto);
                 }
                 else{
