@@ -36,7 +36,7 @@ public class ProfesorDto {
     @Lob
     @NotNull(message = "El rol no puede ser nulo")
     @NotEmpty(message = "El rol no puede estar vacío")
-    @Pattern(regexp = "^(Admin|Profesor)$", message = "El rol debe ser 'Admin' o 'Profesor'")
+    @Pattern(regexp = "^(admin|profesor)$", message = "El rol debe ser 'Admin' o 'Profesor'")
     private String rol;
 
     public ProfesorDto(Integer id, String nombre, String apellidos, String email, String password, String rol) {

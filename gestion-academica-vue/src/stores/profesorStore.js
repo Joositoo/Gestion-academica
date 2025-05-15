@@ -50,6 +50,7 @@ export const useProfesroStore = defineStore("profesor", () => {
 
         } catch (error) {
             console.error("Error al guardar el profesor:", error);
+            throw error;
         }
     }
 
@@ -72,6 +73,7 @@ export const useProfesroStore = defineStore("profesor", () => {
     
         } catch (error) {
             console.error("Error al actualizar el profesor:", error);
+            throw error;
         }
     };
 

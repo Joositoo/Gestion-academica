@@ -4,6 +4,9 @@ import { useProfesroStore } from '../stores/profesorStore';
 import router from '../router';
 
 let profesorStore = useProfesroStore();
+const regExpNombreApellidos = /^[a-zA-ZñÑ ]{3,}$/;
+const regExpEmail = /^[\wñÑ._%+-]{5,30}@gmail\.com$/;
+const regExpPassword = /^[\wñÑ.-]{5,}$/;
 
 let profesor = reactive({
     nombre: "",
@@ -13,15 +16,66 @@ let profesor = reactive({
     rol: ""
 })
 
-const handleSubmit = async() => {
-    if (!profesor.nombre || !profesor.apellidos || !profesor.email || !profesor.password || !profesor.rol){
-        let p = document.querySelector(".error");
-        p.style.display = "block";
+const handleSubmit = async () => {
+    let pVacio = document.getElementById("vacio");
+    let pEmail = document.getElementById("email");
+    let pNombre = document.getElementById("nombre");
+    let pApellidos = document.getElementById("apellidos");
+    let pPassword = document.getElementById("password");
+    let pError500 = document.getElementById("error500");
+
+    if (!profesor.nombre || !profesor.apellidos || !profesor.email || !profesor.password || !profesor.rol) {
+        pVacio.style.display = "block";
         return;
     }
-    await profesorStore.saveProfesor(profesor);
-    await profesorStore.getProfesores();
-    router.push("/profesores");
+
+
+    if (profesor.nombre && profesor.apellidos && profesor.email && profesor.password && profesor.rol) {
+        pVacio.style.display = "none";
+
+        if (!regExpNombreApellidos.test(profesor.nombre)) {
+            pNombre.style.display = "block";
+        } else {
+            pNombre.style.display = "none";
+        }
+
+        if (!regExpNombreApellidos.test(profesor.apellidos)) {
+            pApellidos.style.display = "block";
+        } else {
+            pApellidos.style.display = "none";
+        }
+
+        if (!regExpEmail.test(profesor.email)) {
+            pEmail.style.display = "block";
+        } else {
+            pEmail.style.display = "none";
+        }
+
+        if (!regExpPassword.test(profesor.password)) {
+            pPassword.style.display = "block";
+        } else {
+            pPassword.style.display = "none";
+        }
+
+        if (!regExpNombreApellidos.test(profesor.nombre) || !regExpNombreApellidos.test(profesor.apellidos) || !regExpEmail.test(profesor.email) || !regExpPassword.test(profesor.password)) {
+            return;
+        }
+    }
+
+    try {
+        await profesorStore.saveProfesor(profesor);
+        await profesorStore.getProfesores();
+        router.push("/profesores");
+    }
+    catch {
+        pVacio.style.display = "none";
+        pNombre.style.display = "none";
+        pApellidos.style.display = "none";
+        pEmail.style.display = "none";
+        pPassword.style.display = "none";
+        pError500.style.display = "block";
+        return;
+    }
 }
 </script>
 
@@ -34,19 +88,30 @@ const handleSubmit = async() => {
                 <div class="grid-container">
                     <div class="grid-item">
                         <label>Nombre: </label>
+                        <span class="error" style="display: none;" id="nombre">Nombre solo con letras y
+                            espacios</span>
                         <input type="text" v-model="profesor.nombre" class="crear-editar-input" />
+
                     </div>
                     <div class="grid-item">
                         <label>Apellidos: </label>
+                        <span class="error" style="display: none;" id="apellidos">Apellido solo con letras
+                            y espacios</span>
                         <input type="text" v-model="profesor.apellidos" class="crear-editar-input" />
+
                     </div>
                     <div class="grid-item">
                         <label>Email: </label>
+                        <span class="error" style="display: none;" id="email">Email incorrecto</span>
                         <input type="text" v-model="profesor.email" class="crear-editar-input" />
+
                     </div>
                     <div class="grid-item">
                         <label>Contraseña: </label>
+                        <span class="error" style="display: none;" id="password">Contraseña con mínimo 5 caracteres
+                            alfanuméricos</span>
                         <input type="text" v-model="profesor.password" class="crear-editar-input" />
+
                     </div>
                     <div class="grid-item">
                         <label>Rol: </label>
@@ -60,7 +125,8 @@ const handleSubmit = async() => {
                     </div>
                 </div>
             </form>
-            <p class="error" style="display: none;">Rellene todos los campos, por favor</p>
+            <p class="error" style="display: none;" id="vacio">Rellene todos los campos, por favor</p>
+            <p class="error" style="display: none;" id="error500">Asegúrese de que el email no esté dado de alta</p>
         </div>
     </div>
 </template>
@@ -86,5 +152,9 @@ const handleSubmit = async() => {
 
 h2 {
     margin: 1.5em 2.5em;
+}
+
+.error {
+    font-size: 1.2em;
 }
 </style>
