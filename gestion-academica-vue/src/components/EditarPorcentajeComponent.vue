@@ -1,30 +1,36 @@
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
 import { usePorcentajeStore } from '../stores/porcentajeStore';
+import { useModuloStore } from '../stores/moduloStore';
 import { useRouter } from 'vue-router';
 
 const props = defineProps({
     id: Number
 })
-let data = ref({});
 
 const porcentajeStore = usePorcentajeStore();
+const moduloStore = useModuloStore();
 const router = useRouter();
+const idPorcentaje = ref(0);
 
 onMounted(async () => {
-    data.value = await porcentajeStore.getPorcentajeById(props.id);
-
-    porcentaje.nombreModulo = data.value.nombreModulo;
-    porcentaje.ra1 = data.value.ra1;
-    porcentaje.ra2 = data.value.ra2;
-    porcentaje.ra3 = data.value.ra3;
-    porcentaje.ra4 = data.value.ra4;
-    porcentaje.ra5 = data.value.ra5;
-    porcentaje.ra6 = data.value.ra6;
-    porcentaje.ra7 = data.value.ra7;
-    porcentaje.ra8 = data.value.ra8;
-    porcentaje.ra9 = data.value.ra8;
+    const id = await moduloStore.getModuloById(props.id);    
+    const data = await porcentajeStore.getPorcentajeById(id.id);
+    
+    idPorcentaje.value = data.id;
+    porcentaje.nombreModulo = data.moduloDto.nombre;
+    porcentaje.ra1 = data.ra1;
+    porcentaje.ra2 = data.ra2;
+    porcentaje.ra3 = data.ra3;
+    porcentaje.ra4 = data.ra4;
+    porcentaje.ra5 = data.ra5;
+    porcentaje.ra6 = data.ra6;
+    porcentaje.ra7 = data.ra7;
+    porcentaje.ra8 = data.ra8;
+    porcentaje.ra9 = data.ra9;
 });
+
+
 
 const porcentaje = reactive({
     nombreModulo: "",
@@ -38,9 +44,11 @@ const porcentaje = reactive({
     ra8: "",
     ra9: "",
 })
-
+/*
 const handleSubmit = async () => {
     let pVacio = document.getElementById("vacio");
+    let pSuma = document.getElementById("suma");
+    let pError500 = document.getElementById("error500");
 
     if (!porcentaje.nombreModulo || !porcentaje.ra1 || !porcentaje.ra2 || !porcentaje.ra3 || !porcentaje.ra4 || !porcentaje.ra5 ||
         !porcentaje.ra6 || !porcentaje.ra7 || !porcentaje.ra8 || !porcentaje.ra9) {
@@ -50,6 +58,44 @@ const handleSubmit = async () => {
 
     await porcentajeStore.updatePorcentaje(porcentaje, props.id);
     router.push("/porcentajes");
+}*/
+
+const handleSubmit = async () => {
+    let pVacio = document.getElementById("vacio");
+    let pSuma = document.getElementById("suma");
+    let pError500 = document.getElementById("error500");
+
+    function isEmpty(value) {
+        return value === null || value === undefined || value === "" || isNaN(value);
+    }
+
+    if (!porcentaje.nombreModulo || 
+        [porcentaje.ra1, porcentaje.ra2, porcentaje.ra3, porcentaje.ra4, porcentaje.ra5, porcentaje.ra6, porcentaje.ra7, porcentaje.ra8, porcentaje.ra9]
+        .some(isEmpty)) {
+        pSuma.style.display = "none";
+        pError500.style.display = "none";
+        pVacio.style.display = "block";
+        return;
+    }
+
+    const suma = porcentaje.ra1 + porcentaje.ra2 + porcentaje.ra3 + porcentaje.ra4 + porcentaje.ra5 + porcentaje.ra6 + porcentaje.ra7 + porcentaje.ra8 + porcentaje.ra9;
+
+    if (suma > 100) {
+        pVacio.style.display = "none";
+        pError500.style.display = "none";
+        pSuma.style.display = "block";
+        return;
+    }
+
+    try {        
+        await porcentajeStore.updatePorcentaje(porcentaje, idPorcentaje.value);
+        router.push("/porcentajes");
+    } catch {
+        pVacio.style.display = "none";
+        pSuma.style.display = "none";
+        pError500.style.display = "block";
+        return;
+    }
 }
 </script>
 
@@ -110,6 +156,8 @@ const handleSubmit = async () => {
             </form>
 
             <p class="error" style="display: none;" id="vacio">Rellene todos los campos, por favor</p>
+            <p class="error" style="display: none;" id="suma">La suma de los porcentajes no debe ser superior a 100</p>
+            <p class="error" style="display: none;" id="error500">Ya existen los porcentajes para este módulo</p>
         </div>
     </div>
 </template>

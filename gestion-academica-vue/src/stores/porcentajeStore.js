@@ -50,6 +50,7 @@ export const usePorcentajeStore = defineStore("porcentaje", () => {
 
         } catch (error) {
             console.error("Error al guardar el porcentaje:", error);
+            throw error;
         }
     };
 
@@ -72,6 +73,7 @@ export const usePorcentajeStore = defineStore("porcentaje", () => {
     
         } catch (error) {
             console.error("Error al actualizar el porcentaje:", error);
+            throw error;
         }
     };
 

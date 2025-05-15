@@ -11,32 +11,57 @@ const listaModulos = ref([]);
 
 let porcentaje = reactive({
     nombreModulo: "",
-    ra1: "",
-    ra2: "",
-    ra3: "",
-    ra4: "",
-    ra5: "",
-    ra6: "",
-    ra7: "",
-    ra8: "",
-    ra9: "",
+    ra1: 0,
+    ra2: 0,
+    ra3: 0,
+    ra4: 0,
+    ra5: 0,
+    ra6: 0,
+    ra7: 0,
+    ra8: 0,
+    ra9: 0,
 })
 
 onMounted(async () => {
     listaModulos.value = await moduloStore.getModulos();
 });
 
-const handleSubmit = async() => {
+const handleSubmit = async () => {
     let pVacio = document.getElementById("vacio");
+    let pSuma = document.getElementById("suma");
+    let pError500 = document.getElementById("error500");
 
-    if (!porcentaje.nombreModulo || !porcentaje.ra1 || !porcentaje.ra2 || !porcentaje.ra3 || !porcentaje.ra4 || !porcentaje.ra5 || 
-        !porcentaje.ra6 || !porcentaje.ra7 || !porcentaje.ra8 || !porcentaje.ra9){
+    function isEmpty(value) {
+        return value === null || value === undefined || value === "" || isNaN(value);
+    }
+
+    if (!porcentaje.nombreModulo || 
+        [porcentaje.ra1, porcentaje.ra2, porcentaje.ra3, porcentaje.ra4, porcentaje.ra5, porcentaje.ra6, porcentaje.ra7, porcentaje.ra8, porcentaje.ra9]
+        .some(isEmpty)) {
+        pSuma.style.display = "none";
+        pError500.style.display = "none";
         pVacio.style.display = "block";
         return;
     }
 
-    await porcentajeStore.savePorcentaje(porcentaje);
-    router.push("/porcentajes")
+    const suma = porcentaje.ra1 + porcentaje.ra2 + porcentaje.ra3 + porcentaje.ra4 + porcentaje.ra5 + porcentaje.ra6 + porcentaje.ra7 + porcentaje.ra8 + porcentaje.ra9;
+
+    if (suma > 100) {
+        pVacio.style.display = "none";
+        pError500.style.display = "none";
+        pSuma.style.display = "block";
+        return;
+    }
+
+    try {
+        await porcentajeStore.savePorcentaje(porcentaje);
+        router.push("/porcentajes");
+    } catch {
+        pVacio.style.display = "none";
+        pSuma.style.display = "none";
+        pError500.style.display = "block";
+        return;
+    }
 }
 
 </script>
@@ -98,6 +123,8 @@ const handleSubmit = async() => {
                 </div>
             </form>
             <p class="error" style="display: none;" id="vacio">Rellene todos los campos, por favor</p>
+            <p class="error" style="display: none;" id="suma">La suma de los porcentajes no debe ser superior a 100</p>
+            <p class="error" style="display: none;" id="error500">Ya existen los porcentajes para este módulo</p>
         </div>
     </div>
 

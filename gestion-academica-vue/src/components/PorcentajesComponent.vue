@@ -54,7 +54,7 @@ const handleDetails = (p) => {
 }
 
 const handleEdit = (p) => {
-    router.push(`/porcentajes/${p.id}`);
+    router.push(`/porcentajes/${p.moduloDto.id}`);
 }
 
 const handleClick = () => {
