@@ -50,6 +50,7 @@ export const useCicloStore = defineStore("ciclo", () => {
 
         } catch (error) {
             console.error("Error al guardar el ciclo:", error);
+            throw error;
         }
     }
 
@@ -71,6 +72,7 @@ export const useCicloStore = defineStore("ciclo", () => {
             console.log(`Ciclo actualizado correctamente.`);
         } catch (error) {
             console.error("Error al actualizar el ciclo:", error);
+            throw error;
         }
     };
 

@@ -14,7 +14,8 @@ const ciclo = reactive({
 });
 const cicloStore = useCicloStore();
 const router = useRouter();
-let data = null
+let data = null;
+const regexp = /[\wñ ]{5,}$/;
 
 onMounted(async () => {
     data = await cicloStore.getCicloById(props.id);
@@ -23,15 +24,32 @@ onMounted(async () => {
 });
 
 const handleSubmit = async () => {
+    let pVacio = document.querySelector(".error");
+    let pRegexp = document.getElementById("wrongRegexp");
+    let pError = document.getElementById("error500");
 
-if (!ciclo.nombre){
-    let p = document.querySelector(".error");
-    p.style.display = "block";
-    return;
-}
-    
-await cicloStore.updateCiclo(ciclo, props.id);
-router.push("/ciclos");
+    if (!ciclo.nombre) {
+        pRegexp.style.display = "none";
+        pError.style.display = "none";
+        pVacio.style.display = "block";
+        return;
+    }
+    else {
+        if (!regexp.test(ciclo.nombre)) {
+            pVacio.style.display = "none";
+            pRegexp.style.display = "block";
+            return;
+        }
+    }
+
+    try {
+        await cicloStore.updateCiclo(ciclo, props.id);
+        router.push("/ciclos");
+    }catch{
+        pVacio.style.display = "none";
+        pRegexp.style.display = "none";
+        pError.style.display = "block";
+    }
 
 }
 
@@ -54,6 +72,9 @@ router.push("/ciclos");
                 </div>
             </form>
             <p class="error" style="display: none;">Indique el nombre del ciclo, por favor</p>
+            <p class="error" style="display: none;" id="error500">El ciclo que quiere modificar ya existe</p>
+            <p class="error" style="display: none;" id="wrongRegexp">El nombre del ciclo debe tener mínimo 5 caracteres
+                alfanuméricos</p>
         </div>
     </div>
 </template>

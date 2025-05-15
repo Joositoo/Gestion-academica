@@ -5,20 +5,40 @@ import { useRouter } from 'vue-router';
 
 let cicloStore = useCicloStore();
 const router = useRouter();
+const regexp = /[\wñ ]{5,}$/;
 
 let ciclo = reactive({
     nombre: "",
 })
 
-const handleSubmit = async() => {
-    if (!ciclo.nombre){
-        let p = document.querySelector(".error");
-        p.style.display = "block";
+const handleSubmit = async () => {
+    let pVacio = document.querySelector(".error");
+    let pRegexp = document.getElementById("wrongRegexp");
+    let pError = document.getElementById("error500");
+
+    if (!ciclo.nombre) {
+        pRegexp.style.display = "none";
+        pError.style.display = "none";
+        pVacio.style.display = "block";
         return;
     }
-    await cicloStore.saveCiclo(ciclo);
-    await cicloStore.getCiclos();
-    router.push("/ciclos");
+    else {
+        if (!regexp.test(ciclo.nombre)) {
+            pVacio.style.display = "none";
+            pRegexp.style.display = "block";
+            return;
+        }
+    }
+
+    try {
+        await cicloStore.saveCiclo(ciclo);
+        await cicloStore.getCiclos();
+        router.push("/ciclos");
+    } catch {
+        pVacio.style.display = "none";
+        pRegexp.style.display = "none";
+        pError.style.display = "block";
+    }
 }
 </script>
 
@@ -39,6 +59,9 @@ const handleSubmit = async() => {
                 </div>
             </form>
             <p class="error" style="display: none;">Indique el nombre del ciclo, por favor</p>
+            <p class="error" style="display: none;" id="error500">El ciclo que quiere crear ya existe</p>
+            <p class="error" style="display: none;" id="wrongRegexp">El nombre del ciclo debe tener mínimo 5 caracteres
+                alfanuméricos</p>
         </div>
     </div>
 </template>
