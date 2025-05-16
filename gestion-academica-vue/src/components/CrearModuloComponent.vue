@@ -13,19 +13,31 @@ const handleChange = (e) => {
 const handleSubmit = async() => {
     let pVacio = document.getElementById("vacio");
     let pWrong = document.getElementById("wrongFile");
+    let pError500 = document.getElementById("error500");
     
     if (!modulos.value){
+        pWrong.style.display = "none";
+        pError500.style.display = "none";
         pVacio.style.display = "block";
         return;
     }
     else if (modulos.value.type != "text/csv" && !modulos.value.name.toLowerCase().endsWith(".csv")){
         pVacio.style.display = "none";
+        pError500.style.display = "none";
         pWrong.style.display = "block";
         return;
     }
 
-    await moduloStore.saveModulo(modulos.value);
-    router.push("/modulos");
+    try{
+        await moduloStore.saveModulo(modulos.value);
+        router.push("/modulos");
+    }
+    catch{
+        pVacio.style.display = "none";
+        pWrong.style.display = "none";
+        pError500.style.display = "block";
+        return;
+    }
 }
 
 const generateCSV = () => {
@@ -66,6 +78,7 @@ const generateCSV = () => {
             </div>
             <p class="error" id="vacio" style="display: none;">Seleccione un archivo, por favor</p>
             <p class="error" id="wrongFile" style="display: none;">El archivo no tiene extensión .csv</p>
+            <p class="error" id="error500" style="display: none;">El archivo no tiene todas las columnas y/o los emails no existen </p>
         </div>
     </div>
 </template>

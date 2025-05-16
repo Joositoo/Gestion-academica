@@ -50,6 +50,7 @@ export const useModuloStore = defineStore("modulo", () =>{
 
         } catch (error) {
             console.error("Error al guardar el módulo:", error.message);
+            throw error;
         }
     };
 
@@ -71,6 +72,7 @@ export const useModuloStore = defineStore("modulo", () =>{
             console.log(`Módulo actualizado correctamente.`);
         } catch (error) {
             console.error("Error al actualizar el módulo:", error);
+            throw error;
         }
     };
 

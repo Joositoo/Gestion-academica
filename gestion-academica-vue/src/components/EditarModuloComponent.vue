@@ -12,6 +12,7 @@ const router = useRouter();
 let data = null;
 const listaProfesores = ref([]);
 const listaCiclos = ref([]);
+const regExpNombre = /^[a-zA-ZñÑ ]{3,}$/
 
 const props = defineProps({
     id: Number
@@ -35,14 +36,33 @@ const modulo = reactive({
 })
 
 const handleSubmit = async () => {
-    if (!modulo.nombreCiclo || !modulo.nombre || !modulo.emailProfesor){
-        let p = document.querySelector(".error");
-        p.style.display = "block";
+    let pVacio = document.getElementById("vacio");
+    let pError500 = document.getElementById("error500");
+
+    if (!modulo.nombreCiclo || !modulo.nombre || !modulo.emailProfesor) {
+        pError500.style.display = "none";
+        pVacio.style.display = "block";
         return;
     }
 
-    await moduloStore.updateModulo(modulo, props.id);
-    router.push("/modulos");
+    if (modulo.nombreCiclo && modulo.nombre && modulo.emailProfesor) {
+        pVacio.style.display = "none";
+        if (!regExpNombre.test(modulo.nombre)) {
+            pVacio.style.display = "none";
+            pError500.style.display = "block";
+
+            return;
+        }
+    }
+
+    try{
+        await moduloStore.updateModulo(modulo, props.id);
+        router.push("/modulos");
+    }
+    catch{
+        pVacio.style.display = "none";
+        pError500.style.display = "block";
+    }
 }
 </script>
 
@@ -67,7 +87,8 @@ const handleSubmit = async () => {
                     <div class="grid-item">
                         <label>Nombre del profesor: </label>
                         <select v-model="modulo.emailProfesor" class="editar-crear-input">
-                            <option v-for="profesor in listaProfesores" :value="profesor.email">{{ profesor.nombre }} {{ profesor.apellidos }}</option>
+                            <option v-for="profesor in listaProfesores" :value="profesor.email">{{ profesor.nombre }} {{
+                                profesor.apellidos }}</option>
                         </select>
                     </div>
                     <div class="grid-item">
@@ -75,7 +96,9 @@ const handleSubmit = async () => {
                     </div>
                 </div>
             </form>
-            <p class="error" style="display: none;">Rellene todos los campos, por favor</p>
+            <p class="error" style="display: none;" id="vacio">Rellene todos los campos, por favor</p>
+            <p class="error" style="display: none;" id="error500">Nombre del módulo con mínimo 3 caracteres alfabéticos
+            </p>
         </div>
     </div>
 </template>
@@ -99,7 +122,7 @@ const handleSubmit = async () => {
     border-radius: 8px;
 }
 
-p{
+p {
     margin-top: 1em;
 }
 </style>
