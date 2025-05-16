@@ -62,6 +62,7 @@ export const useCalificacionStore = defineStore("calificacion", () => {
 
         } catch (error) {
             console.error("Error al guardar las calificaciones:", error);
+            throw error;
         }
     };
 
@@ -84,6 +85,7 @@ export const useCalificacionStore = defineStore("calificacion", () => {
     
         } catch (error) {
             console.error("Error al actualizar la calificación:", error);
+            throw error;
         }
     };
 

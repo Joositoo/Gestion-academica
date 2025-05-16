@@ -72,7 +72,7 @@ for (let i = 1; i <= 9; i++) {
 }
 
 const handleSubmit = async () => {
-    let pVacio = document.getElementById("vacio");
+    let pError500 = document.getElementById("error500");
     const modificaCalificacion = reactive({
         nombreModulo: '',
         emailAlumno: '',
@@ -99,14 +99,36 @@ const handleSubmit = async () => {
     modificaCalificacion.ra8 = calificacion.ra8;
     modificaCalificacion.ra9 = calificacion.ra9;
 
+    if (modificaCalificacion.ra1 < 0 || modificaCalificacion.ra1 > 10 ||
+        modificaCalificacion.ra2 < 0 || modificaCalificacion.ra2 > 10 ||
+        modificaCalificacion.ra3 < 0 || modificaCalificacion.ra3 > 10 ||
+        modificaCalificacion.ra4 < 0 || modificaCalificacion.ra4 > 10 ||
+        modificaCalificacion.ra5 < 0 || modificaCalificacion.ra5 > 10 ||
+        modificaCalificacion.ra6 < 0 || modificaCalificacion.ra6 > 10 ||
+        modificaCalificacion.ra7 < 0 || modificaCalificacion.ra7 > 10 ||
+        modificaCalificacion.ra8 < 0 || modificaCalificacion.ra8 > 10 ||
+        modificaCalificacion.ra9 < 0 || modificaCalificacion.ra9 > 10) {
+        pError500.style.display = "block";
+        return;
+    } 
+    else {
+        pError500.style.display = "none";
+    }
+
     if (!calificacion.ra1 || !calificacion.ra2 || !calificacion.ra3 ||
         !calificacion.ra4 || !calificacion.ra5 || !calificacion.ra6 ||
         !calificacion.ra7 || !calificacion.ra8 || !calificacion.ra9) {
         alert("Las calificaciones vacías no se tendrán en cuanta al actualizar");
     }
 
-    await calificacionStore.updateCalificacion(modificaCalificacion, props.id);
-    router.push("/calificaciones");
+    try{
+        await calificacionStore.updateCalificacion(modificaCalificacion, props.id);
+        router.push("/calificaciones");
+    }
+    catch{
+        pError500.style.display = "block";
+        return;
+    }
 }
 </script>
 
@@ -260,10 +282,12 @@ const handleSubmit = async () => {
                         Number(notasParciales.ra8.value) +
                         Number(notasParciales.ra9.value)
                     ).toFixed(2) }}</label>
+
+                    <p class="error" style="display: none;" id="error500">Las calificaciones deben estar comprendidas entre 0 y 10</p>
                 </div>
 
                 <div class="full-width">
-                    <button type="submit" class="crear-editar-button">Modificar</button>
+                    <button type="submit" class="crear-editar-button">Modificar</button>                    
                 </div>
             </form>
         </div>
