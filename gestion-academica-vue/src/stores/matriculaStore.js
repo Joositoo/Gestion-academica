@@ -72,6 +72,7 @@ export const useMatriculaStore = defineStore("matricula", () => {
 
         } catch (error) {
             console.error("Error al guardar las matrículas:", error);
+            throw error;
         }
     };
 
@@ -93,6 +94,7 @@ export const useMatriculaStore = defineStore("matricula", () => {
             console.log(`Matrícula actualizada correctamente.`);
         } catch (error) {
             console.error("Error al actualizar la matrícula:", error);
+            throw error;
         }
     };
 
