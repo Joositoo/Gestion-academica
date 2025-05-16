@@ -50,6 +50,7 @@ export const useAlumnoStore = defineStore("alumno", () => {
 
         } catch (error) {
             console.error("Error al guardar al alumno:", error);
+            throw error;
         }
     };
 
@@ -72,6 +73,7 @@ export const useAlumnoStore = defineStore("alumno", () => {
     
         } catch (error) {
             console.error("Error al actualizar al alumno:", error);
+            throw error;
         }
     };
 

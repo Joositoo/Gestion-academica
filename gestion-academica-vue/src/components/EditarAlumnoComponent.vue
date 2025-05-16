@@ -21,6 +21,9 @@ const alumnoStore = useAlumnoStore();
 const router = useRouter();
 let data = null;
 
+const regExpNombreApellidos = /^[a-zA-ZñÑ ]{3,}$/;
+const regExpEmail = /^[\wñÑ._%+-]{5,30}@gmail\.com$/;
+
 onMounted(async () => {
     data = await alumnoStore.getAlumnoById(props.id);
     listaProfesores.value = await profesorStore.getProfesores();
@@ -35,14 +38,58 @@ onMounted(async () => {
 })
 
 const handleSubmit = async () => {
+    let pVacio = document.getElementById("vacio");
+    let pEmail = document.getElementById("email");
+    let pNombre = document.getElementById("nombre");
+    let pApellidos = document.getElementById("apellido");
+    let pError500 = document.getElementById("error500");
+
     if (!alumno.nombre || !alumno.apellidos || !alumno.email || !alumno.emailProfesor){
-        let p = document.querySelector(".error");
-        p.style.display = "block";
+        pEmail.style.display = "none";
+        pNombre.style.display = "none";
+        pApellidos.style.display = "none";
+        pError500.style.display = "none";
+        pVacio.style.display = "block";
         return;
     }
-    else{
+
+    if (alumno.nombre && alumno.apellidos && alumno.email && alumno.emailProfesor){
+        pVacio.style.display = "none";
+
+        if (!regExpNombreApellidos.test(alumno.nombre)) {
+            pNombre.style.display = "block";
+        } else {
+            pNombre.style.display = "none";
+        }
+
+        if (!regExpNombreApellidos.test(alumno.apellidos)) {
+            pApellidos.style.display = "block";
+        } else {
+            pApellidos.style.display = "none";
+        }
+
+        if (!regExpEmail.test(alumno.email)) {
+            pEmail.style.display = "block";
+        } else {
+            pEmail.style.display = "none";
+        }
+
+        if (!regExpNombreApellidos.test(alumno.nombre) || !regExpNombreApellidos.test(alumno.apellidos) || !regExpEmail.test(alumno.email)) {
+            return;
+        }
+    }
+    
+    try{
         await alumnoStore.updateAlumno(alumno, props.id);
         router.push("/alumnos")
+    }
+    catch{
+        pVacio.style.display = "none";
+        pEmail.style.display = "none";
+        pNombre.style.display = "none";
+        pApellidos.style.display = "none";
+        pError500.style.display = "block";
+        return;
     }
 }
 
@@ -57,14 +104,19 @@ const handleSubmit = async () => {
                 <div class="grid-container">
                     <div class="grid-item">
                         <label>Nombre: </label>
+                        <span class="error" style="display: none;" id="nombre">Nombre solo con letras y
+                            espacios</span>
                         <input type="text" v-model="alumno.nombre" class="crear-editar-input" />
                     </div>
                     <div class="grid-item">
                         <label>Apellidos: </label>
+                        <span class="error" style="display: none;" id="apellido">Apellidos solo con letras y
+                            espacios</span>
                         <input type="text" v-model="alumno.apellidos" class="crear-editar-input" />
                     </div>
                     <div class="grid-item">
                         <label>Email: </label>
+                                                <span class="error" style="display: none;" id="email">Email incorrecto</span>
                         <input type="text" v-model="alumno.email" class="crear-editar-input" />
                     </div>
                     <div class="grid-item">
@@ -78,7 +130,8 @@ const handleSubmit = async () => {
                     </div>
                 </div>
             </form>
-            <p class="error" style="display: none;">Rellene todos los campos, por favor</p>
+            <p class="error" style="display: none;" id="vacio">Rellene todos los campos, por favor</p>
+            <p class="error" style="display: none;" id="error500">El email del alumno ya está registrado</p>
         </div>
     </div>
 </template>
