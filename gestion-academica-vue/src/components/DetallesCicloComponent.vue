@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, reactive } from 'vue';
 import { useCicloStore } from '../stores/cicloStore';
+import LeftArrowComponent from './LeftArrowComponent.vue';
 
 const props = defineProps({
     id: Number
@@ -21,6 +22,8 @@ onMounted(async () => {
 </script>
 
 <template>
+    <LeftArrowComponent path="ciclos" />
+
     <h2>Detalles del ciclo {{ ciclo.nombre }}:</h2>
 
     <div class="card-container">

@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
+import LeftArrowComponent from './LeftArrowComponent.vue';
 import { useProfesroStore } from '../stores/profesorStore';
 import { useRouter } from 'vue-router';
 
@@ -99,6 +100,8 @@ const handleSubmit = async () => {
 </script>
 
 <template>
+    <LeftArrowComponent path="profesores" />
+
     <div class="card-container">
         <div class="card">
             <h2>Modificación de profesor</h2>

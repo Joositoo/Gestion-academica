@@ -1,6 +1,7 @@
 <script setup>
 import { reactive } from 'vue';
 import { useProfesroStore } from '../stores/profesorStore';
+import LeftArrowComponent from './LeftArrowComponent.vue';
 import router from '../router';
 
 let profesorStore = useProfesroStore();
@@ -80,6 +81,8 @@ const handleSubmit = async () => {
 </script>
 
 <template>
+    <LeftArrowComponent path="profesores" />
+
     <div class="card-container">
         <div class="card">
             <h2>Registro de profesor</h2>
@@ -156,5 +159,9 @@ h2 {
 
 .error {
     font-size: 1.2em;
+}
+
+.card-container{
+    margin-top: 2.5em;
 }
 </style>

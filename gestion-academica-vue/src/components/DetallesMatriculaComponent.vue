@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, reactive } from 'vue';
 import { useMatriculaStore } from '../stores/matriculaStore';
+import LeftArrowComponent from './LeftArrowComponent.vue';
 
 const props = defineProps({
     id: Number
@@ -33,6 +34,8 @@ onMounted(async () => {
 </script>
 
 <template>
+    <LeftArrowComponent path="matriculas" />
+
     <h2>Detalles de la matrícula de {{ matricula.nombreAlumno }} {{ matricula.apellidosAlumno }}:</h2>
     <div class="card-container">
         <div class="card">

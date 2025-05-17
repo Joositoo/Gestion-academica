@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useCalificacionStore } from '../stores/calificacionStore';
+import LeftArrowComponent from './LeftArrowComponent.vue';
 
 const calificacionStore = useCalificacionStore();;
 const router = useRouter();
@@ -58,6 +59,8 @@ const generateCSV = () => {
 </script>
 
 <template>
+    <LeftArrowComponent path="calificaciones" />
+
     <div class="card-container">
         <div class="card">
             <h2>Registro de calificaciones</h2>

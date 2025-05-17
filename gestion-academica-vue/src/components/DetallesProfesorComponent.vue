@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
 import { useProfesroStore } from '../stores/profesorStore';
+import LeftArrowComponent from './LeftArrowComponent.vue';
 
 const props = defineProps({
     id: Number
@@ -25,6 +26,8 @@ onMounted(async () => {
 </script>
 
 <template>
+    <LeftArrowComponent path="profesores" />
+
     <h2>Detalles de {{ profesor.nombre }} {{ profesor.apellidos }}:</h2>
 
     <div class="card-container">

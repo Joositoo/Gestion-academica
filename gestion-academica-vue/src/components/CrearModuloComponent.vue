@@ -1,6 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { useModuloStore } from '../stores/moduloStore'
+import LeftArrowComponent from './LeftArrowComponent.vue';
 import { ref } from 'vue';
 const moduloStore = useModuloStore();
 const router = useRouter();
@@ -57,6 +58,8 @@ const generateCSV = () => {
 </script>
 
 <template>
+    <LeftArrowComponent path="modulos" />
+
     <div class="card-container">
         <div class="card">
             <h2>Registro de módulos</h2>

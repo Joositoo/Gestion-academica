@@ -1,6 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { useMatriculaStore } from '../stores/matriculaStore'
+import LeftArrowComponent from './LeftArrowComponent.vue';
 import { ref } from 'vue';
 
 const matriculaStore = useMatriculaStore();
@@ -11,41 +12,41 @@ const handleChange = (e) => {
     matriculas.value = e.target.files[0];
 }
 
-const handleSubmit = async() => {
+const handleSubmit = async () => {
     let pVacio = document.getElementById("vacio");
     let pWrong = document.getElementById("wrongFile");
     let pError500 = document.getElementById("error500");
 
-    if (!matriculas.value){
+    if (!matriculas.value) {
         pWrong.style.display = "none";
         pError500.style.display = "none";
         pVacio.style.display = "block";
         return;
     }
-    else if (matriculas.value.type != "text/csv" && !matriculas.value.name.toLowerCase().endsWith(".csv")){
+    else if (matriculas.value.type != "text/csv" && !matriculas.value.name.toLowerCase().endsWith(".csv")) {
         pVacio.style.display = "none";
         pError500.style.display = "none";
         pWrong.style.display = "block";
         return;
     }
 
-    try{
+    try {
         await matriculaStore.saveMatricula(matriculas.value);
         router.push("/matriculas");
     }
-    catch{
+    catch {
         pVacio.style.display = "none";
         pWrong.style.display = "none";
         pError500.style.display = "block";
         return;
     }
-} 
+}
 
 const generateCSV = () => {
     const encabezado = ["emailAlumno", "nombreCiclo"];
-    const contenidoCSV = encabezado.join(",")+ "\n";
+    const contenidoCSV = encabezado.join(",") + "\n";
 
-    const blob = new Blob([contenidoCSV], {type: "text/csv;charset=utf-8"});
+    const blob = new Blob([contenidoCSV], { type: "text/csv;charset=utf-8" });
     const url = URL.createObjectURL(blob);
 
     const enlace = document.createElement("a");
@@ -58,7 +59,9 @@ const generateCSV = () => {
 </script>
 
 <template>
-        <div class="card-container">
+    <LeftArrowComponent path="matriculas" />
+
+    <div class="card-container">
         <div class="card">
             <h2>Registro de matrículas</h2>
 
@@ -79,7 +82,8 @@ const generateCSV = () => {
             </div>
             <p class="error" id="vacio" style="display: none;">Seleccione un archivo, por favor</p>
             <p class="error" id="wrongFile" style="display: none;">El archivo no tiene extensión .csv</p>
-            <p class="error" id="error500" style="display: none;">El archivo no tiene todas las columnas y/o no existen los emails de alumnos ni ciclos
+            <p class="error" id="error500" style="display: none;">El archivo no tiene todas las columnas y/o no existen
+                los emails de alumnos ni ciclos
             </p>
         </div>
     </div>
@@ -92,17 +96,17 @@ const generateCSV = () => {
     gap: 5em;
 }
 
-.flex-container div{
+.flex-container div {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.error{
+.error {
     margin-top: 1.22em;
 }
 
-form p{
+form p {
     display: block;
     text-align: center;
     font-size: 1.1em;

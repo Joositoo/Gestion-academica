@@ -1,5 +1,6 @@
 <script setup>
 import { useUsuarioStore } from '../stores/usuarioStore';
+import LeftArrowComponent from './LeftArrowComponent.vue';
 
 const usuarioStore = useUsuarioStore();
 const usuario = usuarioStore.usuario;
@@ -34,8 +35,6 @@ const paths2 = ["/matriculas", "/porcentajes","/calificaciones"];
             </router-link>
         </div>
     </div>
-    
-
 </template>
 
 <style scoped>

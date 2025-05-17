@@ -2,6 +2,7 @@
 import { onMounted, reactive } from 'vue';
 import { usePorcentajeStore } from '../stores/porcentajeStore';
 import { useModuloStore } from '../stores/moduloStore';
+import LeftArrowComponent from './LeftArrowComponent.vue';
 
 const props = defineProps({
     id: Number
@@ -59,6 +60,8 @@ onMounted(async () => {
 </script>
 
 <template>
+    <LeftArrowComponent path="porcentajes" />
+
     <h2>Detalles de los porcentajes de {{ porcentajes.modulo }}:</h2>
 
     <div class="card-container">

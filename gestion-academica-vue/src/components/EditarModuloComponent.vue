@@ -4,6 +4,7 @@ import { useModuloStore } from '../stores/moduloStore';
 import { useRouter } from 'vue-router';
 import { useProfesroStore } from '../stores/profesorStore';
 import { useCicloStore } from '../stores/cicloStore'
+import LeftArrowComponent from './LeftArrowComponent.vue';
 
 const moduloStore = useModuloStore();
 const profesorStore = useProfesroStore();
@@ -67,6 +68,8 @@ const handleSubmit = async () => {
 </script>
 
 <template>
+    <LeftArrowComponent path="modulos" />
+    
     <div class="card-container">
         <div class="card">
             <h2>Modificación de módulo</h2>

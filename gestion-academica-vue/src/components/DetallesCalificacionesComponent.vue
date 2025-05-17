@@ -2,6 +2,7 @@
 import { onMounted, reactive } from 'vue';
 import { useCalificacionStore } from '../stores/calificacionStore';
 import { usePorcentajeStore } from '../stores/porcentajeStore';
+import LeftArrowComponent from './LeftArrowComponent.vue';
 
 const props = defineProps({
     id: Number
@@ -103,6 +104,8 @@ onMounted(async () => {
 </script>
 
 <template>
+    <LeftArrowComponent path="calificaciones" />
+
     <h2>Detalles de las calificaciones de {{ calificaciones.nombreAlumno }} en {{ calificaciones.modulo }}:</h2>
 
     <div class="card-container">

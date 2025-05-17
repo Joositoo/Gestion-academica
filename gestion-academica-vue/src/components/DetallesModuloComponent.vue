@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, reactive } from 'vue';
 import { useModuloStore } from '../stores/moduloStore';
+import LeftArrowComponent from './LeftArrowComponent.vue';
 
 const props = defineProps({
     id: Number
@@ -27,6 +28,8 @@ onMounted(async () => {
 </script>
 
 <template>
+    <LeftArrowComponent path="modulos" />
+
     <h2>Detalles del módulo {{ modulo.nombre }}:</h2>
 
     <div class="card-container">

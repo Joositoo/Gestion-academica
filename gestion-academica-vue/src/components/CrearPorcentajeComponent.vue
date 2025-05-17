@@ -2,6 +2,7 @@
 import { onMounted, reactive, ref } from 'vue';
 import { useModuloStore } from '../stores/moduloStore';
 import { usePorcentajeStore } from '../stores/porcentajeStore';
+import LeftArrowComponent from './LeftArrowComponent.vue';
 import { useRouter } from 'vue-router';
 
 const moduloStore = useModuloStore();
@@ -67,6 +68,8 @@ const handleSubmit = async () => {
 </script>
 
 <template>
+    <LeftArrowComponent path="porcentajes" />
+
     <div class="card-container">
         <div class="card">
             <h2>Registro de porcentajes</h2>

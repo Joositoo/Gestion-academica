@@ -3,6 +3,7 @@ import { onMounted, reactive, ref } from 'vue';
 import { useProfesroStore } from '../stores/profesorStore';
 import { useRouter } from 'vue-router';
 import { useCicloStore } from '../stores/cicloStore';
+import LeftArrowComponent from './LeftArrowComponent.vue';
 
 const props = defineProps({
     id: Number
@@ -56,6 +57,8 @@ const handleSubmit = async () => {
 </script>
 
 <template>
+    <LeftArrowComponent path="ciclos" />
+
     <div class="card-container">
         <div class="card">
             <h2>Modificación de profesor</h2>

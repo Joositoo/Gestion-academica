@@ -1,6 +1,7 @@
 <script setup>
 import { reactive } from 'vue';
 import { useCicloStore } from '../stores/cicloStore';
+import LeftArrowComponent from './LeftArrowComponent.vue';
 import { useRouter } from 'vue-router';
 
 let cicloStore = useCicloStore();
@@ -43,6 +44,8 @@ const handleSubmit = async () => {
 </script>
 
 <template>
+    <LeftArrowComponent path="ciclos" />
+
     <div class="card-container">
         <div class="card">
             <h2>Registro de ciclo</h2>

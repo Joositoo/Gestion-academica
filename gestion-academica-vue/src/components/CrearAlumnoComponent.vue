@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useAlumnoStore } from '../stores/alumnoStore';
+import LeftArrowComponent from './LeftArrowComponent.vue';
 import { useRouter } from 'vue-router';
 
 const alumnoStore = useAlumnoStore();
@@ -58,6 +59,8 @@ const generateCSV = () => {
 </script>
 
 <template>
+    <LeftArrowComponent path="alumnos" />
+
     <div class="card-container">
         <div class="card">
             <h2>Registro de Alumnos</h2>
