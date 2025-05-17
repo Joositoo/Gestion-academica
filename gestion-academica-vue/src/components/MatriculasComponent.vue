@@ -9,13 +9,16 @@ const cicloStore = useCicloStore();
 const router = useRouter();
 
 let listaMatriculas = ref([]);
+let listaMatriculasOriginal = ref([]);
 let listaFiltrada = ref([]);
 let listaCiclos = ref([]);
 let matriculaId = ref(0);
 let matricula = ref({});
+let nombreFiltrado = ref("");
 
 onMounted(async () => {
     listaMatriculas.value = await matriculaStore.getMatriculas();
+    listaMatriculasOriginal.value = listaMatriculas.value;
     listaCiclos.value = await cicloStore.getCiclos();
     listaFiltrada.value = listaMatriculas.value;
 });
@@ -50,6 +53,13 @@ const handleDelete = async () => {
     window.location.reload();
 }
 
+const filterByName = () => {
+    const filtro = nombreFiltrado.value.toLowerCase();
+    listaFiltrada.value = listaMatriculasOriginal.value.filter((m) =>
+        m.alumnoDto.nombre.toLowerCase().includes(filtro)
+    );
+}
+
 </script>
 
 <template>
@@ -62,6 +72,10 @@ const handleDelete = async () => {
                     <option value="0">No filtrar</option>
                     <option v-for="ciclo in listaCiclos" :value="ciclo.nombre">{{ ciclo.nombre }}</option>
                 </select>
+            </div>
+            <div>
+                <p>Busca por nombre: </p>
+                <input type="text" class="crear-editar-input" @input="filterByName" v-model="nombreFiltrado" />
             </div>
             <div><button @click="handleClick"> + Crear</button></div>
         </div>
@@ -94,7 +108,7 @@ const handleDelete = async () => {
             </tbody>
         </table>
 
-        <h2 v-else>No hay alumnos matriculados en este ciclo</h2>
+        <h2 v-else>No hay alumnos matriculados en este ciclo o no existe el alumno</h2>
     </div>
 
 
