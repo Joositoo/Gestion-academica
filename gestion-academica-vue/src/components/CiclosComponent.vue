@@ -4,14 +4,16 @@ import { useCicloStore } from '../stores/cicloStore';
 import { useRouter } from 'vue-router';
 
 let listaCiclos = ref([]);
-let listaCiclosOriginal = ref([]); 
+let listaCiclosOriginal = ref([]);
 let ciclo = reactive({});
 let cicloId = ref(0);
+let nombreFiltrado = ref("");
 const ciclosStore = useCicloStore();
 const router = useRouter();
 
 onMounted(async () => {
     listaCiclos.value = await ciclosStore.getCiclos();
+    listaCiclosOriginal.value = listaCiclos.value;
 });
 
 const handleClick = () => {
@@ -38,15 +40,26 @@ const handleDelete = async () => {
     window.location.reload();
 }
 
+const filterByName = () => {
+    const filtro = nombreFiltrado.value.toLowerCase();
+    listaCiclos.value = listaCiclosOriginal.value.filter((c) =>
+        c.nombre.toLowerCase().includes(filtro)
+    );
+}
+
 </script>
 
 <template>
     <h2>Historial de ciclos: </h2>
     <div class="table-container">
         <div class="crear">
-            <button @click="handleClick"> + Crear</button>
+            <div>
+                <p>Busca por nombre: </p>
+                <input type="text" class="crear-editar-input" @input="filterByName" v-model="nombreFiltrado" />
+            </div>
+            <div><button @click="handleClick"> + Crear</button></div>
         </div>
-        <table class="content-table">
+        <table class="content-table" v-if="listaCiclos.length > 0">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -68,6 +81,7 @@ const handleDelete = async () => {
                 </tr>
             </tbody>
         </table>
+        <h2 v-else class="noExiste">No existe el ciclo</h2>
     </div>
 
 
@@ -106,10 +120,28 @@ h2 {
     margin-right: 15em;
 }
 
+.crear {
+    margin-right: 14.5em;
+    justify-content: space-between;
+}
+
+.crear div {
+    display: flex;
+    align-items: center;
+}
+
+.crear p {
+    margin: 0;
+}
+
 i {
     cursor: pointer;
     width: 50px;
     font-size: 18px;
     margin: 0 0.5em;
+}
+
+.noExiste{
+    text-decoration: none;
 }
 </style>
