@@ -12,7 +12,7 @@
 }
 
 .card:hover {
-  transform: scale(1.05); /* Aumenta el tamaño al 105% al pasar el ratón */
+  transform: scale(1.02); /* Aumenta el tamaño al 105% al pasar el ratón */
 }
 
 .card-container{

@@ -5,12 +5,15 @@ import router from '../router';
 
 let profesorStore = useProfesroStore();
 let listaProfesores = ref([]);
+let listaProfesoresOriginal = ref([]);
 let profesor = reactive({});
 let profesorId = ref(0);
+let nombreFiltrado = ref("");
 
 onMounted(async () => {
     await profesorStore.getProfesores();
     listaProfesores.value = await profesorStore.getProfesores();
+    listaProfesoresOriginal.value = listaProfesores.value;
 });
 
 const handleClick = () => {
@@ -36,15 +39,26 @@ const handleDelete = async () => {
 const handleDetails = (prof) => {
     router.push(`/profesores/details/${prof.id}`);
 }
+
+const filterByName = () => {
+    const filtro = nombreFiltrado.value.toLowerCase();
+    listaProfesores.value = listaProfesoresOriginal.value.filter((prof) =>
+        prof.nombre.toLowerCase().includes(filtro)
+    );
+}
 </script>
 
 <template>
     <h2>Historial de profesores: </h2>
     <div class="table-container">
         <div class="crear">
-            <button @click="handleClick"> + Crear</button>
+            <div>
+                <p>Busca por nombre: </p>
+                <input type="text" class="crear-editar-input" @input="filterByName" v-model="nombreFiltrado" />
+            </div>
+            <div><button @click="handleClick"> + Crear</button></div>
         </div>
-        <table class="content-table">
+        <table class="content-table" v-if="listaProfesores.length > 0">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -72,6 +86,8 @@ const handleDetails = (prof) => {
                 </tr>
             </tbody>
         </table>
+
+        <h2 v-else>No existe el profesor</h2>
     </div>
 
 
@@ -110,10 +126,25 @@ h2 {
     margin-right: 8.5em;
 }
 
+.crear {
+    margin-right: 8.5em;
+    justify-content: space-between;
+}
+
 i {
     cursor: pointer;
     width: 50px;
     font-size: 18px;
     margin: 0 0.5em;
+}
+
+
+.crear div {
+    display: flex;
+    align-items: center;
+}
+
+.crear p{
+    margin: 0;
 }
 </style>
