@@ -5,16 +5,19 @@ import { useCicloStore } from '../stores/cicloStore';
 import { useRouter } from 'vue-router';
 
 let listaModulos = ref([]);
+let listaModulosOriginal = ref([]);
 let listaCiclos = ref([]);
 let listaFiltrada = ref([]);
 let modulo = reactive({});
 let moduloId = ref(0);
+let nombreFiltrado = ref("");
 const moduloStore = useModuloStore();
 const cicloStore = useCicloStore();
 const router = useRouter();
 
 onMounted(async () => {
     listaModulos.value = await moduloStore.getModulos();
+    listaModulosOriginal.value = listaModulos.value;
     listaFiltrada.value = listaModulos.value;
     listaCiclos.value = await cicloStore.getCiclos();
 });
@@ -50,6 +53,12 @@ const handleFilter = (e) => {
     }
 }
 
+const filterByName = () => {
+    const filtro = nombreFiltrado.value.toLowerCase();
+    listaFiltrada.value = listaModulosOriginal.value.filter((m) =>
+        m.nombre.toLowerCase().includes(filtro)
+    );
+}
 </script>
 
 <template>
@@ -62,6 +71,10 @@ const handleFilter = (e) => {
                     <option value="0">No filtrar</option>
                     <option v-for="ciclo in listaCiclos" :value="ciclo.nombre">{{ ciclo.nombre }}</option>
                 </select>
+            </div>
+            <div>
+                <p>Busca por nombre: </p>
+                <input type="text" class="crear-editar-input" @input="filterByName" v-model="nombreFiltrado" />
             </div>
             <div><button @click="handleClick"> + Crear</button></div>
         </div>
@@ -95,7 +108,7 @@ const handleFilter = (e) => {
             </tbody>
         </table>
 
-        <h2 v-else>No hay asignaturas asignadas a este módulo</h2>
+        <h2 v-else>No hay asignaturas asignadas a este módulo o no existe el módulo</h2>
     </div>
 
 
