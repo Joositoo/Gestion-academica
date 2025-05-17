@@ -10,11 +10,14 @@ const router = useRouter();
 let alumno = reactive({});
 let alumnoId = ref(0);
 let listaAlumnos = ref([]);
+let listaAlumnosOriginal = ref([]);
 let listaFiltrada = ref([]);
 let listaProfesores = ref([]);
+let nombreFiltrado = ref("");
 
 onMounted(async () => {
     listaAlumnos.value = await alumnoStore.getAlumnos();
+    listaAlumnosOriginal.value = listaAlumnos.value;
     listaProfesores.value = await profesorStore.getProfesores();
     listaFiltrada.value = listaAlumnos.value;
 });
@@ -50,6 +53,13 @@ const handleFilter = (e) => {
         listaFiltrada.value = listaAlumnos.value.filter(a => a.profesorDto.email == e.target.value);
     }
 }
+
+const filterByName = () => {
+    const filtro = nombreFiltrado.value.toLowerCase();
+    listaFiltrada.value = listaAlumnosOriginal.value.filter((al) =>
+        al.nombre.toLowerCase().includes(filtro)
+    );
+}
 </script>
 
 <template>
@@ -62,6 +72,10 @@ const handleFilter = (e) => {
                     <option value="0">No filtrar</option>
                     <option v-for="profesor in listaProfesores" :value="profesor.email">{{ profesor.nombre }} {{ profesor.apellidos }}</option>
                 </select>
+            </div>
+            <div>
+                <p>Busca por nombre: </p>
+                <input type="text" class="crear-editar-input" @input="filterByName" v-model="nombreFiltrado" />
             </div>
             <div><button @click="handleClick"> + Crear</button></div>
         </div>
@@ -98,7 +112,7 @@ const handleFilter = (e) => {
             </tbody>
         </table>
 
-        <h2 v-else>No hay alumnos asignados a este profesor</h2>
+        <h2 v-else >No hay alumnos asignados a este profesor o no existe el alumno</h2>
     </div>
 
 

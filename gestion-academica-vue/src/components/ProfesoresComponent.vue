@@ -87,7 +87,7 @@ const filterByName = () => {
             </tbody>
         </table>
 
-        <h2 v-else>No existe el profesor</h2>
+        <h2 v-else class="noExiste">No existe el profesor</h2>
     </div>
 
 
@@ -120,6 +120,10 @@ h2 {
     text-align: center;
     margin: 2em 0 0 0;
     text-decoration: underline;
+}
+
+.noExiste {
+    text-decoration: none;
 }
 
 .crear {

@@ -4,6 +4,7 @@ import { useCicloStore } from '../stores/cicloStore';
 import { useRouter } from 'vue-router';
 
 let listaCiclos = ref([]);
+let listaCiclosOriginal = ref([]); 
 let ciclo = reactive({});
 let cicloId = ref(0);
 const ciclosStore = useCicloStore();
