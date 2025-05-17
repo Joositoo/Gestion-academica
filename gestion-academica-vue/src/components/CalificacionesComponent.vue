@@ -14,7 +14,10 @@ const calificacionesStore = useCalificacionStore();
 const calificaciones = ref([]);
 const calificacionesProfesor = ref([]);
 const listaModulos = ref([]);
+const listaCalificacionesOriginal = ref([]);
 const listaModulosProf = ref([]);
+const calificacionesProfesorOriginal = ref([]);
+const nombreFiltrado = ref("");
 
 let calificacionesFiltradas = ref([]);
 let hasCalificaciones = ref(false);
@@ -30,15 +33,18 @@ onMounted(async () => {
     const data = await calificacionesStore.getCalificaciones();
     listaModulos.value = await moduloStore.getModulos();
 
+
     listaModulosProf.value = listaModulos.value.filter(m => m.profesorDto.id == usuario.id);
 
     calificaciones.value = data;
     calificacionesFiltradas.value = calificaciones.value;
+    listaCalificacionesOriginal.value = calificacionesFiltradas.value;
 
     calificacionesProfesor.value = calificaciones.value.filter(c => c.moduloDto.profesorDto.id == usuario.id);
     if (calificacionesProfesor.value.length > 0) {
         hasCalificaciones.value = true;
     }
+    calificacionesProfesorOriginal.value = calificacionesProfesor.value;
 })
 
 const isAdmin = ref(false);
@@ -88,6 +94,38 @@ const handleDetails = (c) => {
 const handleClick = () => {
     router.push("/calificaciones/crear");
 }
+
+const filterByNameAdmin = () => {
+    const filtro = nombreFiltrado.value
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+
+    calificacionesFiltradas.value = listaCalificacionesOriginal.value.filter((c) => {
+        const nombreAlumno = c.alumnoDto.nombre
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "");
+
+        return nombreAlumno.includes(filtro);
+    });
+};
+
+const filterByNameProf = () => {
+    const filtro = nombreFiltrado.value
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+
+    calificacionesProfesor.value = calificacionesProfesorOriginal.value.filter((c) => {
+        const nombreAlumno = c.alumnoDto.nombre
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "");
+
+        return nombreAlumno.includes(filtro);
+    });
+}
 </script>
 
 <template>
@@ -101,6 +139,10 @@ const handleClick = () => {
                         <option value="0">No filtrar</option>
                         <option v-for="modulo in listaModulos" :value="modulo.nombre">{{ modulo.nombre }}</option>
                     </select>
+                </div>
+                <div>
+                    <p>Busca por alumno: </p>
+                    <input type="text" class="crear-editar-input" @input="filterByNameAdmin" v-model="nombreFiltrado" />
                 </div>
                 <div><button @click="handleClick"> + Crear</button></div>
             </div>
@@ -154,7 +196,7 @@ const handleClick = () => {
                 </tbody>
             </table>
 
-            <h2 v-else>No hay calificaciones en este módulo</h2>
+            <h2 v-else>No hay calificaciones en este módulo o no existe el alumno</h2>
         </div>
 
 
@@ -205,6 +247,11 @@ const handleClick = () => {
                             <option v-for="modulo in listaModulosProf" :value="modulo.nombre">{{ modulo.nombre }}
                             </option>
                         </select>
+                    </div>
+                    <div>
+                        <p>Busca por módulo: </p>
+                        <input type="text" class="crear-editar-input" @input="filterByNameProf"
+                            v-model="nombreFiltrado" />
                     </div>
                     <div><button @click="handleClick"> + Crear</button></div>
                 </div>
@@ -258,7 +305,7 @@ const handleClick = () => {
                     </tbody>
                 </table>
 
-                <h2 v-else>No hay calificaciones en este módulo</h2>
+                <h2 v-else>No hay calificaciones en este módulo o no existe el alumno</h2>
             </div>
 
 
@@ -346,9 +393,9 @@ h2 {
 
 .btn-container {
     display: flex;
-    justify-content: flex-end; 
+    justify-content: flex-end;
     width: 100%;
-    padding-right: 3.5em; 
+    padding-right: 3.5em;
 }
 
 .btn-wrapper {

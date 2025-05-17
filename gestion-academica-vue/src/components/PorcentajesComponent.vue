@@ -86,9 +86,9 @@ const filterByNameAdmin = () => {
                     </select>
                 </div>
                 <div>
-                <p>Busca por módulo: </p>
-                <input type="text" class="crear-editar-input" @input="filterByNameAdmin" v-model="nombreFiltrado" />
-            </div>
+                    <p>Busca por módulo: </p>
+                    <input type="text" class="crear-editar-input" @input="filterByNameAdmin" v-model="nombreFiltrado" />
+                </div>
                 <div><button @click="handleClick"> + Crear</button></div>
             </div>
 
@@ -125,7 +125,7 @@ const filterByNameAdmin = () => {
                         <td>{{ porcentaje.ra8 }}</td>
                         <td>{{ porcentaje.ra9 }}</td>
                         <td><i class="bi bi-card-list" @click="handleDetails(porcentaje)"></i>
-                            |   
+                            |
                             <i class="bi bi-pencil" @click="handleEdit(porcentaje)"></i>
                             |
                             <i class="bi bi-trash" @click="openModal(porcentaje)" data-bs-toggle="modal"
@@ -203,7 +203,7 @@ const filterByNameAdmin = () => {
                         <td>{{ porcentaje.ra8 }}</td>
                         <td>{{ porcentaje.ra9 }}</td>
                         <td><i class="bi bi-card-list" @click="handleDetails(porcentaje)"></i>
-                            | 
+                            |
                             <i class="bi bi-pencil" @click="handleEdit(porcentaje)"></i>
                             |
                             <i class="bi bi-trash" @click="openModal(porcentaje)" data-bs-toggle="modal"
