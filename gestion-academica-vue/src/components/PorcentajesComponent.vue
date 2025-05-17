@@ -6,6 +6,7 @@ import { useRouter } from 'vue-router';
 import { useUsuarioStore } from '../stores/usuarioStore';
 
 const listaPorcentajes = ref([]);
+const listaPorcentajesOriginal = ref([]);
 const listaFiltrada = ref([]);
 const listaFiltradaProf = ref([]);
 const listaCiclos = ref([]);
@@ -15,6 +16,7 @@ const porcentajesStore = usePorcentajeStore();
 const ciclosStore = useCicloStore();
 const usuarioStore = useUsuarioStore();
 const router = useRouter();
+const nombreFiltrado = ref("");
 
 
 const usuario = usuarioStore.usuario;
@@ -25,6 +27,7 @@ if (usuario.rol == "admin") {
 
 onMounted(async () => {
     listaPorcentajes.value = await porcentajesStore.getPorcentajes();
+    listaPorcentajesOriginal.value = listaPorcentajes.value;
     listaFiltrada.value = await porcentajesStore.getPorcentajes();
     listaFiltradaProf.value = listaFiltrada.value.filter(p => p.moduloDto.profesorDto.id == usuario.id);
     listaCiclos.value = await ciclosStore.getCiclos();
@@ -60,6 +63,14 @@ const handleEdit = (p) => {
 const handleClick = () => {
     router.push("porcentajes/crear");
 }
+
+const filterByNameAdmin = () => {
+    const filtro = nombreFiltrado.value.toLowerCase();
+    listaFiltrada.value = listaPorcentajesOriginal.value.filter((p) =>
+        p.moduloDto.nombre.toLowerCase().includes(filtro)
+    );
+
+}
 </script>
 
 <template>
@@ -74,6 +85,10 @@ const handleClick = () => {
                         <option v-for="ciclo in listaCiclos" :value="ciclo.nombre">{{ ciclo.nombre }}</option>
                     </select>
                 </div>
+                <div>
+                <p>Busca por módulo: </p>
+                <input type="text" class="crear-editar-input" @input="filterByNameAdmin" v-model="nombreFiltrado" />
+            </div>
                 <div><button @click="handleClick"> + Crear</button></div>
             </div>
 
@@ -120,7 +135,7 @@ const handleClick = () => {
                 </tbody>
             </table>
 
-            <h2 v-else>No hay porcentajes asignados a este ciclo</h2>
+            <h2 v-else>No hay registro de porcentajes asignados a este ciclo o no existe el registro</h2>
         </div>
 
 
