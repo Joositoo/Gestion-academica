@@ -10,7 +10,6 @@ import jakarta.validation.constraints.Size;
 public class AlumnoDto {
     private Integer id;
 
-    @NotNull
     private ProfesorDto profesorDto;
 
     @Size(max = 100)
