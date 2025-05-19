@@ -131,7 +131,7 @@ const generateExcel = async () => {
 
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Calificación");
-    XLSX.writeFile(workbook, `Calificaciones_${calificaciones.nombreAlumno.replace(/\s/g, "_")}.xlsx`);
+    XLSX.writeFile(workbook, `Calificaciones${calificaciones.nombreAlumno.replace(/\s/g, "")}.xlsx`);
 }
 </script>
 

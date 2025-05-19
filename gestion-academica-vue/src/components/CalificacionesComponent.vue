@@ -1,13 +1,16 @@
 <script setup>
+import * as XLSX from 'xlsx';
 import { onMounted, reactive, ref } from 'vue';
 import { useCalificacionStore } from '../stores/calificacionStore';
 import { useUsuarioStore } from '../stores/usuarioStore';
 import { useModuloStore } from '../stores/moduloStore'
 import { useRouter } from 'vue-router';
+import { usePorcentajeStore } from '../stores/porcentajeStore';
 
 const router = useRouter();
 const usuarioStore = useUsuarioStore();
 const moduloStore = useModuloStore();
+const porcentajesStore = usePorcentajeStore();
 const usuario = usuarioStore.usuario;
 
 const calificacionesStore = useCalificacionStore();
@@ -17,6 +20,7 @@ const listaModulos = ref([]);
 const listaCalificacionesOriginal = ref([]);
 const listaModulosProf = ref([]);
 const calificacionesProfesorOriginal = ref([]);
+const listaPorcentajes = ref([]);
 const nombreFiltrado = ref("");
 
 let calificacionesFiltradas = ref([]);
@@ -32,6 +36,7 @@ let calificacion = reactive({
 onMounted(async () => {
     const data = await calificacionesStore.getCalificaciones();
     listaModulos.value = await moduloStore.getModulos();
+    listaPorcentajes.value = await porcentajesStore.getPorcentajes();
 
 
     listaModulosProf.value = listaModulos.value.filter(m => m.profesorDto.id == usuario.id);
@@ -126,6 +131,74 @@ const filterByNameProf = () => {
         return nombreAlumno.includes(filtro);
     });
 }
+
+const generateExcel = (array) => {
+    const porcentaje = reactive({
+        ra1: 0,
+        ra2: 0,
+        ra3: 0,
+        ra4: 0,
+        ra5: 0,
+        ra6: 0,
+        ra7: 0,
+        ra8: 0,
+        ra9: 0,
+    })
+
+    const notaPonderada = reactive({
+        ra1: 0,
+        ra2: 0,
+        ra3: 0,
+        ra4: 0,
+        ra5: 0,
+        ra6: 0,
+        ra7: 0,
+        ra8: 0,
+        ra9: 0,
+    })
+
+    const data = [
+        ["ID", "Ciclo", "Módulo", "Alumno", "Email del alumno", "RA 1", "RA 2", "RA 3", "RA 4", "RA 5", "RA 6", "RA 7", "RA 8", "RA 9", "Nota final"],
+    ];
+    for (const c of array) {
+        for (const p of listaPorcentajes.value) {
+            if (c.moduloDto.nombre == p.moduloDto.nombre){                
+                porcentaje.ra1 = p.ra1;
+                porcentaje.ra2 = p.ra2;
+                porcentaje.ra3 = p.ra3;
+                porcentaje.ra4 = p.ra4;
+                porcentaje.ra5 = p.ra5;
+                porcentaje.ra6 = p.ra6;
+                porcentaje.ra7 = p.ra7;
+                porcentaje.ra8 = p.ra8;
+                porcentaje.ra9 = p.ra9;
+                break;                
+            }
+        }
+        notaPonderada.ra1 = (c.ra1 * porcentaje.ra1 / 100);
+        notaPonderada.ra2 = (c.ra2 * porcentaje.ra2 / 100);
+        notaPonderada.ra3 = (c.ra3 * porcentaje.ra3 / 100);
+        notaPonderada.ra4 = (c.ra4 * porcentaje.ra4 / 100);
+        notaPonderada.ra5 = (c.ra5 * porcentaje.ra5 / 100);
+        notaPonderada.ra6 = (c.ra6 * porcentaje.ra6 / 100);
+        notaPonderada.ra7 = (c.ra7 * porcentaje.ra7 / 100);
+        notaPonderada.ra8 = (c.ra8 * porcentaje.ra8 / 100);
+        notaPonderada.ra9 = (c.ra9 * porcentaje.ra9 / 100);
+        
+        let notaFinal = (notaPonderada.ra1 + notaPonderada.ra2 + notaPonderada.ra3 + notaPonderada.ra4 + notaPonderada.ra5 + 
+                        notaPonderada.ra6 + notaPonderada.ra7 + notaPonderada.ra8 + notaPonderada.ra9);
+
+        data.push([c.id, c.moduloDto.cicloDto.nombre, c.moduloDto.nombre, c.alumnoDto.nombre+ " " +c.alumnoDto.apellidos, c.alumnoDto.email, notaPonderada.ra1, 
+                    notaPonderada.ra2, notaPonderada.ra3, notaPonderada.ra4, notaPonderada.ra5, notaPonderada.ra6, notaPonderada.ra7, notaPonderada.ra8, notaPonderada.ra9, notaFinal]);
+    }
+
+    const worksheet = XLSX.utils.aoa_to_sheet(data);
+    worksheet['!autofilter'] = { ref: 'A1:O1' }
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Calificaciones");
+    XLSX.writeFile(workbook, 'ListaDeCalificaciones.xlsx');
+}
 </script>
 
 <template>
@@ -144,7 +217,10 @@ const filterByNameProf = () => {
                     <p>Busca por alumno: </p>
                     <input type="text" class="crear-editar-input" @input="filterByNameAdmin" v-model="nombreFiltrado" />
                 </div>
-                <div><button @click="handleClick"> + Crear</button></div>
+                <div class="botones">
+                    <button class="excel" @click="generateExcel(calificacionesFiltradas)">Generar Excel</button>
+                    <button @click="handleClick"> + Crear</button>
+                </div>
             </div>
 
 
@@ -230,7 +306,9 @@ const filterByNameProf = () => {
             <h2>Historial de calificaciones: </h2>
             <div class="btn-container">
                 <div class="crear btn-wrapper">
-                    <div><button @click="handleClick"> + Crear</button></div>
+                    <div>
+                        <button @click="handleClick"> + Crear</button>
+                    </div>
                 </div>
             </div>
             <h2 class="no-calificaciones"> Lo sentimos, {{ usuario.nombre }} {{ usuario.apellidos }}. Todavía no tienes
@@ -253,7 +331,10 @@ const filterByNameProf = () => {
                         <input type="text" class="crear-editar-input" @input="filterByNameProf"
                             v-model="nombreFiltrado" />
                     </div>
-                    <div><button @click="handleClick"> + Crear</button></div>
+                    <div class="botones">
+                        <button class="excel" @click="generateExcel(calificacionesProfesor)">Generar Excel</button>
+                        <button @click="handleClick"> + Crear</button>
+                    </div>
                 </div>
 
 
@@ -401,5 +482,14 @@ h2 {
 .btn-wrapper {
     display: flex;
     align-items: center;
+}
+
+.botones{
+    display: flex;
+    gap: 20px;
+}
+
+.excel:hover {
+    background-color: #17d586;
 }
 </style>
