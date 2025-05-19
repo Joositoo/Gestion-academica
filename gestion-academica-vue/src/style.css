@@ -146,6 +146,10 @@ i {
   font-size: 18px;
   margin: 0 0.5em;
 }
+
+.excel:hover{
+  background-color: #17d586;
+}
 /*:root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
