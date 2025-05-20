@@ -5,7 +5,7 @@ import LeftArrowComponent from './LeftArrowComponent.vue';
 import router from '../router';
 
 let profesorStore = useProfesroStore();
-const regExpNombreApellidos = /^[a-zA-ZñÑ ]{3,}$/;
+const regExpNombreApellidos = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]{3,}$/;
 const regExpEmail = /^[\wñÑ._%+-]{5,30}@gmail\.com$/;
 const regExpPassword = /^[\wñÑ.-]{5,}$/;
 

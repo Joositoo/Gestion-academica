@@ -50,7 +50,7 @@ public class CalificacionDto {
     @Size(max = 100)
     @NotNull(message = "El nombre del módulo no puede ser nulo")
     @NotEmpty(message = "El nombre del módulo no puede estar vacío")
-    @Pattern(regexp = "^[a-zA-ZñÑ ]{3,}$", message = "El nombre solo debe contener letras y espacios")
+    @Pattern(regexp = "^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]{3,}$", message = "El nombre solo debe contener letras y espacios")
     private String nombreModulo;
 
     @Size(max = 255)

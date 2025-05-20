@@ -6,7 +6,7 @@ public class PorcentajesRaDto {
     private int id;
 
     @NotEmpty(message = "El nombre del módulo no puede quedar vacío")
-    @Pattern(regexp = "^[\\wñÑ ]{5,}$", message = "El nombre del módulo debe tener mínimo 5 caracteres alfanuméricos")
+    @Pattern(regexp = "^[\\wñÑáéíóúÁÉÍÓÚ ]{5,}$", message = "El nombre del módulo debe tener mínimo 5 caracteres alfanuméricos")
     private String nombreModulo;
 
     private ModuloDto moduloDto;

@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router';
 
 let cicloStore = useCicloStore();
 const router = useRouter();
-const regexp = /[\wñ ]{5,}$/;
+const regexp = /[\wñÑáéíóúÁÉÍÓÚ ]{5,}$/;
 
 let ciclo = reactive({
     nombre: "",

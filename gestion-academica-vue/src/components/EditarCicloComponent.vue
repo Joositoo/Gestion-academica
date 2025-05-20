@@ -16,7 +16,7 @@ const ciclo = reactive({
 const cicloStore = useCicloStore();
 const router = useRouter();
 let data = null;
-const regexp = /[\wñ ]{5,}$/;
+const regexp = /[\wñÑáéíóúÁÉÍÓÚ ]{5,}$/;
 
 onMounted(async () => {
     data = await cicloStore.getCicloById(props.id);

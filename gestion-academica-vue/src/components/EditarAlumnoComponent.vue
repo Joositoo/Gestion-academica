@@ -22,7 +22,7 @@ const alumnoStore = useAlumnoStore();
 const router = useRouter();
 let data = null;
 
-const regExpNombreApellidos = /^[a-zA-ZñÑ ]{3,}$/;
+const regExpNombreApellidos = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]{3,}$/;
 const regExpEmail = /^[\wñÑ._%+-]{5,30}@gmail\.com$/;
 
 onMounted(async () => {

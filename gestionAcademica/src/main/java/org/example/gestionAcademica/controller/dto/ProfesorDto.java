@@ -12,13 +12,13 @@ public class ProfesorDto {
     @Size(max = 100)
     @NotNull(message = "El nombre no puede ser nulo")
     @NotEmpty(message = "El nombre no puede estar vacío")
-    @Pattern(regexp = "^[a-zA-ZñÑ ]{3,}$", message = "El nombre solo debe contener letras y espacios")
+    @Pattern(regexp = "^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]{3,}$", message = "El nombre solo debe contener letras y espacios")
     private String nombre;
 
     @Size(max = 150)
     @NotNull(message = "Los apellidos no pueden ser nulos")
     @NotEmpty(message = "Los apellidos no pueden estar vacíos")
-    @Pattern(regexp = "^[a-zA-ZñÑ ]{3,}$", message = "El apellido solo debe contener letras y espacios")
+    @Pattern(regexp = "^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]{3,}$", message = "El apellido solo debe contener letras y espacios")
     private String apellidos;
 
     @Size(max = 255)
@@ -30,7 +30,7 @@ public class ProfesorDto {
     @Size(max = 255)
     @NotNull(message = "La contraseña no puede ser nula")
     @NotEmpty(message = "La contraseña no puede estar vacía")
-    @Pattern(regexp = "^[\\wñÑ.-]{5,}$", message = "La contraseña debe tener caracteres alfanuméricos y mínimo 5 caracteres")
+    @Pattern(regexp = "^[\\wñÑáéíóúÁÉÍÓÚ.-]{5,}$", message = "La contraseña debe tener caracteres alfanuméricos y mínimo 5 caracteres")
     private String password;
 
     @Lob

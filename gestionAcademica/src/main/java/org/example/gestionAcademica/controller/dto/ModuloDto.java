@@ -18,7 +18,7 @@ public class ModuloDto {
     @Size(max = 100)
     @NotNull(message = "El nombre del módulo no puede ser nulo")
     @NotEmpty(message = "El nombre del módulo no puede estar vacío")
-    @Pattern(regexp = "^[a-zA-ZñÑ ]{3,}$", message = "El nombre solo debe contener letras y espacios")
+    @Pattern(regexp = "^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]{3,}$", message = "El nombre solo debe contener letras y espacios")
     private String nombre;
 
     @Size(max = 255)
@@ -30,7 +30,7 @@ public class ModuloDto {
     @Size(max = 100)
     @NotNull(message = "El nombre del ciclo no puede estar vacío")
     @NotEmpty(message = "El nombre del ciclo no puede ser nulo")
-    @Pattern(regexp = "^[\\wñ ]{5,}$", message = "El nombre del ciclo debe tener mínimo 5 caracteres alfanuméricos")
+    @Pattern(regexp = "^[\\wñáéíóúÁÉÍÓÚ ]{5,}$", message = "El nombre del ciclo debe tener mínimo 5 caracteres alfanuméricos")
     private String nombreCiclo;
 
     public ModuloDto(Integer id, CicloDto cicloDto, ProfesorDto profesorDto, String nombre) {

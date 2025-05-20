@@ -12,7 +12,7 @@ public class CicloDto {
     @Size(max = 100)
     @NotNull(message = "El nombre del ciclo no puede estar vacío")
     @NotEmpty(message = "El nombre del ciclo no puede ser nulo")
-    @Pattern(regexp = "^[\\wñÑ ]{5,}$", message = "El nombre del cciclo debe tener mínimo 5 caracteres alfanuméricos")
+    @Pattern(regexp = "^[\\wñÑáéíóúÁÉÍÓÚ ]{5,}$", message = "El nombre del cciclo debe tener mínimo 5 caracteres alfanuméricos")
     private String nombre;
 
     public CicloDto(Integer id, String nombre) {

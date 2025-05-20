@@ -13,7 +13,7 @@ const router = useRouter();
 let data = null;
 const listaProfesores = ref([]);
 const listaCiclos = ref([]);
-const regExpNombre = /^[a-zA-ZñÑ ]{3,}$/
+const regExpNombre = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]{3,}$/
 
 const props = defineProps({
     id: Number

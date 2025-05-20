@@ -15,13 +15,13 @@ public class AlumnoDto {
     @Size(max = 100)
     @NotNull(message = "El nombre no puede ser nulo")
     @NotEmpty(message = "El nombre no puede estar vacío")
-    @Pattern(regexp = "^[a-zA-ZñÑ ]{3,}$", message = "El nombre solo debe contener letras y espacios")
+    @Pattern(regexp = "^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]{3,}$", message = "El nombre solo debe contener letras y espacios")
     private String nombre;
 
     @Size(max = 150)
     @NotNull(message = "Los apellidos no pueden ser nulos")
     @NotEmpty(message = "Los apellidos no pueden estar vacíos")
-    @Pattern(regexp = "^[a-zA-ZñÑ ]{3,}$", message = "El apellido solo debe contener letras y espacios")
+    @Pattern(regexp = "^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]{3,}$", message = "El apellido solo debe contener letras y espacios")
     private String apellidos;
 
     @Size(max = 255)

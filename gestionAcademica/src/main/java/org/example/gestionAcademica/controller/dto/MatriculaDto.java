@@ -18,7 +18,7 @@ public class MatriculaDto {
     @Size(max = 100)
     @NotNull(message = "El nombre del ciclo no puede estar vacío")
     @NotEmpty(message = "El nombre del ciclo no puede ser nulo")
-    @Pattern(regexp = "^[\\wñ ]{5,}$", message = "El nombre del ciclo debe tener mínimo 5 caracteres alfanuméricos")
+    @Pattern(regexp = "^[\\wñáéíóúÁÉÍÓÚ ]{5,}$", message = "El nombre del ciclo debe tener mínimo 5 caracteres alfanuméricos")
     private String nombreCiclo;
 
     @Size(max = 255)

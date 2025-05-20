@@ -4,9 +4,11 @@ import org.example.gestionAcademica.controller.dto.ModuloDto;
 import org.example.gestionAcademica.controller.mapper.ModuloMapper;
 import org.example.gestionAcademica.modelo.Ciclo;
 import org.example.gestionAcademica.modelo.Modulo;
+import org.example.gestionAcademica.modelo.PorcentajesRa;
 import org.example.gestionAcademica.modelo.Profesor;
 import org.example.gestionAcademica.repository.CicloRepository;
 import org.example.gestionAcademica.repository.ModuloRepository;
+import org.example.gestionAcademica.repository.PorcentajesRaRepository;
 import org.example.gestionAcademica.repository.ProfesorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,13 +24,15 @@ public class ModuloService {
     private final ModuloMapper moduloMapper;
     private final CicloRepository cicloRepository;
     private final ProfesorRepository profesorRepository;
+    private final PorcentajesRaRepository porcentajesRaRepository;
 
     @Autowired
-    public ModuloService(ModuloRepository moduloRepository, ModuloMapper moduloMapper, CicloRepository cicloRepository, ProfesorRepository profesorRepository) {
+    public ModuloService(ModuloRepository moduloRepository, ModuloMapper moduloMapper, CicloRepository cicloRepository, ProfesorRepository profesorRepository, PorcentajesRaRepository porcentajesRaRepository) {
         this.moduloRepository = moduloRepository;
         this.moduloMapper = moduloMapper;
         this.cicloRepository = cicloRepository;
         this.profesorRepository = profesorRepository;
+        this.porcentajesRaRepository = porcentajesRaRepository;
     }
 
     public List<ModuloDto> getModulos() {
@@ -112,6 +116,7 @@ public class ModuloService {
             modulo.setNombre(moduloDto.getNombre());
 
             moduloRepository.save(modulo);
+            creaYGuardaPorcentaje(modulo);
         }
     }
 
@@ -127,6 +132,21 @@ public class ModuloService {
         return listaModulosDto;
     }
 
+    private void creaYGuardaPorcentaje(Modulo modulo){
+        PorcentajesRa porcentajesRa = new PorcentajesRa();
+        porcentajesRa.setModulo(modulo);
+        porcentajesRa.setRa1((byte) 0);
+        porcentajesRa.setRa2((byte) 0);
+        porcentajesRa.setRa3((byte) 0);
+        porcentajesRa.setRa4((byte) 0);
+        porcentajesRa.setRa5((byte) 0);
+        porcentajesRa.setRa6((byte) 0);
+        porcentajesRa.setRa7((byte) 0);
+        porcentajesRa.setRa8((byte) 0);
+        porcentajesRa.setRa9((byte) 0);
+
+        porcentajesRaRepository.save(porcentajesRa);
+    }
 
 
 
