@@ -322,4 +322,8 @@ label {
 div {
     margin-bottom: 1.5em;
 }
+
+.crear-editar-button{
+    padding: 18px;
+}
 </style>

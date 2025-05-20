@@ -76,7 +76,7 @@ const filterByName = () => {
                 <p>Busca por nombre: </p>
                 <input type="text" class="crear-editar-input" @input="filterByName" v-model="nombreFiltrado" />
             </div>
-            <div><button @click="handleClick"> + Crear</button></div>
+            <div><button @click="handleClick" class="crearBtn"> + Crear</button></div>
         </div>
 
         <table class="content-table" v-if="listaFiltrada.length > 0">
@@ -168,5 +168,13 @@ i {
 
 .table-container h2 {
     text-decoration: none;
+}
+
+.crearBtn{
+    transition: background-color 0.3s ease;
+}
+
+.crearBtn:hover{
+    background-color: #59c1ff;;
 }
 </style>

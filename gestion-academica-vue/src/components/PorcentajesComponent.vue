@@ -89,7 +89,7 @@ const filterByNameAdmin = () => {
                     <p>Busca por módulo: </p>
                     <input type="text" class="crear-editar-input" @input="filterByNameAdmin" v-model="nombreFiltrado" />
                 </div>
-                <div><button @click="handleClick"> + Crear</button></div>
+                <div><button @click="handleClick" class="crearBtn"> + Crear</button></div>
             </div>
 
             <table class="content-table" v-if="listaFiltrada.length > 0">
@@ -167,7 +167,7 @@ const filterByNameAdmin = () => {
         <h2>Historial de porcentajes</h2>
         <div class="table-container">
             <div class="crear crearP">
-                <div><button @click="handleClick"> + Crear</button></div>
+                <div><button @click="handleClick" class="crearBtn"> + Crear</button></div>
             </div>
 
             <table class="content-table" v-if="listaFiltradaProf.length > 0">
@@ -278,5 +278,13 @@ i {
 
 .table-container h2 {
     text-decoration: none;
+}
+
+.crearBtn{
+    transition: background-color 0.3s ease;
+}
+
+.crearBtn:hover{
+    background-color: #59c1ff;;
 }
 </style>

@@ -30,10 +30,11 @@ i {
     box-shadow: 8px 8px 8px #74777c;
     margin-left: 10em;
     margin-top: 2em;
-    transition: transform 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 
 .arrow-container:hover{
     transform: scale(1.05);
+    background-color: #59c1ff;;
 }
 </style>

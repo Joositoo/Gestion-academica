@@ -219,7 +219,7 @@ const generateExcel = (array) => {
                 </div>
                 <div class="botones">
                     <button class="excel" @click="generateExcel(calificacionesFiltradas)">Generar Excel</button>
-                    <button @click="handleClick"> + Crear</button>
+                    <button @click="handleClick" class="crearBtn"> + Crear</button>
                 </div>
             </div>
 
@@ -333,7 +333,7 @@ const generateExcel = (array) => {
                     </div>
                     <div class="botones">
                         <button class="excel" @click="generateExcel(calificacionesProfesor)">Generar Excel</button>
-                        <button @click="handleClick"> + Crear</button>
+                        <button @click="handleClick" class="crearBtn"> + Crear</button>
                     </div>
                 </div>
 
@@ -489,7 +489,19 @@ h2 {
     gap: 20px;
 }
 
+.excel{
+    transition: background-color 0.3s ease;
+}
+
 .excel:hover {
     background-color: #17d586;
+}
+
+.crearBtn{
+    transition: background-color 0.3s ease;
+}
+
+.crearBtn:hover{
+    background-color: #59c1ff;;
 }
 </style>

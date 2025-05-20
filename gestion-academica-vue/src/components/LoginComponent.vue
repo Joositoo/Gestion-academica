@@ -89,6 +89,7 @@ button{
 
 button{
     background-color: rgba(49, 142, 201, 0.8);
+    transition: background-color 0.3s ease;
 }
 
 button:hover{
