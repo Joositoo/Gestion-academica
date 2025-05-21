@@ -109,8 +109,8 @@ const generateExcel = async () => {
     const sumNotas = notaFinal.ra1 + notaFinal.ra2 + notaFinal.ra3 + notaFinal.ra4 + notaFinal.ra5 + notaFinal.ra6 + notaFinal.ra7 + notaFinal.ra8 + notaFinal.ra9;
 
     const data = [
-        ["ID", "Profesor", "Email del profesor", "Alumno", "Email del alumno", "Módulo"],
-        [calificaciones.id, calificaciones.nombreProfesor, calificaciones.emailProfesor, calificaciones.nombreAlumno, calificaciones.emailAlumno, calificaciones.modulo],
+        ["ID", "Alumno", "Email del alumno", "Módulo"],
+        [calificaciones.id, calificaciones.nombreAlumno, calificaciones.emailAlumno, calificaciones.modulo],
         [],
         ["RA", "Nota", "Porcentaje", "Nota Final"],
         ["RA1", calificaciones.ra1, porcentajes.ra1, notaFinal.ra1],

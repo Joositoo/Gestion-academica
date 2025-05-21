@@ -188,6 +188,10 @@ const generateExcel = (array) => {
         let notaFinal = (notaPonderada.ra1 + notaPonderada.ra2 + notaPonderada.ra3 + notaPonderada.ra4 + notaPonderada.ra5 + 
                         notaPonderada.ra6 + notaPonderada.ra7 + notaPonderada.ra8 + notaPonderada.ra9);
 
+        /*data.push([c.id, c.moduloDto.cicloDto.nombre, c.moduloDto.nombre, c.alumnoDto.nombre+ " " +c.alumnoDto.apellidos, c.alumnoDto.email, c.ra1+ " (" +notaPonderada.ra1+ ")", 
+                    c.ra2+ " (" +notaPonderada.ra2+ ")",c.ra3+ " (" +notaPonderada.ra3+ ")", c.ra4+ " (" +notaPonderada.ra4+ ")", c.ra5+ " (" +notaPonderada.ra5+ ")",
+                    c.ra6+ " (" +notaPonderada.ra6+ ")", c.ra7+ " (" +notaPonderada.ra7+ ")", c.ra8+ " (" +notaPonderada.ra8+ ")", c.ra9+ " (" +notaPonderada.ra9+ ")", notaFinal]);*/
+
         data.push([c.id, c.moduloDto.cicloDto.nombre, c.moduloDto.nombre, c.alumnoDto.nombre+ " " +c.alumnoDto.apellidos, c.alumnoDto.email, notaPonderada.ra1, 
                     notaPonderada.ra2, notaPonderada.ra3, notaPonderada.ra4, notaPonderada.ra5, notaPonderada.ra6, notaPonderada.ra7, notaPonderada.ra8, notaPonderada.ra9, notaFinal]);
     }
