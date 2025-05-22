@@ -234,7 +234,6 @@ const generateExcel = (array) => {
                         <th>ID</th>
                         <th>Ciclo</th>
                         <th>Módulo</th>
-                        <!--<th>Profesor</th>-->
                         <th>Alumno</th>
                         <th>RA 1</th>
                         <th>RA 2</th>
@@ -253,8 +252,6 @@ const generateExcel = (array) => {
                         <td>{{ calificacion.id }}</td>
                         <td>{{ calificacion.moduloDto.cicloDto.nombre }}</td>
                         <td>{{ calificacion.moduloDto.nombre }}</td>
-                        <!--<td>{{ calificacion.moduloDto.profesorDto.nombre }} {{
-                            calificacion.moduloDto.profesorDto.apellidos }}</td>-->
                         <td>{{ calificacion.alumnoDto.nombre }} {{ calificacion.alumnoDto.apellidos }}</td>
                         <td>{{ calificacion.ra1 }}</td>
                         <td>{{ calificacion.ra2 }}</td>
@@ -348,7 +345,6 @@ const generateExcel = (array) => {
                             <th>ID</th>
                             <th>Ciclo</th>
                             <th>Módulo</th>
-                            <!--<th>Profesor</th>-->
                             <th>Alumno</th>
                             <th>RA 1</th>
                             <th>RA 2</th>
@@ -367,8 +363,6 @@ const generateExcel = (array) => {
                             <td>{{ calificacion.id }}</td>
                             <td>{{ calificacion.moduloDto.cicloDto.nombre }}</td>
                             <td>{{ calificacion.moduloDto.nombre }}</td>
-                            <!--<td>{{ calificacion.moduloDto.profesorDto.nombre }} {{
-                            calificacion.moduloDto.profesorDto.apellidos }}</td>-->
                             <td>{{ calificacion.alumnoDto.nombre }} {{ calificacion.alumnoDto.apellidos }}</td>
                             <td>{{ calificacion.ra1 }}</td>
                             <td>{{ calificacion.ra2 }}</td>

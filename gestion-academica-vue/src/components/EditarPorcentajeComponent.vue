@@ -45,21 +45,6 @@ const porcentaje = reactive({
     ra8: "",
     ra9: "",
 })
-/*
-const handleSubmit = async () => {
-    let pVacio = document.getElementById("vacio");
-    let pSuma = document.getElementById("suma");
-    let pError500 = document.getElementById("error500");
-
-    if (!porcentaje.nombreModulo || !porcentaje.ra1 || !porcentaje.ra2 || !porcentaje.ra3 || !porcentaje.ra4 || !porcentaje.ra5 ||
-        !porcentaje.ra6 || !porcentaje.ra7 || !porcentaje.ra8 || !porcentaje.ra9) {
-        pVacio.style.display = "block";
-        return;
-    }
-
-    await porcentajeStore.updatePorcentaje(porcentaje, props.id);
-    router.push("/porcentajes");
-}*/
 
 const handleSubmit = async () => {
     let pVacio = document.getElementById("vacio");

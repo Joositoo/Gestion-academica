@@ -32,28 +32,6 @@ export const useMatriculaStore = defineStore("matricula", () => {
         }
     };
 
-    //ESTE METODO TIENE QUE ENVIAR UN FICHERO
-    /*const saveMatrícula = async (matricula) => {
-        try {
-            const response = await fetch("http://localhost:8080/matrículas", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(matricula),
-            });
-
-            if (!response.ok) {
-                throw new Error("Error al guardar la matrícula");
-            }
-
-            await getMatriculas();
-
-        } catch (error) {
-            console.error("Error al guardar la matrícula:", error);
-        }
-    };*/
-
     const saveMatricula = async (file) => {
         try {
             const formData = new FormData();

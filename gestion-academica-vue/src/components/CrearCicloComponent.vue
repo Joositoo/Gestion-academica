@@ -79,7 +79,6 @@ const handleSubmit = async () => {
 }
 
 .grid-item {
-    /*background-color: #b0c4de;*/
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -23,7 +23,6 @@ html, body {
   min-height: 100vh;
 }
 
-/* Asegúrate de que el contenido principal pueda crecer */
 #app > *:first-child {
   flex: 1;
 }

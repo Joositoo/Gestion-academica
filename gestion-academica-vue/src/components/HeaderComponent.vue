@@ -35,10 +35,6 @@ if (usuario.rol == "admin"){
 
 <style scoped>
 .header{
-    /*position: fixed;
-    top:0;
-    left: 0;
-    width: 100%;*/
     background-color: #a9d4ff;
     padding: 2em;
     display: flex;

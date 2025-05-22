@@ -307,7 +307,6 @@ const handleSubmit = async () => {
 
 .full-width {
     grid-column: 1 / -1;
-    /* Hace que ocupe las 3 columnas */
     text-align: right;
 }
 
