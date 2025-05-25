@@ -1,12 +1,14 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
+const url = "http://localhost:8080/";
+
 export const useModuloStore = defineStore("modulo", () =>{
     const modulos = ref([]);
 
     const getModulos = async () => {
         try {
-            const response = await fetch("http://localhost:8080/modulos");
+            const response = await fetch(url+ "modulos");
             if (!response.ok) {
                 throw new Error("Ha ocurrido un error");
             }
@@ -21,7 +23,7 @@ export const useModuloStore = defineStore("modulo", () =>{
 
     const getModuloById = async (id) => {
         try {
-            const response = await fetch(`http://localhost:8080/modulos/${id}`);
+            const response = await fetch(url+ `modulos/${id}`);
             if (!response.ok) {
                 throw new Error("Error al obtener el módulo");
             }
@@ -37,7 +39,7 @@ export const useModuloStore = defineStore("modulo", () =>{
             const formData = new FormData();
             formData.append("file", file)
 
-            const response = await fetch("http://localhost:8080/modulos", {
+            const response = await fetch(url+ "modulos", {
                 method: "POST",
                 body: formData,
             });
@@ -56,7 +58,7 @@ export const useModuloStore = defineStore("modulo", () =>{
 
     const updateModulo = async (modulo, id) => {
         try {
-            const response = await fetch(`http://localhost:8080/modulos/${id}`, {
+            const response = await fetch(url+ `modulos/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -78,7 +80,7 @@ export const useModuloStore = defineStore("modulo", () =>{
 
     const deleteModulo = async (id) => {
         try {
-            const response = await fetch(`http://localhost:8080/modulos/${id}`, {
+            const response = await fetch(url+ `modulos/${id}`, {
                 method: 'DELETE',
             });
     

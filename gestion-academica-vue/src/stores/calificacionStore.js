@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import { reactive } from "vue";
 
+const url = "http://localhost:8080/";
+
 export const useCalificacionStore = defineStore("calificacion", () => {
     const calificaciones = reactive([]);
 
@@ -11,7 +13,7 @@ export const useCalificacionStore = defineStore("calificacion", () => {
     }
 
     const getCalificaciones = async () => {
-        const API_URL = "http://localhost:8080/calificaciones";
+        const API_URL = url+ "calificaciones";
 
         const response = await fetch(API_URL, {
             method: "GET",
@@ -33,7 +35,7 @@ export const useCalificacionStore = defineStore("calificacion", () => {
 
     const getCalificacionById = async (id) => {
         try {
-            const response = await fetch(`http://localhost:8080/calificaciones/${id}`);
+            const response = await fetch(url+ `calificaciones/${id}`);
             if (!response.ok) {
                 throw new Error("Error al obtener la calificación");
             }
@@ -49,7 +51,7 @@ export const useCalificacionStore = defineStore("calificacion", () => {
             const formData = new FormData();
             formData.append("file", file)
 
-            const response = await fetch("http://localhost:8080/calificaciones", {
+            const response = await fetch(url+ "calificaciones", {
                 method: "POST",
                 body: formData,
             });
@@ -68,7 +70,7 @@ export const useCalificacionStore = defineStore("calificacion", () => {
 
     const updateCalificacion = async (calificacion, id) => {
         try {
-            const response = await fetch(`http://localhost:8080/calificaciones/${id}`, {
+            const response = await fetch(url+ `calificaciones/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -91,7 +93,7 @@ export const useCalificacionStore = defineStore("calificacion", () => {
 
     const deleteCalificacion = async (id) => {
         try {
-            const response = await fetch(`http://localhost:8080/calificaciones/${id}`, {
+            const response = await fetch(url+ `calificaciones/${id}`, {
                 method: 'DELETE',
             });
     

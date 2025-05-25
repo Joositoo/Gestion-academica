@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
+const url = "http://localhost:8080/";
+
 export const useProfesroStore = defineStore("profesor", () => {
     const profesores = ref([]);
 
@@ -21,7 +23,7 @@ export const useProfesroStore = defineStore("profesor", () => {
 
     const getProfesorById = async (id) => {
         try {
-            const response = await fetch(`http://localhost:8080/profesores/${id}`);
+            const response = await fetch(url+ `profesores/${id}`);
             if (!response.ok) {
                 throw new Error("Error al obtener el profesor");
             }
@@ -34,7 +36,7 @@ export const useProfesroStore = defineStore("profesor", () => {
 
     const saveProfesor = async (profesor) => {
         try {
-            const response = await fetch("http://localhost:8080/profesores", {
+            const response = await fetch(url+ "profesores", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -56,7 +58,7 @@ export const useProfesroStore = defineStore("profesor", () => {
 
     const updateProfesor = async (profesor, id) => {
         try {
-            const response = await fetch(`http://localhost:8080/profesores/${id}`, {
+            const response = await fetch(url+ `profesores/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -79,7 +81,7 @@ export const useProfesroStore = defineStore("profesor", () => {
 
     const deleteProfesor = async (id) => {
         try {
-            const response = await fetch(`http://localhost:8080/profesores/${id}`, {
+            const response = await fetch(url+ `profesores/${id}`, {
                 method: 'DELETE',
             });
     

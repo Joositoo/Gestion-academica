@@ -1,12 +1,15 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
+const url = "http://localhost:8080/";
+
+
 export const usePorcentajeStore = defineStore("porcentaje", () => {
     const porcentajes = ref([]);
 
     const getPorcentajes = async () => {
         try {
-            const response = await fetch("http://localhost:8080/porcentajes");
+            const response = await fetch(url+ "porcentajes");
             if (!response.ok) {
                 throw new Error("Ha ocurrido un error");
             }
@@ -21,7 +24,7 @@ export const usePorcentajeStore = defineStore("porcentaje", () => {
 
     const getPorcentajeById = async (id) => {
         try {
-            const response = await fetch(`http://localhost:8080/porcentajes/${id}`);
+            const response = await fetch(url+ `porcentajes/${id}`);
             if (!response.ok) {
                 throw new Error("Error al obtener el porcentaje");
             }
@@ -34,7 +37,7 @@ export const usePorcentajeStore = defineStore("porcentaje", () => {
 
     const savePorcentaje = async (porcentaje) => {
         try {
-            const response = await fetch("http://localhost:8080/porcentajes", {
+            const response = await fetch(url+ "porcentajes", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -56,7 +59,7 @@ export const usePorcentajeStore = defineStore("porcentaje", () => {
 
     const updatePorcentaje = async (porcentaje, id) => {
         try {
-            const response = await fetch(`http://localhost:8080/porcentajes/${id}`, {
+            const response = await fetch(url+ `porcentajes/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -79,7 +82,7 @@ export const usePorcentajeStore = defineStore("porcentaje", () => {
 
     const deletePorcentaje = async (id) => {
         try {
-            const response = await fetch(`http://localhost:8080/porcentajes/${id}`, {
+            const response = await fetch(url+ `porcentajes/${id}`, {
                 method: 'DELETE',
             });
     

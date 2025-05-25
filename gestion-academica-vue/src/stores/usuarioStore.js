@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import { reactive } from "vue";
 
+const url = "http://localhost:8080/";
+
 export const useUsuarioStore = defineStore("usuario", () => {
     const usuario = reactive(
         {
@@ -20,7 +22,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
     }
 
     const getUsuario = async (usuarioData) => {
-        const API_URL = "http://localhost:8080/auth/login";
+        const API_URL = url+ "auth/login";
 
         const response = await fetch(API_URL, {
             method: "POST",

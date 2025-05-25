@@ -1,12 +1,14 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
+const url = "http://localhost:8080/";
+
 export const useMatriculaStore = defineStore("matricula", () => {
     const matriculas = ref([]);
 
     const getMatriculas = async () => {
         try {
-            const response = await fetch("http://localhost:8080/matriculas");
+            const response = await fetch(url+ "matriculas");
             if (!response.ok) {
                 throw new Error("Ha ocurrido un error");
             }
@@ -21,7 +23,7 @@ export const useMatriculaStore = defineStore("matricula", () => {
 
     const getMatriculaById = async (id) => {
         try {
-            const response = await fetch(`http://localhost:8080/matriculas/${id}`);
+            const response = await fetch(url+ `matriculas/${id}`);
             if (!response.ok) {
                 throw new Error("Error al obtener la matrícula");
             }
@@ -37,7 +39,7 @@ export const useMatriculaStore = defineStore("matricula", () => {
             const formData = new FormData();
             formData.append("file", file)
 
-            const response = await fetch("http://localhost:8080/matriculas", {
+            const response = await fetch(url+ "matriculas", {
                 method: "POST",
                 body: formData,
             });
@@ -56,7 +58,7 @@ export const useMatriculaStore = defineStore("matricula", () => {
 
     const updateMatricula = async (matricula, id) => {
         try {
-            const response = await fetch(`http://localhost:8080/matriculas/${id}`, {
+            const response = await fetch(url+ `matriculas/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -78,7 +80,7 @@ export const useMatriculaStore = defineStore("matricula", () => {
 
     const deleteMatricula = async (id) => {
         try {
-            const response = await fetch(`http://localhost:8080/matriculas/${id}`, {
+            const response = await fetch(url+ `matriculas/${id}`, {
                 method: 'DELETE',
             });
     

@@ -1,12 +1,14 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
+const url = "http://localhost:8080/";
+
 export const useCicloStore = defineStore("ciclo", () => {
     const ciclos = ref([]);
 
     const getCiclos = async () => {
         try {
-            const response = await fetch("http://localhost:8080/ciclos");
+            const response = await fetch(url+ "ciclos");
             if (!response.ok) {
                 throw new Error("Ha ocurrido un error");
             }
@@ -21,7 +23,7 @@ export const useCicloStore = defineStore("ciclo", () => {
 
     const getCicloById = async (id) => {
         try {
-            const response = await fetch(`http://localhost:8080/ciclos/${id}`);
+            const response = await fetch(url+ `ciclos/${id}`);
             if (!response.ok) {
                 throw new Error("Error al obtener el ciclo");
             }
@@ -34,7 +36,7 @@ export const useCicloStore = defineStore("ciclo", () => {
 
     const saveCiclo = async (ciclo) => {
         try {
-            const response = await fetch("http://localhost:8080/ciclos", {
+            const response = await fetch(url+ "ciclos", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -56,7 +58,7 @@ export const useCicloStore = defineStore("ciclo", () => {
 
     const updateCiclo = async (ciclo, id) => {
         try {
-            const response = await fetch(`http://localhost:8080/ciclos/${id}`, {
+            const response = await fetch(url+ `ciclos/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -78,7 +80,7 @@ export const useCicloStore = defineStore("ciclo", () => {
 
     const deleteCiclo = async (id) => {
         try {
-            const response = await fetch(`http://localhost:8080/ciclos/${id}`, {
+            const response = await fetch(url+ `ciclos/${id}`, {
                 method: 'DELETE',
             });
     
