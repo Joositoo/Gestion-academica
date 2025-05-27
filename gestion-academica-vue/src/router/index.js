@@ -32,7 +32,6 @@ import DetalllesMatriculaPage from "../pages/DetallesMatriculaPage.vue";
 import DetallesPorcentajesPage from "../pages/DetallesPorcentajesPage.vue";
 import DetallesCalificacionesPage from "../pages/DetallesCalificacionesPage.vue";
 
-
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -44,159 +43,219 @@ const router = createRouter({
         {
             path: "/indexprof",
             name: "IndexProf",
-            component: IndexProfPage
+            component: IndexProfPage,
+            meta: { requiresAuth: true, rol: "profesor" }
         },
         {
             path: "/indexadmin",
             name: "IndexAdmin",
-            component: IndexAdminPage
+            component: IndexAdminPage,
+            meta: { requiresAuth: true, rol: "admin" }
         },
         {
             path: "/account",
             name: "Account",
-            component: AccountPage
+            component: AccountPage,
+            meta: { requiresAuth: true, rol: ["profesor", "admin"] }
         },
         {
             path: "/profesores",
             name: "Profesores",
-            component: ProfesoresPage
+            component: ProfesoresPage,
+            meta: { requiresAuth: true, rol: "admin" }
         },
         {
             path: "/profesores/:id",
             name: "UpdateProfesor",
-            component: EditarProfesorPage
+            component: EditarProfesorPage,
+            meta: { requiresAuth: true, rol: "admin" }
         },
         {
             path: "/profesores/details/:id",
             name: "ProfesorDetails",
-            component: DetallesProfesorPage
+            component: DetallesProfesorPage,
+            meta: { requiresAuth: true, rol: "admin" }
         },
         {
             path: "/profesores/crear",
             name: "CrearProfesor",
-            component: CrearProfesorPage
+            component: CrearProfesorPage,
+            meta: { requiresAuth: true, rol: "admin" }
         },
         {
             path: "/alumnos",
             name: "AlumnosPage",
-            component: AlumnosPage
+            component: AlumnosPage,
+            meta: { requiresAuth: true, rol: "admin" }
         },
         {
             path: "/alumnos/details/:id",
             name: "AlumnoDetails",
-            component: DetallesAlumnoPage
+            component: DetallesAlumnoPage,
+            meta: { requiresAuth: true, rol: "admin" }
         },
         {
             path: "/alumnos/:id",
             name: "updateAlumnos",
-            component: EditarAlumnoPage
+            component: EditarAlumnoPage,
+            meta: { requiresAuth: true, rol: "admin" }
         },
         {
             path: "/alumnos/crear",
             name: "CrearAlumno",
-            component: CrearAlumnoPage
+            component: CrearAlumnoPage,
+            meta: { requiresAuth: true, rol: "admin" }
         },
         {
             path: "/ciclos",
             name: "CiclosPage",
-            component: CiclosPage
+            component: CiclosPage,
+            meta: { requiresAuth: true, rol: "admin" }
         },
         {
             path: "/ciclos/details/:id",
             name: "CicloDetails",
-            component: DetallesCiclosPage
+            component: DetallesCiclosPage,
+            meta: { requiresAuth: true, rol: "admin" }
         },
         {
             path: "/ciclos/:id",
             name: "updateCiclos",
-            component: EditarCicloPage
+            component: EditarCicloPage,
+            meta: { requiresAuth: true, rol: "admin" }
         },
         {
             path: "/ciclos/crear",
             name: "CrearCiclo",
-            component: CrearCicloPage
+            component: CrearCicloPage,
+            meta: { requiresAuth: true, rol: "admin" }
         },
         {
             path: "/modulos",
             name: "ModulosPage",
-            component: ModulosPage
+            component: ModulosPage,
+            meta: { requiresAuth: true, rol: "admin" }
         },
         {
             path: "/modulos/details/:id",
             name: "ModuloDetails",
-            component: DetallesModuloPage
+            component: DetallesModuloPage,
+            meta: { requiresAuth: true, rol: "admin" }
         },
         {
             path: "/modulos/:id",
             name: "updateModulos",
-            component: EditarModuloPage
+            component: EditarModuloPage,
+            meta: { requiresAuth: true, rol: "admin" }
         },
         {
             path: "/modulos/crear",
             name: "CrearModulo",
-            component: CrearModuloPage
+            component: CrearModuloPage,
+            meta: { requiresAuth: true, rol: "admin" }
         },
         {
             path: "/matriculas",
             name: "MatriculasPage",
-            component: MatriculasPage
+            component: MatriculasPage,
+            meta: { requiresAuth: true, rol: "admin" }
         },
         {
             path: "/matriculas/details/:id",
             name: "MatriculaDetails",
-            component: DetalllesMatriculaPage
+            component: DetalllesMatriculaPage,
+            meta: { requiresAuth: true, rol: "admin" }
         },
         {
             path: "/matriculas/crear",
             name: "CrearMatricula",
-            component: CrearMatriculaPage
+            component: CrearMatriculaPage,
+            meta: { requiresAuth: true, rol: "admin" }
         },
         {
             path: "/matriculas/:id",
             name:"updaterMatriculas",
-            component: EditarMatriculaPage
+            component: EditarMatriculaPage,
+            meta: { requiresAuth: true, rol: "admin" }
         },
         {
             path: "/porcentajes",
             name: "PorcentajesPage",
-            component: PorcentajesPage
+            component: PorcentajesPage,
+            meta: { requiresAuth: true, rol: ["admin", "profesor"] }
         },
         {
             path: "/porcentajes/crear",
             name: "CrearPorcentaje",
-            component: CrearPorcentajePage
+            component: CrearPorcentajePage,
+            meta: { requiresAuth: true, rol: ["admin", "profesor"] }
         },
         {
             path: "/porcentajes/details/:id",
             name: "PorcentajeDetails",
-            component: DetallesPorcentajesPage
+            component: DetallesPorcentajesPage,
+            meta: { requiresAuth: true, rol: ["admin", "profesor"] }
         },
         {
             path: "/porcentajes/:id",
             name: "updatePorcentajes",
-            component: EditarPorcentajePage
+            component: EditarPorcentajePage,
+            meta: { requiresAuth: true, rol: ["admin", "profesor"] }
         },
         {
             path: "/calificaciones",
             name: "CalificacionesPage",
-            component: CalificacionesPage
+            component: CalificacionesPage,
+            meta: { requiresAuth: true, rol: ["admin", "profesor"] }
         },
         {
             path: "/calificaciones/crear",
             name: "CrearCalificacion",
-            component: CrearCalificacionPage
+            component: CrearCalificacionPage,
+            meta: { requiresAuth: true, rol: ["admin", "profesor"] }
         },
         {
             path: "/calificaciones/:id",
             name: "updateCalificaciones",
-            component: EditarCalificacionPage
+            component: EditarCalificacionPage,
+            meta: { requiresAuth: true, rol: ["admin", "profesor"] }
         },
         {
             path: "/calificaciones/details/:id",
             name: "CalificacionDetails",
-            component: DetallesCalificacionesPage
+            component: DetallesCalificacionesPage,
+            meta: { requiresAuth: true, rol: ["admin", "profesor"] }
         }
     ]
 })
+
+router.beforeEach((to, from, next) => {
+    const usuario = JSON.parse(sessionStorage.getItem("usuario"));
+
+    if (to.meta.requiresAuth && !usuario){
+        next({name: "Login"});
+    }
+
+    else if (to.meta.rol){
+        const roles = Array.isArray(to.meta.rol) ? to.meta.rol : [to.meta.rol];
+        if (usuario && roles.includes(usuario.rol)){
+            next();
+        }
+        else{
+            if (usuario && usuario.rol == "admin"){
+                next({ name: "IndexAdmin" });
+            }
+            else if (usuario && usuario.rol == "profesor"){
+                next({ name: "IndexProf" })
+            }
+            else{
+                next({ name: "Login" })
+            }
+        }
+    }
+    else{
+        next();
+    }
+});
 
 export default router; 

@@ -123,6 +123,7 @@ const handleSubmit = async () => {
                             <option value="admin">Admin</option>
                         </select>
                     </div>
+
                     <div class="grid-item">
                         <button type="submit" class="crear-editar-button">Registrar</button>
                     </div>
