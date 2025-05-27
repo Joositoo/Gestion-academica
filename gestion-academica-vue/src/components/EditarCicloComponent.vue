@@ -86,7 +86,7 @@ const handleSubmit = async () => {
 .grid-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(1, 150px);
+    grid-template-rows: repeat(1, auto);
     gap: 10px;
     padding: 10px;
 }

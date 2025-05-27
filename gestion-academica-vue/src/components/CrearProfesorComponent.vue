@@ -78,6 +78,22 @@ const handleSubmit = async () => {
         return;
     }
 }
+
+const handlePasswordVisualization = () => {
+    const seePasswordIcon = document.querySelector("#seePassword i");
+    const passwordInput = document.getElementById("passwordInput");
+
+    if (passwordInput.type == "password") {
+        passwordInput.type = "text";
+        seePasswordIcon.classList.remove("bi-eye-slash");
+        seePasswordIcon.classList.add("bi-eye");
+    }
+    else {
+        passwordInput.type = "password";
+        seePasswordIcon.classList.remove("bi-eye");
+        seePasswordIcon.classList.add("bi-eye-slash");
+    }
+}
 </script>
 
 <template>
@@ -113,8 +129,13 @@ const handleSubmit = async () => {
                         <label>Contraseña: </label>
                         <span class="error" style="display: none;" id="password">Contraseña con mínimo 5 caracteres
                             alfanuméricos</span>
-                        <input type="text" v-model="profesor.password" class="crear-editar-input" />
-
+                        <div class="password-wrapper">
+                            <input type="password" v-model="profesor.password" class="crear-editar-input"
+                                id="passwordInput" />
+                            <span id="seePassword" @click="handlePasswordVisualization">
+                                <i class="bi bi-eye-slash"></i>
+                            </span>
+                        </div>
                     </div>
                     <div class="grid-item">
                         <label>Rol: </label>
@@ -139,7 +160,7 @@ const handleSubmit = async () => {
 .grid-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, 150px);
+    grid-auto-rows: auto;
     gap: 10px;
     padding: 10px;
 }
@@ -161,7 +182,34 @@ h2 {
     font-size: 1.2em;
 }
 
-.card-container{
+.card-container {
     margin-top: 2.5em;
+}
+
+
+
+
+span i {
+    font-size: 25px !important;
+}
+
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 1em 1.5em;
+}
+
+.password-wrapper input {
+    flex: 1;
+    padding-right: 2.5em;
+}
+
+.password-wrapper span {
+    position: absolute;
+    right: 2em;
+    cursor: pointer;
+    color: #333;
+    font-size: 1.2em;
 }
 </style>

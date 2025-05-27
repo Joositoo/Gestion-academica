@@ -16,7 +16,8 @@ const fullPath = '/' + props.path;
 </template>
 
 <style scoped>
-i {
+.bi-arrow-left,
+.bi {
     font-size: 45px;
     color: black
 }
@@ -26,7 +27,7 @@ i {
     background-color: #a9d4ff;
     border: 1px solid black;
     border-radius: 10%;
-    padding: 10px;
+    padding: 20px;
     box-shadow: 8px 8px 8px #74777c;
     margin-left: 10em;
     margin-top: 2em;

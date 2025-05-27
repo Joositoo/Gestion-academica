@@ -97,6 +97,21 @@ const handleSubmit = async () => {
     }
 }
 
+const handlePasswordVisualization = () => {
+    const seePasswordIcon = document.querySelector("#seePassword i");
+    const passwordInput = document.getElementById("passwordInput");
+
+    if (passwordInput.type == "password") {
+        passwordInput.type = "text";
+        seePasswordIcon.classList.remove("bi-eye-slash");
+        seePasswordIcon.classList.add("bi-eye");
+    }
+    else {
+        passwordInput.type = "password";
+        seePasswordIcon.classList.remove("bi-eye");
+        seePasswordIcon.classList.add("bi-eye-slash");
+    }
+}
 </script>
 
 <template>
@@ -129,7 +144,13 @@ const handleSubmit = async () => {
                         <label>Contraseña nueva: </label>
                         <span class="error" style="display: none;" id="password">Contraseña con mínimo 5 caracteres
                             alfanuméricos</span>
-                        <input type="text" v-model="password" class="crear-editar-input" />
+                        <!--<input type="password" v-model="password" class="crear-editar-input" />-->
+                        <div class="password-wrapper">
+                            <input type="password" id="passwordInput" v-model="password" class="crear-editar-input" />
+                            <span id="seePassword" @click="handlePasswordVisualization">
+                                <i class="bi bi-eye-slash"></i>
+                            </span>
+                        </div>
                     </div>
                     <div class="grid-item">
                         <label>Rol: </label>
@@ -149,4 +170,24 @@ const handleSubmit = async () => {
     </div>
 </template>
 
-<style></style>
+<style scoped>
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 1em 1.5em;
+}
+
+.password-wrapper input {
+    flex: 1;
+    padding-right: 2.5em;
+}
+
+.password-wrapper span {
+    position: absolute;
+    right: 2em;
+    cursor: pointer;
+    color: #333;
+    font-size: 1.2em;
+}
+</style>
