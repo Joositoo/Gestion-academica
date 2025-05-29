@@ -23,7 +23,7 @@ export const useProfesroStore = defineStore("profesor", () => {
 
     const getProfesorById = async (id) => {
         try {
-            const response = await fetch(url+ `profesores/${id}`);
+            const response = await fetch(url + `profesores/${id}`);
             if (!response.ok) {
                 throw new Error("Error al obtener el profesor");
             }
@@ -33,15 +33,46 @@ export const useProfesroStore = defineStore("profesor", () => {
             console.error("Error al obtener el profesor:", error);
         }
     }
+    /*
+        const saveProfesor = async (profesor) => {
+            try {
+                const response = await fetch(url+ "profesores", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(profesor),
+                });
+    
+                if (!response.ok) {
+                    throw new Error("Error al guardar el profesor");
+                }
+    
+                await getProfesores();
+    
+            } catch (error) {
+                console.error("Error al guardar el profesor:", error);
+                throw error;
+            }
+        }*/
 
     const saveProfesor = async (profesor) => {
         try {
-            const response = await fetch(url+ "profesores", {
+            const formData = new FormData();
+            formData.append("nombre", profesor.nombre);
+            formData.append("apellidos", profesor.apellidos);
+            formData.append("email", profesor.email);
+            formData.append("password", profesor.password);
+            formData.append("rol", profesor.rol);
+
+            // Solo si hay imagen, la añadimos
+            if (profesor.img instanceof File) {
+                formData.append("imagen", profesor.img);
+            }
+
+            const response = await fetch(url + "profesores", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(profesor),
+                body: formData
             });
 
             if (!response.ok) {
@@ -54,43 +85,75 @@ export const useProfesroStore = defineStore("profesor", () => {
             console.error("Error al guardar el profesor:", error);
             throw error;
         }
-    }
-
+    };
+/*
     const updateProfesor = async (profesor, id) => {
         try {
-            const response = await fetch(url+ `profesores/${id}`, {
+            const response = await fetch(url + `profesores/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(profesor),
             });
-    
+
             if (!response.ok) {
                 throw new Error("Error al actualizar el profesor");
             }
-    
-            await getProfesores(); 
+
+            await getProfesores();
             console.log(`Profesor con ID ${profesor.id} actualizado correctamente.`);
-    
+
         } catch (error) {
             console.error("Error al actualizar el profesor:", error);
             throw error;
         }
-    };
+    };*/
+
+    const updateProfesor = async (profesor, id) => {
+    try {
+        const formData = new FormData();
+        formData.append("nombre", profesor.nombre);
+        formData.append("apellidos", profesor.apellidos);
+        formData.append("email", profesor.email);
+        formData.append("password", profesor.password);
+        formData.append("rol", profesor.rol);
+
+        if (profesor.img instanceof File) {
+            formData.append("imagen", profesor.img);
+        }
+
+        const response = await fetch(url + `profesores/${id}`, {
+            method: "PUT",
+            body: formData, // envías FormData
+            // NO pongas el header "Content-Type", lo maneja automáticamente fetch con FormData
+        });
+
+        if (!response.ok) {
+            throw new Error("Error al actualizar el profesor");
+        }
+
+        await getProfesores();
+        console.log(`Profesor con ID ${id} actualizado correctamente.`);
+
+    } catch (error) {
+        console.error("Error al actualizar el profesor:", error);
+        throw error;
+    }
+};
 
     const deleteProfesor = async (id) => {
         try {
-            const response = await fetch(url+ `profesores/${id}`, {
+            const response = await fetch(url + `profesores/${id}`, {
                 method: 'DELETE',
             });
-    
+
             if (!response.ok) {
                 throw new Error("Error al eliminar el profesor");
             }
 
             await getProfesores();
-    
+
             console.log(`Profesor con ID ${id} eliminado correctamente.`);
         } catch (error) {
             console.error("Error al eliminar el profesor:", error);

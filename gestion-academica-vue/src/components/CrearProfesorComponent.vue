@@ -14,8 +14,9 @@ let profesor = reactive({
     apellidos: "",
     email: "",
     password: "",
-    rol: ""
-})
+    rol: "",
+    img:  null
+});
 
 const handleSubmit = async () => {
     let pVacio = document.getElementById("vacio");
@@ -146,6 +147,11 @@ const handlePasswordVisualization = () => {
                     </div>
 
                     <div class="grid-item">
+                        <label>Foto de perfil: </label>
+                        <input type="file" @change="e => profesor.img = e.target.files[0]" class="crear-editar-input">
+                    </div>
+
+                    <div class="grid-item boton-centro">
                         <button type="submit" class="crear-editar-button">Registrar</button>
                     </div>
                 </div>
@@ -174,6 +180,12 @@ const handlePasswordVisualization = () => {
     border-radius: 8px;
 }
 
+.boton-centro {
+    grid-column: 1 / -1; 
+    display: flex;
+    justify-content: center;
+}
+
 h2 {
     margin: 1.5em 2.5em;
 }
@@ -185,9 +197,6 @@ h2 {
 .card-container {
     margin-top: 2.5em;
 }
-
-
-
 
 span i {
     font-size: 25px !important;

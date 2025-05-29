@@ -27,7 +27,8 @@ if (usuario.rol == "admin"){
             
         <div class="flex-item">
             <router-link to="/account">
-                <img src="../../iconoUsuario.png" class="iconoUsuario">
+                <img v-if="!usuario.img" src="../../iconoUsuario.png" class="iconoUsuario">
+                <img v-else :src="`data:image/png;base64,${usuario.img}`" class="iconoUsuario rounded">
             </router-link>
         </div>
     </div>
@@ -52,5 +53,9 @@ if (usuario.rol == "admin"){
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.rounded{
+    border-radius: 100%;
 }
 </style>

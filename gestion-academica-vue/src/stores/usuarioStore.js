@@ -11,7 +11,8 @@ export const useUsuarioStore = defineStore("usuario", () => {
             apellidos: "",
             email: "",
             password: "",
-            rol: ""
+            rol: "",
+            img: ""
         }
     );
 
@@ -44,6 +45,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
         usuario.email = data.email;
         usuario.password = data.password;
         usuario.rol = data.rol;
+        usuario.img = data.img || "";
 
         sessionStorage.setItem("usuario", JSON.stringify(usuario));
 

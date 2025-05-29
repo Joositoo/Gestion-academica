@@ -13,7 +13,8 @@ public class ProfesorMapper {
                 profesor.getApellidos(),
                 profesor.getEmail(),
                 profesor.getPassword(),
-                profesor.getRol());
+                profesor.getRol(),
+                profesor.getImg());
     }
 
     public Profesor getProfesorByDto(ProfesorDto profesorDto) {
@@ -23,6 +24,7 @@ public class ProfesorMapper {
         profesor.setEmail(profesorDto.getEmail());
         profesor.setPassword(profesorDto.getPassword());
         profesor.setRol(profesorDto.getRol());
+        profesor.setImg(profesorDto.getImg());
 
         return profesor;
     }

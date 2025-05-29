@@ -40,6 +40,10 @@ public class Profesor {
     @Column(name = "rol", nullable = false)
     private String rol;
 
+    @Lob
+    @Column(name = "img", columnDefinition = "LONGBLOB")
+    private byte[] img;
+
     @OneToMany(mappedBy = "idProfesor")
     private Set<Alumno> alumnos = new LinkedHashSet<>();
 
@@ -92,6 +96,14 @@ public class Profesor {
 
     public void setRol(String rol) {
         this.rol = rol;
+    }
+
+    public byte[] getImg() {
+        return img;
+    }
+
+    public void setImg(byte[] img) {
+        this.img = img;
     }
 
     public Set<Alumno> getAlumnos() {

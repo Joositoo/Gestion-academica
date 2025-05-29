@@ -75,6 +75,9 @@ public class ProfesorService {
             if (profesorDto.getRol() != null) {
                 profesor.setRol(profesorDto.getRol());
             }
+            if (profesorDto.getImg() != null && profesorDto.getImg().length > 0) {
+                profesor.setImg(profesorDto.getImg());
+            }
 
             profesoresRepository.save(profesor);
         } else {

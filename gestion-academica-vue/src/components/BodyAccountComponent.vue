@@ -19,7 +19,8 @@ const handleLogin = () => {
     <div class="card-container">
         <div class="card">
             <div class="item">
-                <img src="../../avatar.png">
+                <img v-if="!usuario.img" src="../../iconoUsuario.png" class="iconoUsuario">
+                <img v-else :src="`data:image/png;base64,${usuario.img}`" class="iconoUsuario rounded">
                 <p><b>Id: </b> {{ usuario.id }}</p>
             </div>
 

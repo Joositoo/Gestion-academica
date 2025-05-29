@@ -11,7 +11,8 @@ const profesor = reactive({
     nombre: '',
     apellidos: '',
     email: '',
-    rol: ''
+    rol: '',
+    img: ''
 })
 const profesorStore = useProfesroStore();
 
@@ -21,7 +22,11 @@ onMounted(async () => {
     profesor.nombre = data.nombre;
     profesor.apellidos = data.apellidos;
     profesor.email = data.email;
-    profesor.rol = data.rol
+    profesor.rol = data.rol;
+    profesor.img = data.img;
+
+    console.log(data);
+    
 });
 </script>
 
@@ -32,7 +37,8 @@ onMounted(async () => {
 
     <div class="card-container">
         <div class="card">
-            <img src="../../avatar.png">
+            <img v-if="!profesor.img" src="../../iconoUsuario.png" class="iconoUsuario">
+            <img v-else :src="`data:image/png;base64,${profesor.img}`" class="iconoUsuario rounded">
 
             <div class="grid">                
                 <div>

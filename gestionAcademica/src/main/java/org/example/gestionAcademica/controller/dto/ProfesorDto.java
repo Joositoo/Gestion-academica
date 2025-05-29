@@ -39,13 +39,16 @@ public class ProfesorDto {
     @Pattern(regexp = "^(admin|profesor)$", message = "El rol debe ser 'Admin' o 'Profesor'")
     private String rol;
 
-    public ProfesorDto(Integer id, String nombre, String apellidos, String email, String password, String rol) {
+    private byte[] img;
+
+    public ProfesorDto(Integer id, String nombre, String apellidos, String email, String password, String rol, byte[] img) {
         this.id = id;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.email = email;
         this.password = password;
         this.rol = rol;
+        this.img = img;
     }
 
     public ProfesorDto(String nombre, String apellidos, String email, String password, String rol) {
@@ -109,5 +112,13 @@ public class ProfesorDto {
 
     public void setRol(String rol) {
         this.rol = rol;
+    }
+
+    public byte[] getImg() {
+        return img;
+    }
+
+    public void setImg(byte[] img) {
+        this.img = img;
     }
 }

@@ -18,7 +18,8 @@ const profesor = reactive({
     apellidos: '',
     email: '',
     password: '',
-    rol: ''
+    rol: '',
+    img: null
 });
 const profesorStore = useProfesroStore();
 const router = useRouter();
@@ -159,7 +160,13 @@ const handlePasswordVisualization = () => {
                             <option value="admin">Admin</option>
                         </select>
                     </div>
+
                     <div class="grid-item">
+                        <label>Foto de perfil: </label>
+                        <input type="file" @change="e => profesor.img = e.target.files[0]" class="crear-editar-input">
+                    </div>
+
+                    <div class="grid-item boton-centro">
                         <button type="submit" class="crear-editar-button">Modificar</button>
                     </div>
                 </div>
@@ -189,5 +196,11 @@ const handlePasswordVisualization = () => {
     cursor: pointer;
     color: #333;
     font-size: 1.2em;
+}
+
+.boton-centro {
+    grid-column: 1 / -1; 
+    display: flex;
+    justify-content: center;
 }
 </style>
