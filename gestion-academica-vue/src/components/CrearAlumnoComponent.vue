@@ -70,7 +70,7 @@ const generateCSV = () => {
                     <p>Asegúrate de que el archivo csv contenga la información en este orden: </p>
                     <hr>
                     <img src="../../registroAlumnos.png">
-                    <p><button class="crear-editar-input excel" @click="generateCSV">Generar CSV</button></p>
+                    <p><button class="crear-editar-input excel" @click="generateCSV">Generar plantilla CSV</button></p>
                 </div>
                 <div>
                     <form @submit.prevent="handleSubmit">

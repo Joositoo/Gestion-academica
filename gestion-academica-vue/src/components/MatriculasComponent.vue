@@ -13,24 +13,28 @@ let listaMatriculasOriginal = ref([]);
 let listaFiltrada = ref([]);
 let listaCiclos = ref([]);
 let matriculaId = ref(0);
-let matricula = ref({});
+let nombreMatricula = ref("");
+let cicloMatricula = ref("");
+let cicloSeleccionado = ref("0");
 let nombreFiltrado = ref("");
 
 onMounted(async () => {
     listaMatriculas.value = await matriculaStore.getMatriculas();
     listaMatriculasOriginal.value = listaMatriculas.value;
     listaCiclos.value = await cicloStore.getCiclos();
-    listaFiltrada.value = listaMatriculas.value;
-});
+    listaFiltrada.value = listaMatriculas.value;    
+    listaFiltrada.value.sort((a, b) => {
+        const cicloA = a.cicloDto.nombre.toLowerCase();
+        const cicloB = b.cicloDto.nombre.toLowerCase();
+        const nombreA = a.alumnoDto.nombre.toLowerCase();
+        const nombreB = b.alumnoDto.nombre.toLowerCase();
 
-const handleFilter = (e) => {
-    if (e.target.value == 0) {
-        listaFiltrada.value = listaMatriculas.value;
-    }
-    else {
-        listaFiltrada.value = listaMatriculas.value.filter(m => m.cicloDto.nombre == e.target.value);
-    }    
-}
+        if (cicloA < cicloB) return -1;
+        if (cicloA > cicloB) return 1;
+
+        return nombreA.localeCompare(nombreB);
+    });
+});
 
 const handleClick = () => {
     router.push("/matriculas/crear");
@@ -38,6 +42,8 @@ const handleClick = () => {
 
 const openModal = async (m) => {
     matriculaId.value = m.id;
+    nombreMatricula.value = m.alumnoDto.nombre + " " + m.alumnoDto.apellidos;
+    cicloMatricula.value = m.cicloDto.nombre;
 }
 
 const handleEdit = (m) => {
@@ -54,21 +60,38 @@ const handleDelete = async () => {
 }
 
 const filterByName = () => {
-    const filtro = nombreFiltrado.value.toLowerCase();
-    listaFiltrada.value = listaMatriculasOriginal.value.filter((m) =>
-        m.alumnoDto.nombre.toLowerCase().includes(filtro)
-    );
+    filtrarMatriculas();
 }
+
+const handleFilter = (e) => {
+    filtrarMatriculas();    
+}
+
+const quitarTildes = (texto) => {
+    return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+};
+
+const filtrarMatriculas = () => {
+    const filtroNombre = quitarTildes(nombreFiltrado.value.toLowerCase());
+    const filtroCiclo = cicloSeleccionado.value;
+
+    listaFiltrada.value = listaMatriculasOriginal.value.filter((m) => {
+        const nombreAlumno = quitarTildes(m.alumnoDto.nombre.toLowerCase());
+        const coincideNombre = nombreAlumno.includes(filtroNombre);
+        const coincideCiclo = filtroCiclo === "0" || m.cicloDto.nombre === filtroCiclo;
+        return coincideNombre && coincideCiclo;
+    });
+};
 
 </script>
 
 <template>
-    <h2>Historial de matrículas: </h2>
+    <h2>Listado de matrículas: </h2>
     <div class="table-container">
         <div class="crear">
             <div>
                 <p>Filtrar por ciclo: </p>
-                <select @change="handleFilter">
+                <select @change="handleFilter" v-model="cicloSeleccionado">
                     <option value="0">No filtrar</option>
                     <option v-for="ciclo in listaCiclos" :value="ciclo.nombre">{{ ciclo.nombre }}</option>
                 </select>
@@ -122,7 +145,7 @@ const filterByName = () => {
                 </div>
 
                 <div class="modal-body">
-                    ¿Estás seguro de eliminar la matrícula con ID {{ matriculaId }}?
+                    ¿Estás seguro de eliminar la matrícula de {{ nombreMatricula }} en {{ cicloMatricula }}?
                 </div>
 
                 <div class="modal-footer">

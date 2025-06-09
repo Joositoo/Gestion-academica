@@ -145,7 +145,6 @@ const handlePasswordVisualization = () => {
                         <label>Contraseña nueva: </label>
                         <span class="error" style="display: none;" id="password">Contraseña con mínimo 5 caracteres
                             alfanuméricos</span>
-                        <!--<input type="password" v-model="password" class="crear-editar-input" />-->
                         <div class="password-wrapper">
                             <input type="password" id="passwordInput" v-model="password" class="crear-editar-input" />
                             <span id="seePassword" @click="handlePasswordVisualization">

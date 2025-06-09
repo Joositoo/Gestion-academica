@@ -33,29 +33,7 @@ export const useProfesroStore = defineStore("profesor", () => {
             console.error("Error al obtener el profesor:", error);
         }
     }
-    /*
-        const saveProfesor = async (profesor) => {
-            try {
-                const response = await fetch(url+ "profesores", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(profesor),
-                });
     
-                if (!response.ok) {
-                    throw new Error("Error al guardar el profesor");
-                }
-    
-                await getProfesores();
-    
-            } catch (error) {
-                console.error("Error al guardar el profesor:", error);
-                throw error;
-            }
-        }*/
-
     const saveProfesor = async (profesor) => {
         try {
             const formData = new FormData();
@@ -86,29 +64,6 @@ export const useProfesroStore = defineStore("profesor", () => {
             throw error;
         }
     };
-/*
-    const updateProfesor = async (profesor, id) => {
-        try {
-            const response = await fetch(url + `profesores/${id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(profesor),
-            });
-
-            if (!response.ok) {
-                throw new Error("Error al actualizar el profesor");
-            }
-
-            await getProfesores();
-            console.log(`Profesor con ID ${profesor.id} actualizado correctamente.`);
-
-        } catch (error) {
-            console.error("Error al actualizar el profesor:", error);
-            throw error;
-        }
-    };*/
 
     const updateProfesor = async (profesor, id) => {
     try {
@@ -125,8 +80,7 @@ export const useProfesroStore = defineStore("profesor", () => {
 
         const response = await fetch(url + `profesores/${id}`, {
             method: "PUT",
-            body: formData, // envías FormData
-            // NO pongas el header "Content-Type", lo maneja automáticamente fetch con FormData
+            body: formData, 
         });
 
         if (!response.ok) {

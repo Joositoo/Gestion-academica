@@ -14,12 +14,26 @@ let listaAlumnosOriginal = ref([]);
 let listaFiltrada = ref([]);
 let listaProfesores = ref([]);
 let nombreFiltrado = ref("");
+let tutorSeleccionado = ref("0");
 
 onMounted(async () => {
     listaAlumnos.value = await alumnoStore.getAlumnos();
     listaAlumnosOriginal.value = listaAlumnos.value;
     listaProfesores.value = await profesorStore.getProfesores();
     listaFiltrada.value = listaAlumnos.value;
+    listaFiltrada.value.sort((a, b) => {
+        const nombreA = a.nombre.toLowerCase();
+        const nombreB = b.nombre.toLowerCase();
+        if (nombreA < nombreB) return -1;
+        if (nombreA > nombreB) return 1;
+
+        const apellidosA = a.apellidos.toLowerCase();
+        const apellidosB = b.apellidos.toLowerCase();
+        if (apellidosA < apellidosB) return -1;
+        if (apellidosA > apellidosB) return 1;
+
+        return 0;
+    })
 });
 
 const handleClick = () => {
@@ -46,29 +60,39 @@ const handleDelete = async () => {
 }
 
 const handleFilter = (e) => {
-    if (e.target.value == 0) {
-        listaFiltrada.value = listaAlumnos.value;
-    }
-    else {
-        listaFiltrada.value = listaAlumnos.value.filter(a => a.profesorDto.email == e.target.value);
-    }
+    filtrarAlumnos();
 }
 
 const filterByName = () => {
-    const filtro = nombreFiltrado.value.toLowerCase();
-    listaFiltrada.value = listaAlumnosOriginal.value.filter((al) =>
-        al.nombre.toLowerCase().includes(filtro)
-    );
+    filtrarAlumnos();
 }
+
+const quitarTildes = (texto) => {
+    return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+};
+
+const filtrarAlumnos = () => {
+    const filtroNombre = quitarTildes(nombreFiltrado.value.toLowerCase());
+    const filtroTutor = tutorSeleccionado.value;
+
+    listaFiltrada.value = listaAlumnosOriginal.value.filter((al) => {
+        const nombreSinTildes = quitarTildes(al.nombre.toLowerCase());
+        const coincideNombre = nombreSinTildes.includes(filtroNombre);
+
+        const coincideTutor = filtroTutor === "0" || al.profesorDto.email === filtroTutor;
+
+        return coincideNombre && coincideTutor;
+    });
+};
 </script>
 
 <template>
-    <h2>Historial de alumnos: </h2>
+    <h2>Listado de alumnos: </h2>
     <div class="table-container">
         <div class="crear">
             <div>
                 <p>Filtrar por tutor: </p>
-                <select @change="handleFilter">
+                <select @change="handleFilter" v-model="tutorSeleccionado">
                     <option value="0">No filtrar</option>
                     <option v-for="profesor in listaProfesores" :value="profesor.email">{{ profesor.nombre }} {{ profesor.apellidos }}</option>
                 </select>

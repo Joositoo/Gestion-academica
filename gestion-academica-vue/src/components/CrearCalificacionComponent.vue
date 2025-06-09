@@ -43,7 +43,7 @@ const handleSubmit = async () => {
 }
 
 const generateCSV = () => {
-    const encabezado = ["nombreModulo", "emailAlumno", "ra1", "ra2", "ra3", "ra4", "ra5", "ra6", "ra7", "ra8", "ra9"];
+    const encabezado = ["nombreModulo", "emailAlumno", "descripcionRa", "nota"];
     const contenidoCSV = encabezado.join(",")+ "\n";
 
     const blob = new Blob([contenidoCSV], {type: "text/csv;charset=utf-8"});
@@ -70,7 +70,7 @@ const generateCSV = () => {
                     <p>Asegúrate de que el archivo csv contenga la información en este orden: </p>
                     <hr>
                     <img src="../../registroCalificaciones.png">
-                    <p><button class="crear-editar-input excel" @click="generateCSV">Generar CSV</button></p>
+                    <p><button class="crear-editar-input excel" @click="generateCSV">Generar plantilla CSV</button></p>
                 </div>
                 <div>
                     <form @submit.prevent="handleSubmit">
@@ -82,7 +82,7 @@ const generateCSV = () => {
             </div>
             <p class="error" id="vacio" style="display: none;">Seleccione un archivo, por favor</p>
             <p class="error" id="wrongFile" style="display: none;">El archivo no tiene extensión .csv</p>
-            <p class="error" id="error500" style="display: none;">El archivo no tiene todas las columnas y/o no existe el nombre del módulo ni el email del alumno</p>
+            <p class="error" id="error500" style="display: none;">Asegúrate de que el archivo tenga todas las columnas, rellenes todos los datos correctamente, el alumno esté matriculado y no dupliques notas.</p>
         </div>
     </div>
 </template>

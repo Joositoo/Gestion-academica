@@ -17,7 +17,7 @@ const ciclosStore = useCicloStore();
 const usuarioStore = useUsuarioStore();
 const router = useRouter();
 const nombreFiltrado = ref("");
-
+const cicloSeleccionado = ref("0");
 
 const usuario = usuarioStore.usuario;
 const isAdmin = ref(false);
@@ -29,12 +29,34 @@ onMounted(async () => {
     listaPorcentajes.value = await porcentajesStore.getPorcentajes();
     listaPorcentajesOriginal.value = listaPorcentajes.value;
     listaFiltrada.value = await porcentajesStore.getPorcentajes();
-    listaFiltradaProf.value = listaFiltrada.value.filter(p => p.moduloDto.profesorDto.id == usuario.id);
+    listaFiltrada.value.sort((a, b) => {
+        const cicloA = a.modulo.cicloDto.nombre.toLowerCase();
+        const cicloB = b.modulo.cicloDto.nombre.toLowerCase();
+        const moduloA = a.modulo.nombre.toLowerCase();
+        const moduloB = b.modulo.nombre.toLowerCase();
+
+        if (cicloA < cicloB) return -1;
+        if (cicloA > cicloB) return 1;
+
+        return moduloA.localeCompare(moduloB);
+    });
+    listaFiltradaProf.value = listaFiltrada.value.filter(p => p.modulo.profesorDto.id == usuario.id);
+    listaFiltradaProf.value.sort((a, b) => {
+        const cicloA = a.modulo.cicloDto.nombre.toLowerCase();
+        const cicloB = b.modulo.cicloDto.nombre.toLowerCase();
+        const moduloA = a.modulo.nombre.toLowerCase();
+        const moduloB = b.modulo.nombre.toLowerCase();
+
+        if (cicloA < cicloB) return -1;
+        if (cicloA > cicloB) return 1;
+
+        return moduloA.localeCompare(moduloB);
+    });
     listaCiclos.value = await ciclosStore.getCiclos();
 });
 
 const openModal = async (p) => {
-    porcentaje.nombre = p.moduloDto.nombre;
+    porcentaje.descripcion = p.descripcion;
     porcentajeId.value = p.id;
 }
 
@@ -43,21 +65,12 @@ const handleDelete = async () => {
     window.location.reload();
 }
 
-const handleFilter = (e) => {
-    if (e.target.value == 0) {
-        listaFiltrada.value = listaPorcentajes.value;
-    }
-    else {
-        listaFiltrada.value = listaPorcentajes.value.filter(p => p.moduloDto.cicloDto.nombre == e.target.value);
-    }
-}
-
 const handleDetails = (p) => {
-    router.push(`/porcentajes/details/${p.moduloDto.id}`);
+    router.push(`/porcentajes/details/${p.id}`);
 }
 
 const handleEdit = (p) => {
-    router.push(`/porcentajes/${p.moduloDto.id}`);
+    router.push(`/porcentajes/${p.id}`);
 }
 
 const handleClick = () => {
@@ -65,22 +78,33 @@ const handleClick = () => {
 }
 
 const filterByNameAdmin = () => {
-    const filtro = nombreFiltrado.value.toLowerCase();
-    listaFiltrada.value = listaPorcentajesOriginal.value.filter((p) =>
-        p.moduloDto.nombre.toLowerCase().includes(filtro)
-    );
-
+    filtrarPorcentajes();
 }
+
+const handleFilter = (e) => {
+    filtrarPorcentajes();
+}
+
+const filtrarPorcentajes = () => {
+    const filtroNombre = nombreFiltrado.value.toLowerCase();
+    const filtroCiclo = cicloSeleccionado.value;
+
+    listaFiltrada.value = listaPorcentajesOriginal.value.filter((p) => {
+        const coincideNombre = p.modulo.nombre.toLowerCase().includes(filtroNombre);
+        const coincideCiclo = filtroCiclo === "0" || p.modulo.cicloDto.nombre === filtroCiclo;
+        return coincideNombre && coincideCiclo;
+    });
+};
 </script>
 
 <template>
     <div v-if="isAdmin">
-        <h2>Historial de porcentajes</h2>
+        <h2>Listado de porcentajes</h2>
         <div class="table-container">
             <div class="crear">
                 <div>
                     <p>Filtrar por ciclo: </p>
-                    <select @change="handleFilter">
+                    <select @change="handleFilter" v-model="cicloSeleccionado">
                         <option value="0">No filtrar</option>
                         <option v-for="ciclo in listaCiclos" :value="ciclo.nombre">{{ ciclo.nombre }}</option>
                     </select>
@@ -97,33 +121,24 @@ const filterByNameAdmin = () => {
                     <tr>
                         <th>ID</th>
                         <th>Ciclo</th>
+                        <th>Profesor</th>
                         <th>Módulo</th>
-                        <th>RA 1</th>
-                        <th>RA 2</th>
-                        <th>RA 3</th>
-                        <th>RA 4</th>
-                        <th>RA 5</th>
-                        <th>RA 6</th>
-                        <th>RA 7</th>
-                        <th>RA 8</th>
-                        <th>RA 9</th>
+                        <th>Descripción</th>
+                        <th>Nombre</th>
+                        <th>Porcentaje</th>
                         <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="porcentaje in listaFiltrada" :key="porcentaje.id">
                         <td>{{ porcentaje.id }}</td>
-                        <td>{{ porcentaje.moduloDto.cicloDto.nombre }}</td>
-                        <td> {{ porcentaje.moduloDto.nombre }}</td>
-                        <td>{{ porcentaje.ra1 }}</td>
-                        <td>{{ porcentaje.ra2 }}</td>
-                        <td>{{ porcentaje.ra3 }}</td>
-                        <td>{{ porcentaje.ra4 }}</td>
-                        <td>{{ porcentaje.ra5 }}</td>
-                        <td>{{ porcentaje.ra6 }}</td>
-                        <td>{{ porcentaje.ra7 }}</td>
-                        <td>{{ porcentaje.ra8 }}</td>
-                        <td>{{ porcentaje.ra9 }}</td>
+                        <td>{{ porcentaje.modulo.cicloDto.nombre }}</td>
+                        <td>{{ porcentaje.modulo.profesorDto.nombre }} {{ porcentaje.modulo.profesorDto.apellidos }}
+                        </td>
+                        <td>{{ porcentaje.modulo.nombre }}</td>
+                        <td>{{ porcentaje.descripcion }}</td>
+                        <td>{{ porcentaje.nombre }}</td>
+                        <td>{{ porcentaje.porcentaje }}%</td>
                         <td><i class="bi bi-card-list" @click="handleDetails(porcentaje)"></i>
                             |
                             <i class="bi bi-pencil" @click="handleEdit(porcentaje)"></i>
@@ -149,7 +164,7 @@ const filterByNameAdmin = () => {
                     </div>
 
                     <div class="modal-body">
-                        ¿Estás seguro de eliminar los porcentajes de {{ porcentaje.nombre }}?
+                        ¿Estás seguro de eliminar el porcentaje de {{ porcentaje.descripcion }}?
                     </div>
 
                     <div class="modal-footer">
@@ -175,33 +190,24 @@ const filterByNameAdmin = () => {
                     <tr>
                         <th>ID</th>
                         <th>Ciclo</th>
+                        <th>Profesor</th>
                         <th>Módulo</th>
-                        <th>RA 1</th>
-                        <th>RA 2</th>
-                        <th>RA 3</th>
-                        <th>RA 4</th>
-                        <th>RA 5</th>
-                        <th>RA 6</th>
-                        <th>RA 7</th>
-                        <th>RA 8</th>
-                        <th>RA 9</th>
+                        <th>Descripción</th>
+                        <th>Nombre</th>
+                        <th>Porcentaje</th>
                         <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="porcentaje in listaFiltradaProf" :key="porcentaje.id">
                         <td>{{ porcentaje.id }}</td>
-                        <td>{{ porcentaje.moduloDto.cicloDto.nombre }}</td>
-                        <td> {{ porcentaje.moduloDto.nombre }}</td>
-                        <td>{{ porcentaje.ra1 }}</td>
-                        <td>{{ porcentaje.ra2 }}</td>
-                        <td>{{ porcentaje.ra3 }}</td>
-                        <td>{{ porcentaje.ra4 }}</td>
-                        <td>{{ porcentaje.ra5 }}</td>
-                        <td>{{ porcentaje.ra6 }}</td>
-                        <td>{{ porcentaje.ra7 }}</td>
-                        <td>{{ porcentaje.ra8 }}</td>
-                        <td>{{ porcentaje.ra9 }}</td>
+                        <td>{{ porcentaje.modulo.cicloDto.nombre }}</td>
+                        <td>{{ porcentaje.modulo.profesorDto.nombre }} {{ porcentaje.modulo.profesorDto.apellidos }}
+                        </td>
+                        <td>{{ porcentaje.modulo.nombre }}</td>
+                        <td>{{ porcentaje.descripcion }}</td>
+                        <td>{{ porcentaje.nombre }}</td>
+                        <td>{{ porcentaje.porcentaje }}%</td>
                         <td><i class="bi bi-card-list" @click="handleDetails(porcentaje)"></i>
                             |
                             <i class="bi bi-pencil" @click="handleEdit(porcentaje)"></i>
@@ -227,7 +233,7 @@ const filterByNameAdmin = () => {
                     </div>
 
                     <div class="modal-body">
-                        ¿Estás seguro de eliminar los porcentajes de {{ porcentaje.nombre }}?
+                        ¿Estás seguro de eliminar el porcentaje de {{ porcentaje.descripcion }}?
                     </div>
 
                     <div class="modal-footer">
@@ -280,11 +286,12 @@ i {
     text-decoration: none;
 }
 
-.crearBtn{
+.crearBtn {
     transition: background-color 0.3s ease;
 }
 
-.crearBtn:hover{
-    background-color: #59c1ff;;
+.crearBtn:hover {
+    background-color: #59c1ff;
+    ;
 }
 </style>

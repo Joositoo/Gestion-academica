@@ -23,6 +23,7 @@ const calificacionesProfesorOriginal = ref([]);
 const listaPorcentajes = ref([]);
 const nombreFiltrado = ref("");
 
+let moduloSeleccionado = ref("0");
 let calificacionesFiltradas = ref([]);
 let hasCalificaciones = ref(false);
 
@@ -43,9 +44,34 @@ onMounted(async () => {
 
     calificaciones.value = data;
     calificacionesFiltradas.value = calificaciones.value;
+    calificacionesFiltradas.value = calificaciones.value.sort((a, b) => {
+        const moduloA = a.moduloDto.nombre.toLowerCase();
+        const moduloB = b.moduloDto.nombre.toLowerCase();
+
+        if (moduloA < moduloB) return -1;
+        if (moduloA > moduloB) return 1;
+
+        const alumnoA = a.alumnoDto.nombre.toLowerCase();
+        const alumnoB = b.alumnoDto.nombre.toLowerCase();
+
+        return alumnoA.localeCompare(alumnoB);
+    });
     listaCalificacionesOriginal.value = calificacionesFiltradas.value;
 
-    calificacionesProfesor.value = calificaciones.value.filter(c => c.moduloDto.profesorDto.id == usuario.id);
+    calificacionesProfesor.value = calificaciones.value
+    .filter(c => c.moduloDto.profesorDto.id == usuario.id)
+    .sort((a, b) => {
+        const moduloA = a.moduloDto.nombre.toLowerCase();
+        const moduloB = b.moduloDto.nombre.toLowerCase();
+
+        if (moduloA < moduloB) return -1;
+        if (moduloA > moduloB) return 1;
+
+        const alumnoA = a.alumnoDto.nombre.toLowerCase();
+        const alumnoB = b.alumnoDto.nombre.toLowerCase();
+
+        return alumnoA.localeCompare(alumnoB);
+    });
     if (calificacionesProfesor.value.length > 0) {
         hasCalificaciones.value = true;
     }
@@ -57,27 +83,9 @@ if (usuario.rol == "admin") {
     isAdmin.value = true;
 }
 
-const handleFilter = async (e) => {
-    if (e.target.value == 0) {
-        calificacionesFiltradas.value = calificaciones.value;
-    }
-    else {
-        calificacionesFiltradas.value = calificaciones.value.filter(c => c.moduloDto.nombre == e.target.value);
-    }
-}
-
-const handleFilterProf = async (e) => {
-    if (e.target.value == 0) {
-        calificacionesProfesor.value = calificaciones.value.filter(c => c.moduloDto.profesorDto.id == usuario.id);
-    }
-    else {
-        calificacionesProfesor.value = calificaciones.value.filter(c => c.moduloDto.nombre == e.target.value);
-    }
-}
-
 const openModal = async (c) => {
     calificacionId.value = c.id;
-
+    calificacion.descripcion = c.porcentajesRaDto.descripcion;
     calificacion.nombre = c.alumnoDto.nombre;
     calificacion.apellidos = c.alumnoDto.apellidos;
     calificacion.modulo = c.moduloDto.nombre
@@ -101,10 +109,29 @@ const handleClick = () => {
 }
 
 const filterByNameAdmin = () => {
-    const filtro = nombreFiltrado.value
+    filtrarCalificaciones();
+};
+
+const handleFilter = async (e) => {
+    filtrarCalificaciones();
+}
+
+const filterByNameProf = () => {
+    filtrarCalificacionesProfesor();
+}
+
+const handleFilterProf = async (e) => {
+    moduloSeleccionado.value = e.target.value;
+    filtrarCalificacionesProfesor();
+}
+
+const filtrarCalificaciones = () => {
+    const filtroNombre = nombreFiltrado.value
         .toLowerCase()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "");
+
+    const filtroModulo = moduloSeleccionado.value;
 
     calificacionesFiltradas.value = listaCalificacionesOriginal.value.filter((c) => {
         const nombreAlumno = c.alumnoDto.nombre
@@ -112,15 +139,20 @@ const filterByNameAdmin = () => {
             .normalize("NFD")
             .replace(/[\u0300-\u036f]/g, "");
 
-        return nombreAlumno.includes(filtro);
+        const coincideNombre = nombreAlumno.includes(filtroNombre);
+        const coincideModulo = filtroModulo === "0" || c.moduloDto.nombre === filtroModulo;
+
+        return coincideNombre && coincideModulo;
     });
 };
 
-const filterByNameProf = () => {
-    const filtro = nombreFiltrado.value
+const filtrarCalificacionesProfesor = () => {
+    const filtroNombre = nombreFiltrado.value
         .toLowerCase()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "");
+
+    const filtroModulo = moduloSeleccionado.value;
 
     calificacionesProfesor.value = calificacionesProfesorOriginal.value.filter((c) => {
         const nombreAlumno = c.alumnoDto.nombre
@@ -128,91 +160,41 @@ const filterByNameProf = () => {
             .normalize("NFD")
             .replace(/[\u0300-\u036f]/g, "");
 
-        return nombreAlumno.includes(filtro);
+        const coincideNombre = nombreAlumno.includes(filtroNombre);
+        const coincideModulo = filtroModulo === "0" || c.moduloDto.nombre === filtroModulo;
+
+        return coincideNombre && coincideModulo;
     });
-}
+};
 
 const generateExcel = (array) => {
-    const porcentaje = reactive({
-        ra1: 0,
-        ra2: 0,
-        ra3: 0,
-        ra4: 0,
-        ra5: 0,
-        ra6: 0,
-        ra7: 0,
-        ra8: 0,
-        ra9: 0,
-    })
-
-    const notaPonderada = reactive({
-        ra1: 0,
-        ra2: 0,
-        ra3: 0,
-        ra4: 0,
-        ra5: 0,
-        ra6: 0,
-        ra7: 0,
-        ra8: 0,
-        ra9: 0,
-    })
-
     const data = [
-        ["ID", "Ciclo", "Módulo", "Alumno", "Email del alumno", "RA 1", "RA 2", "RA 3", "RA 4", "RA 5", "RA 6", "RA 7", "RA 8", "RA 9", "Nota final"],
+        ["ID", "Ciclo", "Módulo", "Descripción del RA", "Alumno", "Email del alumno", "Nota", "Porcentaje", "Nota final"],
     ];
+
     for (const c of array) {
-        for (const p of listaPorcentajes.value) {
-            if (c.moduloDto.nombre == p.moduloDto.nombre){                
-                porcentaje.ra1 = p.ra1;
-                porcentaje.ra2 = p.ra2;
-                porcentaje.ra3 = p.ra3;
-                porcentaje.ra4 = p.ra4;
-                porcentaje.ra5 = p.ra5;
-                porcentaje.ra6 = p.ra6;
-                porcentaje.ra7 = p.ra7;
-                porcentaje.ra8 = p.ra8;
-                porcentaje.ra9 = p.ra9;
-                break;                
-            }
-        }
-        notaPonderada.ra1 = (c.ra1 * porcentaje.ra1 / 100);
-        notaPonderada.ra2 = (c.ra2 * porcentaje.ra2 / 100);
-        notaPonderada.ra3 = (c.ra3 * porcentaje.ra3 / 100);
-        notaPonderada.ra4 = (c.ra4 * porcentaje.ra4 / 100);
-        notaPonderada.ra5 = (c.ra5 * porcentaje.ra5 / 100);
-        notaPonderada.ra6 = (c.ra6 * porcentaje.ra6 / 100);
-        notaPonderada.ra7 = (c.ra7 * porcentaje.ra7 / 100);
-        notaPonderada.ra8 = (c.ra8 * porcentaje.ra8 / 100);
-        notaPonderada.ra9 = (c.ra9 * porcentaje.ra9 / 100);
-        
-        let notaFinal = (notaPonderada.ra1 + notaPonderada.ra2 + notaPonderada.ra3 + notaPonderada.ra4 + notaPonderada.ra5 + 
-                        notaPonderada.ra6 + notaPonderada.ra7 + notaPonderada.ra8 + notaPonderada.ra9);
-
-        /*data.push([c.id, c.moduloDto.cicloDto.nombre, c.moduloDto.nombre, c.alumnoDto.nombre+ " " +c.alumnoDto.apellidos, c.alumnoDto.email, c.ra1+ " (" +notaPonderada.ra1+ ")", 
-                    c.ra2+ " (" +notaPonderada.ra2+ ")",c.ra3+ " (" +notaPonderada.ra3+ ")", c.ra4+ " (" +notaPonderada.ra4+ ")", c.ra5+ " (" +notaPonderada.ra5+ ")",
-                    c.ra6+ " (" +notaPonderada.ra6+ ")", c.ra7+ " (" +notaPonderada.ra7+ ")", c.ra8+ " (" +notaPonderada.ra8+ ")", c.ra9+ " (" +notaPonderada.ra9+ ")", notaFinal]);*/
-
-        data.push([c.id, c.moduloDto.cicloDto.nombre, c.moduloDto.nombre, c.alumnoDto.nombre+ " " +c.alumnoDto.apellidos, c.alumnoDto.email, notaPonderada.ra1, 
-                    notaPonderada.ra2, notaPonderada.ra3, notaPonderada.ra4, notaPonderada.ra5, notaPonderada.ra6, notaPonderada.ra7, notaPonderada.ra8, notaPonderada.ra9, notaFinal]);
+        data.push([c.id, c.moduloDto.cicloDto.nombre, c.moduloDto.nombre, c.porcentajesRaDto.descripcion,
+        `${c.alumnoDto.nombre} ${c.alumnoDto.apellidos}`, c.alumnoDto.email, c.nota,
+        `${c.porcentajesRaDto.porcentaje}%`, ((c.porcentajesRaDto.porcentaje / 100) * c.nota).toFixed(2)]);
     }
 
     const worksheet = XLSX.utils.aoa_to_sheet(data);
-    worksheet['!autofilter'] = { ref: 'A1:O1' }
+    worksheet['!autofilter'] = { ref: 'A1:H1' }
 
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Calificaciones");
-    XLSX.writeFile(workbook, 'ListaDeCalificaciones.xlsx');
+    XLSX.writeFile(workbook, 'ListaDeCalificacionesPrueba.xlsx');
 }
 </script>
 
 <template>
     <div v-if="isAdmin">
-        <h2>Historial de calificaciones: </h2>
+        <h2>Listado de calificaciones: </h2>
         <div class="table-container">
             <div class="crear">
                 <div>
                     <p>Filtrar por módulo: </p>
-                    <select @change="handleFilter">
+                    <select @change="handleFilter" v-model="moduloSeleccionado">
                         <option value="0">No filtrar</option>
                         <option v-for="modulo in listaModulos" :value="modulo.nombre">{{ modulo.nombre }}</option>
                     </select>
@@ -234,16 +216,11 @@ const generateExcel = (array) => {
                         <th>ID</th>
                         <th>Ciclo</th>
                         <th>Módulo</th>
+                        <th>RA</th>
                         <th>Alumno</th>
-                        <th>RA 1</th>
-                        <th>RA 2</th>
-                        <th>RA 3</th>
-                        <th>RA 4</th>
-                        <th>RA 5</th>
-                        <th>RA 6</th>
-                        <th>RA 7</th>
-                        <th>RA 8</th>
-                        <th>RA 9</th>
+                        <th>Nota</th>
+                        <th>Porcentaje</th>
+                        <th>Nota final</th>
                         <th>Acción</th>
                     </tr>
                 </thead>
@@ -252,16 +229,11 @@ const generateExcel = (array) => {
                         <td>{{ calificacion.id }}</td>
                         <td>{{ calificacion.moduloDto.cicloDto.nombre }}</td>
                         <td>{{ calificacion.moduloDto.nombre }}</td>
+                        <td>{{ calificacion.porcentajesRaDto.descripcion }}</td>
                         <td>{{ calificacion.alumnoDto.nombre }} {{ calificacion.alumnoDto.apellidos }}</td>
-                        <td>{{ calificacion.ra1 }}</td>
-                        <td>{{ calificacion.ra2 }}</td>
-                        <td>{{ calificacion.ra3 }}</td>
-                        <td>{{ calificacion.ra4 }}</td>
-                        <td>{{ calificacion.ra5 }}</td>
-                        <td>{{ calificacion.ra6 }}</td>
-                        <td>{{ calificacion.ra7 }}</td>
-                        <td>{{ calificacion.ra8 }}</td>
-                        <td>{{ calificacion.ra9 }}</td>
+                        <td>{{ calificacion.nota }}</td>
+                        <td>{{ calificacion.porcentajesRaDto.porcentaje }}%</td>
+                        <td>{{ ((calificacion.porcentajesRaDto.porcentaje / 100) * calificacion.nota).toFixed(2) }}</td>
                         <td><i class="bi bi-card-list" @click="handleDetails(calificacion)"></i>
                             |
                             <i class="bi bi-pencil" @click="handleEdit(calificacion)"></i>
@@ -288,7 +260,7 @@ const generateExcel = (array) => {
 
                     <div class="modal-body">
                         ¿Estás seguro de eliminar la calificación de {{ calificacion.nombre }} {{ calificacion.apellidos
-                        }} en {{ calificacion.modulo }}?
+                        }} en {{ calificacion.descripcion }}?
                     </div>
 
                     <div class="modal-footer">
@@ -304,7 +276,7 @@ const generateExcel = (array) => {
 
     <div v-else>
         <div v-if="!hasCalificaciones" class="sin-calificaciones">
-            <h2>Historial de calificaciones: </h2>
+            <h2>Listado de calificaciones: </h2>
             <div class="btn-container">
                 <div class="crear btn-wrapper">
                     <div>
@@ -328,7 +300,7 @@ const generateExcel = (array) => {
                         </select>
                     </div>
                     <div>
-                        <p>Busca por módulo: </p>
+                        <p>Busca por alumno: </p>
                         <input type="text" class="crear-editar-input" @input="filterByNameProf"
                             v-model="nombreFiltrado" />
                     </div>
@@ -345,16 +317,11 @@ const generateExcel = (array) => {
                             <th>ID</th>
                             <th>Ciclo</th>
                             <th>Módulo</th>
+                            <th>RA</th>
                             <th>Alumno</th>
-                            <th>RA 1</th>
-                            <th>RA 2</th>
-                            <th>RA 3</th>
-                            <th>RA 4</th>
-                            <th>RA 5</th>
-                            <th>RA 6</th>
-                            <th>RA 7</th>
-                            <th>RA 8</th>
-                            <th>RA 9</th>
+                            <th>Nota</th>
+                            <th>Porcentaje</th>
+                            <th>Nota final</th>
                             <th>Acción</th>
                         </tr>
                     </thead>
@@ -363,16 +330,12 @@ const generateExcel = (array) => {
                             <td>{{ calificacion.id }}</td>
                             <td>{{ calificacion.moduloDto.cicloDto.nombre }}</td>
                             <td>{{ calificacion.moduloDto.nombre }}</td>
+                            <td>{{ calificacion.porcentajesRaDto.descripcion }}</td>
                             <td>{{ calificacion.alumnoDto.nombre }} {{ calificacion.alumnoDto.apellidos }}</td>
-                            <td>{{ calificacion.ra1 }}</td>
-                            <td>{{ calificacion.ra2 }}</td>
-                            <td>{{ calificacion.ra3 }}</td>
-                            <td>{{ calificacion.ra4 }}</td>
-                            <td>{{ calificacion.ra5 }}</td>
-                            <td>{{ calificacion.ra6 }}</td>
-                            <td>{{ calificacion.ra7 }}</td>
-                            <td>{{ calificacion.ra8 }}</td>
-                            <td>{{ calificacion.ra9 }}</td>
+                            <td>{{ calificacion.nota }}</td>
+                            <td>{{ calificacion.porcentajesRaDto.porcentaje }}%</td>
+                            <td>{{ ((calificacion.porcentajesRaDto.porcentaje / 100) * calificacion.nota).toFixed(2) }}
+                            </td>
                             <td><i class="bi bi-card-list" @click="handleDetails(calificacion)"></i>
                                 |
                                 <i class="bi bi-pencil" @click="handleEdit(calificacion)"></i>
@@ -482,12 +445,12 @@ h2 {
     align-items: center;
 }
 
-.botones{
+.botones {
     display: flex;
     gap: 20px;
 }
 
-.excel{
+.excel {
     transition: background-color 0.3s ease;
 }
 
@@ -495,11 +458,12 @@ h2 {
     background-color: #17d586;
 }
 
-.crearBtn{
+.crearBtn {
     transition: background-color 0.3s ease;
 }
 
-.crearBtn:hover{
-    background-color: #59c1ff;;
+.crearBtn:hover {
+    background-color: #59c1ff;
+    ;
 }
 </style>

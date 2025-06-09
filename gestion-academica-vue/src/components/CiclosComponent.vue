@@ -13,6 +13,13 @@ const router = useRouter();
 
 onMounted(async () => {
     listaCiclos.value = await ciclosStore.getCiclos();
+        listaCiclos.value.sort((a, b) => {
+        const nombreA = a.nombre.toLowerCase();
+        const nombreB = b.nombre.toLowerCase();
+        if (nombreA < nombreB) return -1;
+        if (nombreA > nombreB) return 1;
+        return 0;
+    });
     listaCiclosOriginal.value = listaCiclos.value;
 });
 
@@ -50,7 +57,7 @@ const filterByName = () => {
 </script>
 
 <template>
-    <h2>Historial de ciclos: </h2>
+    <h2>Listado de ciclos: </h2>
     <div class="table-container">
         <div class="crear">
             <div>

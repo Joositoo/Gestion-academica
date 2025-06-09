@@ -54,8 +54,4 @@ if (usuario.rol == "admin"){
     justify-content: center;
     align-items: center;
 }
-
-.rounded{
-    border-radius: 100%;
-}
 </style>

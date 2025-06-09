@@ -9,18 +9,13 @@ const moduloStore = useModuloStore();
 const porcentajeStore = usePorcentajeStore();
 const router = useRouter()
 const listaModulos = ref([]);
+const regExp = /^[\wñÑáéíóúÁÉÍÓÚ\-() ]{2,}$/;
 
 let porcentaje = reactive({
     nombreModulo: "",
-    ra1: 0,
-    ra2: 0,
-    ra3: 0,
-    ra4: 0,
-    ra5: 0,
-    ra6: 0,
-    ra7: 0,
-    ra8: 0,
-    ra9: 0,
+    descripcion: "",
+    nombre: "",
+    porcentaje: null,
 })
 
 onMounted(async () => {
@@ -29,37 +24,45 @@ onMounted(async () => {
 
 const handleSubmit = async () => {
     let pVacio = document.getElementById("vacio");
-    let pSuma = document.getElementById("suma");
     let pError500 = document.getElementById("error500");
+    let pNombre = document.getElementById("nombre");
+    let pDescripcion = document.getElementById("descripcion");
+    let pPorcentaje = document.getElementById("porcentaje");
 
-    function isEmpty(value) {
-        return value === null || value === undefined || value === "" || isNaN(value);
-    }
-
-    if (!porcentaje.nombreModulo || 
-        [porcentaje.ra1, porcentaje.ra2, porcentaje.ra3, porcentaje.ra4, porcentaje.ra5, porcentaje.ra6, porcentaje.ra7, porcentaje.ra8, porcentaje.ra9]
-        .some(isEmpty)) {
-        pSuma.style.display = "none";
-        pError500.style.display = "none";
+    if (!porcentaje.nombreModulo || !porcentaje.descripcion || !porcentaje.nombre || porcentaje.porcentaje === null) {
         pVacio.style.display = "block";
-        return;
-    }
-
-    const suma = porcentaje.ra1 + porcentaje.ra2 + porcentaje.ra3 + porcentaje.ra4 + porcentaje.ra5 + porcentaje.ra6 + porcentaje.ra7 + porcentaje.ra8 + porcentaje.ra9;
-
-    if (suma > 100) {
-        pVacio.style.display = "none";
         pError500.style.display = "none";
-        pSuma.style.display = "block";
         return;
     }
+
+    if (porcentaje.nombreModulo && porcentaje.descripcion && porcentaje.nombre && porcentaje.porcentaje != null){
+        pVacio.style.display = "none";
+
+        if (!regExp.test(porcentaje.descripcion)) {
+            pDescripcion.style.display = "block";
+        }
+
+        if (!regExp.test(porcentaje.nombre)) {
+            pNombre.style.display = "block";
+        }
+
+        if (porcentaje.porcentaje < 0 || porcentaje.porcentaje > 100) {
+            pPorcentaje.style.display = "block";
+        } else {
+            pPorcentaje.style.display = "none";
+        }
+
+        if (!regExp.test(porcentaje.descripcion) || !regExp.test(porcentaje.nombre) || porcentaje.porcentaje < 0 || porcentaje.porcentaje > 100) {
+            return;
+        }
+    }
+    
 
     try {
         await porcentajeStore.savePorcentaje(porcentaje);
         router.push("/porcentajes");
     } catch {
         pVacio.style.display = "none";
-        pSuma.style.display = "none";
         pError500.style.display = "block";
         return;
     }
@@ -69,7 +72,6 @@ const handleSubmit = async () => {
 
 <template>
     <LeftArrowComponent path="porcentajes" />
-
     <div class="card-container">
         <div class="card">
             <h2>Registro de porcentajes</h2>
@@ -84,40 +86,19 @@ const handleSubmit = async () => {
                         </select>
                     </div>
                     <div class="grid-item">
-                        <label>Resultado de Aprendizaje 1 (RA 1):</label>
-                        <input type="text" class="crear-editar-input" v-model.number="porcentaje.ra1" />
+                        <label>Descripción del RA:</label>
+                        <span class="error" style="display: none;" id="descripcion">Descripción con caracteres alfanuméricos</span>
+                        <input type="text" class="crear-editar-input" v-model="porcentaje.descripcion" />
                     </div>
                     <div class="grid-item">
-                        <label>Resultado de Aprendizaje 2 (RA 2):</label>
-                        <input type="text" class="crear-editar-input" v-model.number="porcentaje.ra2" />
+                        <label>Nombre del RA:</label>
+                        <span class="error" style="display: none;" id="nombre">Nombre con caracteres alfanuméricos</span>
+                        <input type="text" class="crear-editar-input" v-model="porcentaje.nombre" />
                     </div>
                     <div class="grid-item">
-                        <label>Resultado de Aprendizaje 3 (RA 3):</label>
-                        <input type="text" class="crear-editar-input" v-model.number="porcentaje.ra3" />
-                    </div>
-                    <div class="grid-item">
-                        <label>Resultado de Aprendizaje 4 (RA 4):</label>
-                        <input type="text" class="crear-editar-input" v-model.number="porcentaje.ra4" />
-                    </div>
-                    <div class="grid-item">
-                        <label>Resultado de Aprendizaje 5 (RA 5):</label>
-                        <input type="text" class="crear-editar-input" v-model.number="porcentaje.ra5" />
-                    </div>
-                    <div class="grid-item">
-                        <label>Resultado de Aprendizaje 6 (RA 6):</label>
-                        <input type="text" class="crear-editar-input" v-model.number="porcentaje.ra6" />
-                    </div>
-                    <div class="grid-item">
-                        <label>Resultado de Aprendizaje 7 (RA 7):</label>
-                        <input type="text" class="crear-editar-input" v-model.number="porcentaje.ra7" />
-                    </div>
-                    <div class="grid-item">
-                        <label>Resultado de Aprendizaje 8 (RA 8):</label>
-                        <input type="text" class="crear-editar-input" v-model.number="porcentaje.ra8" />
-                    </div>
-                    <div class="grid-item">
-                        <label>Resultado de Aprendizaje 9 (RA 9):</label>
-                        <input type="text" class="crear-editar-input" v-model.number="porcentaje.ra9" />
+                        <label>Porcentaje:</label>
+                        <span class="error" style="display: none;" id="porcentaje">Porcentaje comprendido entre 1 y 99</span>
+                        <input type="text" class="crear-editar-input" v-model.number="porcentaje.porcentaje" />
                     </div>
 
                     <div class="grid-item full-width">
@@ -126,8 +107,7 @@ const handleSubmit = async () => {
                 </div>
             </form>
             <p class="error" style="display: none;" id="vacio">Rellene todos los campos, por favor</p>
-            <p class="error" style="display: none;" id="suma">La suma de los porcentajes no debe ser superior a 100</p>
-            <p class="error" style="display: none;" id="error500">Ya existen los porcentajes para este módulo</p>
+            <p class="error" style="display: none;" id="error500">Ya existe el porcentaje para este RA</p>
         </div>
     </div>
 
@@ -138,7 +118,7 @@ const handleSubmit = async () => {
 .grid-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, 150px);
+    grid-template-rows: repeat(3, auto);
     gap: 10px;
     padding: 10px;
 }

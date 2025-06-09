@@ -49,7 +49,7 @@ const filterByName = () => {
 </script>
 
 <template>
-    <h2>Historial de profesores: </h2>
+    <h2>Listado de profesores: </h2>
     <div class="table-container">
         <div class="crear">
             <div>

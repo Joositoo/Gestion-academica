@@ -11,6 +11,7 @@ let listaFiltrada = ref([]);
 let modulo = reactive({});
 let moduloId = ref(0);
 let nombreFiltrado = ref("");
+let cicloSeleccionado = ref("0");
 const moduloStore = useModuloStore();
 const cicloStore = useCicloStore();
 const router = useRouter();
@@ -19,6 +20,17 @@ onMounted(async () => {
     listaModulos.value = await moduloStore.getModulos();
     listaModulosOriginal.value = listaModulos.value;
     listaFiltrada.value = listaModulos.value;
+    listaFiltrada.value.sort((a, b) => {
+        const cicloA = a.cicloDto.nombre.toLowerCase();
+        const cicloB = b.cicloDto.nombre.toLowerCase();
+        const moduloA = a.nombre.toLowerCase();
+        const moduloB = b.nombre.toLowerCase();
+
+        if (cicloA < cicloB) return -1;
+        if (cicloA > cicloB) return 1;
+
+        return moduloA.localeCompare(moduloB);
+    })
     listaCiclos.value = await cicloStore.getCiclos();
 });
 
@@ -45,35 +57,38 @@ const handleDelete = async () => {
 }
 
 const handleFilter = (e) => {
-    if (e.target.value == 0) {
-        listaFiltrada.value = listaModulos.value;
-    }
-    else {
-        listaFiltrada.value = listaModulos.value.filter(m => m.cicloDto.nombre == e.target.value);
-    }
+    filtrarModulos();
 }
 
 const filterByName = () => {
-    const filtro = nombreFiltrado.value.toLowerCase();
-    listaFiltrada.value = listaModulosOriginal.value.filter((m) =>
-        m.nombre.toLowerCase().includes(filtro)
-    );
+    filtrarModulos();
 }
+
+const filtrarModulos = () => {
+    const filtroNombre = nombreFiltrado.value.toLowerCase();
+    const filtroCiclo = cicloSeleccionado.value;
+
+    listaFiltrada.value = listaModulosOriginal.value.filter((m) => {
+        const coincideNombre = m.nombre.toLowerCase().includes(filtroNombre);
+        const coincideCiclo = filtroCiclo === "0" || m.cicloDto.nombre === filtroCiclo;
+        return coincideNombre && coincideCiclo;
+    });
+};
 </script>
 
 <template>
-    <h2>Historial de módulos: </h2>
+    <h2>Listado de módulos: </h2>
     <div class="table-container">
         <div class="crear">
             <div>
                 <p>Filtrar por ciclo: </p>
-                <select @change="handleFilter">
+                <select @change="handleFilter" v-model="cicloSeleccionado">
                     <option value="0">No filtrar</option>
                     <option v-for="ciclo in listaCiclos" :value="ciclo.nombre">{{ ciclo.nombre }}</option>
                 </select>
             </div>
             <div>
-                <p>Busca por nombre: </p>
+                <p>Busca por módulo: </p>
                 <input type="text" class="crear-editar-input" @input="filterByName" v-model="nombreFiltrado" />
             </div>
             <div><button @click="handleClick" class="crearBtn"> + Crear</button></div>
