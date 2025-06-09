@@ -33,14 +33,9 @@ public class PorcentajesRaController {
     @PostMapping
     public boolean savePorcentajesRa(@Valid @RequestBody PorcentajesRaDto porcentajesRaDto) {
         if (porcentajesRaService.existeModulo(porcentajesRaDto)){
-            if (!porcentajesRaService.existePorcentaje(porcentajesRaDto)){
                 PorcentajesRa porcentajesRa = porcentajesRaMapper.getPorcentajesByDto(porcentajesRaDto);
                 porcentajesRaService.savePorcentajeRa(porcentajesRa);
                 return true;
-            }
-            else{
-                throw new RuntimeException("El módulo " +porcentajesRaDto.getNombreModulo()+ " ya tiene porcentajes asignados");
-            }
         }
         else{
             throw new RuntimeException("No existe el módulo " +porcentajesRaDto.getNombreModulo());

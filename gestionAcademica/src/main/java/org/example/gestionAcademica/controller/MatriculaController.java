@@ -32,13 +32,6 @@ public class MatriculaController {
         return ResponseEntity.ok(matriculaService.getMatriculaById(id));
     }
 
-    /*@PostMapping()
-    public ResponseEntity<Matricula> saveMatricula(@RequestBody MatriculaDto matriculaDto){
-        Matricula matricula = matriculaService.getMatriculaByDto(matriculaDto);
-        matriculaService.saveMatricula(matricula);
-        return ResponseEntity.ok(matricula);
-    }*/
-
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public boolean saveMatricula (@RequestParam("file") MultipartFile file) {
         if (file == null || file.isEmpty()) {

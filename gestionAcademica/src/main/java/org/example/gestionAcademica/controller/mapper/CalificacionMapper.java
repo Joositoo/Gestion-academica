@@ -26,6 +26,8 @@ public class CalificacionMapper {
 
     @Autowired
     private Validator validator;
+    @Autowired
+    private PorcentajesRaMapper porcentajesRaMapper;
 
     public CalificacionMapper(ModuloMapper moduloMapper, AlumnoMapper alumnoMapper) {
         this.moduloMapper = moduloMapper;
@@ -37,25 +39,19 @@ public class CalificacionMapper {
                 calificacion.getId(),
                 moduloMapper.getDto(calificacion.getIdModulo()),
                 alumnoMapper.getDto(calificacion.getIdAlumno()),
-                calificacion.getRa1(),
-                calificacion.getRa2(),
-                calificacion.getRa3(),
-                calificacion.getRa4(),
-                calificacion.getRa5(),
-                calificacion.getRa6(),
-                calificacion.getRa7(),
-                calificacion.getRa8(),
-                calificacion.getRa9()
+                porcentajesRaMapper.getDto(calificacion.getIdRa()),
+                calificacion.getNota()
         );
     }
 
     public List<CalificacionDto> getCalificacionesByFile(MultipartFile file) {
         List<CalificacionDto> listaCalificaciones = new ArrayList<>();
 
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))){
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             String linea;
             int numLinea = 1;
             boolean cabecera = true;
+
             while ((linea = br.readLine()) != null) {
                 if (cabecera) {
                     cabecera = false;
@@ -63,47 +59,60 @@ public class CalificacionMapper {
                 }
 
                 String[] datos = linea.split(",");
-
-                if (datos.length == 11) {
-                    CalificacionDto calificacionDto = new CalificacionDto();
-                    calificacionDto.setNombreModulo(datos[0].trim());
-                    calificacionDto.setEmailAlumno(datos[1].trim());
-                    calificacionDto.setRa1(parseBigDecimal(datos[2]));
-                    calificacionDto.setRa2(parseBigDecimal(datos[3]));
-                    calificacionDto.setRa3(parseBigDecimal(datos[4]));
-                    calificacionDto.setRa4(parseBigDecimal(datos[5]));
-                    calificacionDto.setRa5(parseBigDecimal(datos[6]));
-                    calificacionDto.setRa6(parseBigDecimal(datos[7]));
-                    calificacionDto.setRa7(parseBigDecimal(datos[8]));
-                    calificacionDto.setRa8(parseBigDecimal(datos[9]));
-                    calificacionDto.setRa9(parseBigDecimal(datos[10]));
-
-                    Set<ConstraintViolation<CalificacionDto>> errores = validator.validate(calificacionDto);
-
-                    if (!errores.isEmpty()) {
-                        StringBuilder sb = new StringBuilder();
-                        sb.append("Error en línea " +numLinea+ ": ").append(numLinea).append(": ");
-
-                        for (ConstraintViolation<CalificacionDto> error : errores) {
-                            sb.append(error.getPropertyPath())
-                                    .append(" - ")
-                                    .append(error.getMessage())
-                                    .append(". ");
-                        }
-
-                        throw new ConstraintViolationException(sb.toString(), errores);
-                    }
-
-                    listaCalificaciones.add(calificacionDto);
+                if (datos.length != 4) {
+                    throw new RuntimeException("Línea " + numLinea + ": el archivo debe tener 4 columnas (nombreModulo, emailAlumno, descripcionRa, nota)");
                 }
-                else{
-                    throw new RuntimeException("El archivo debe tener 11 columnas (nombreModulo, emailAlumno, ra1, ra2, ra3, ra4, ra5, ra6, ra7, ra8, ra9)");
-                }}
+
+                String nombreModulo = datos[0].trim();
+                String emailAlumno = datos[1].trim();
+                String descripcionRa = datos[2].trim();
+                String notaStr = datos[3].trim();
+
+                if (nombreModulo == null || nombreModulo.isBlank()) {
+                    throw new RuntimeException("Línea " + numLinea + ": nombreModulo está vacío o en blanco");
+                }
+                if (emailAlumno == null || emailAlumno.isBlank()) {
+                    throw new RuntimeException("Línea " + numLinea + ": emailAlumno está vacío o en blanco");
+                }
+                if (descripcionRa == null || descripcionRa.isBlank()) {
+                    throw new RuntimeException("Línea " + numLinea + ": descripcionRa está vacío o en blanco");
+                }
+                if (notaStr == null || notaStr.isBlank()) {
+                    throw new RuntimeException("Línea " + numLinea + ": nota está vacío o en blanco");
+                }
+
+                BigDecimal nota;
+                try {
+                    nota = new BigDecimal(notaStr);
+                } catch (NumberFormatException e) {
+                    throw new RuntimeException("Línea " + numLinea + ": la nota no es un número válido");
+                }
+
+                CalificacionDto calificacionDto = new CalificacionDto(nombreModulo, emailAlumno, descripcionRa, nota);
+
+                Set<ConstraintViolation<CalificacionDto>> errores = validator.validate(calificacionDto);
+
+                if (!errores.isEmpty()) {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("Error en línea ").append(numLinea).append(": ");
+                    for (ConstraintViolation<CalificacionDto> error : errores) {
+                        sb.append(error.getPropertyPath())
+                                .append(" - ")
+                                .append(error.getMessage())
+                                .append(". ");
+                    }
+                    throw new ConstraintViolationException(sb.toString(), errores);
+                }
+
+                listaCalificaciones.add(calificacionDto);
+                numLinea++;
+            }
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        return  listaCalificaciones;
+        return listaCalificaciones;
     }
 
     private BigDecimal parseBigDecimal(String valor) {

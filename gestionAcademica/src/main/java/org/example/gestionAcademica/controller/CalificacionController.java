@@ -31,23 +31,16 @@ public class CalificacionController {
         return ResponseEntity.ok(calificacionService.getCalificacionById(id));
     }
 
-    /*@PostMapping()
-    public ResponseEntity<Calificacion> saveCalificacion(@RequestBody CalificacionDto calificacionDto){
-        Calificacion calificacion = calificacionService.getCalificacionByDto(calificacionDto);
-        calificacionService.saveCalificacion(calificacion);
-        return ResponseEntity.ok(calificacion);
-    }*/
-
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public List<CalificacionDto> saveCalificacion(@RequestParam("file") MultipartFile file){
+    public boolean saveCalificacion(@RequestParam("file") MultipartFile file){
         List<CalificacionDto> listaCalificaciones = calificacionMapper.getCalificacionesByFile(file);
 
         if (calificacionService.validaLista(listaCalificaciones)){
             calificacionService.saveListaCalificaciones(listaCalificaciones);
-            return calificacionService.getCalificacionesByLista(listaCalificaciones);
+            return true;
         }
         else{
-            throw new RuntimeException("El archivo contiene emails de alumnos que no existen y/o de módulos que no existen y/0 calificaciones ya registrados");
+            throw new RuntimeException("El archivo contiene emails de alumnos que no existen, de módulos que no existen, de RA's que no existen y/0 calificaciones ya registrados");
         }
     }
 

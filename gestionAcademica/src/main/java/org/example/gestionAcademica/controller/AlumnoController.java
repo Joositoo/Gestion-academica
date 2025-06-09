@@ -29,14 +29,6 @@ public class AlumnoController {
     public ResponseEntity<AlumnoDto> getAlumnoById(@PathVariable int id){
         return ResponseEntity.ok(alumnoService.getAlumnoById(id));
     }
-/*
-    @PostMapping
-    public ResponseEntity<Alumno> saveAlumno(@RequestBody AlumnoDto alumnoDto){
-        Alumno alumno = alumnoService.getAlumnoByDto(alumnoDto);
-        alumnoService.saveAlumno(alumno);
-
-        return ResponseEntity.ok(alumno);
-    }*/
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public List<AlumnoDto> saveListAlumnos (@RequestParam("file") MultipartFile file) {

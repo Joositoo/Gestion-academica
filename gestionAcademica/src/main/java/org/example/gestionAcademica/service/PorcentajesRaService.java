@@ -37,14 +37,12 @@ public class PorcentajesRaService {
     }
 
     public PorcentajesRaDto getPorcentajesRaById(int id) {
-        Modulo modulo = moduloRepository.findById(id).get();
-        Optional<PorcentajesRa> optPorcentajesRa = Optional.ofNullable(porcentajesRaRepository.findPorcentajesRaByModulo(modulo));
-        //Optional<PorcentajesRa> optPorcentajesRa = porcentajesRaRepository.findById(id);
-        if (porcentajesRaRepository.existsById(optPorcentajesRa.get().getId())) {
-            return porcentajesRaMapper.getDto(optPorcentajesRa.get());
+        Optional<PorcentajesRa> optionalPorcentajesRa = porcentajesRaRepository.findById(id);
+        if (optionalPorcentajesRa.isPresent()) {
+            return porcentajesRaMapper.getDto(optionalPorcentajesRa.get());
         }
         else{
-            throw new RuntimeException("No existen los porcentajes con id " +id);
+            throw new RuntimeException("No existe el porcentaje con id " +id);
         }
     }
 
@@ -60,37 +58,28 @@ public class PorcentajesRaService {
             if (porcentajesRaDto.getNombreModulo() == null || porcentajesRaDto.getNombreModulo().isEmpty()) {
                 throw new RuntimeException("El nombre del módulo no  puede ser nulo o estar vacío");
             }
-            if (porcentajesRaDto.getRa1() != null && porcentajesRaDto.getRa1() != 0){
-                porcentajesRa.setRa1(porcentajesRaDto.getRa1());
+            if (porcentajesRaDto.getDescripcion() == null || porcentajesRaDto.getDescripcion().isEmpty()) {
+                throw new RuntimeException("La descripción no puede estar vacía");
             }
-            if (porcentajesRaDto.getRa2() != null && porcentajesRaDto.getRa2() != 0){
-                porcentajesRa.setRa2(porcentajesRaDto.getRa2());
+            else {
+                porcentajesRa.setDescripcion(porcentajesRaDto.getDescripcion());
             }
-            if (porcentajesRaDto.getRa3() != null  && porcentajesRaDto.getRa3() != 0){
-                porcentajesRa.setRa3(porcentajesRaDto.getRa3());
+            if (porcentajesRaDto.getNombre() == null || porcentajesRaDto.getNombre().isEmpty()) {
+                throw new RuntimeException("El nombre no puede estar vacío");
             }
-            if (porcentajesRaDto.getRa4() != null && porcentajesRaDto.getRa4() != 0){
-                porcentajesRa.setRa4(porcentajesRaDto.getRa4());
+            else{
+                porcentajesRa.setNombre(porcentajesRaDto.getNombre());
             }
-            if (porcentajesRaDto.getRa5() != null && porcentajesRaDto.getRa5() != 0){
-                porcentajesRa.setRa5(porcentajesRaDto.getRa5());
+            if (porcentajesRaDto.getPorcentaje() == null || porcentajesRaDto.getPorcentaje() < 1 || porcentajesRaDto.getPorcentaje() > 99) {
+                throw new RuntimeException("El porcentaje debe estar entre 1 y 99");
+            } else {
+                porcentajesRa.setPorcentaje(porcentajesRaDto.getPorcentaje());
             }
-            if (porcentajesRaDto.getRa6() != null && porcentajesRaDto.getRa6() != 0){
-                porcentajesRa.setRa6(porcentajesRaDto.getRa6());
-            }
-            if (porcentajesRaDto.getRa7() != null  && porcentajesRaDto.getRa7() != 0){
-                porcentajesRa.setRa7(porcentajesRaDto.getRa7());
-            }
-            if (porcentajesRaDto.getRa8() != null  && porcentajesRaDto.getRa8() != 0){
-                porcentajesRa.setRa8(porcentajesRaDto.getRa8());
-            }
-            if (porcentajesRaDto.getRa9() != null  && porcentajesRaDto.getRa9() != 0){
-                porcentajesRa.setRa9(porcentajesRaDto.getRa9());
-            }
+
             porcentajesRaRepository.save(porcentajesRa);
         }
         else{
-            throw new RuntimeException("No existen los porcentajes con id " +id);
+            throw new RuntimeException("No existen el porcentaje con id " +id);
         }
     }
 
@@ -110,10 +99,15 @@ public class PorcentajesRaService {
 
     public boolean existeModulo(PorcentajesRaDto porcentajesRaDto) {
         if (moduloRepository.existsModuloByNombre(porcentajesRaDto.getNombreModulo())) {
-            return true;
+            if (!porcentajesRaRepository.existsPorcentajesRaByDescripcion(porcentajesRaDto.getDescripcion())) {
+                return true;
+            }
+            else{
+                throw new RuntimeException("Ya existe ese RA");
+            }
         }
         else{
-            throw new RuntimeException("No existe el módulo");
+            throw new RuntimeException("No existe el módulo " +porcentajesRaDto.getNombreModulo());
         }
     }
 

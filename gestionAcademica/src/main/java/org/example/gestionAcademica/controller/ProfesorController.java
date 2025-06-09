@@ -8,6 +8,7 @@ import org.example.gestionAcademica.repository.ProfesorRepository;
 import org.example.gestionAcademica.service.ProfesorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,15 +44,6 @@ public class ProfesorController {
             return ResponseEntity.notFound().build();
         }
     }
-/*
-    @PostMapping()
-    public ResponseEntity<ProfesorDto> saveProfesor(@Valid @RequestBody ProfesorDto profesorDto){
-        Profesor profesor = profesorMapper.getProfesorByDto(profesorDto);
-        Profesor profesorPasswordEncript = profesorService.encriptaPassword(profesor);
-        profesorService.saveProfesor(profesorPasswordEncript);
-        Profesor profesorCreado = profesorRepository.findProfesorByEmail(profesor.getEmail());
-        return ResponseEntity.ok(profesorMapper.getDto(profesorCreado));
-    }*/
 
     @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<ProfesorDto> saveProfesor(
@@ -62,7 +54,6 @@ public class ProfesorController {
             @RequestPart("rol") String rol,
             @RequestPart(value = "imagen", required = false) MultipartFile imagen) {
         try {
-            // Construir el DTO a partir de los campos recibidos
             ProfesorDto profesorDto = new ProfesorDto();
             profesorDto.setNombre(nombre);
             profesorDto.setApellidos(apellidos);
@@ -88,35 +79,38 @@ public class ProfesorController {
         }
     }
 
-    /*@PutMapping("/{id}")
-    public Optional<Profesor> updateProfesor(@PathVariable int id, @Valid @RequestBody ProfesorDto profesorDto){
-        profesorDto.setId(id);
-        profesorService.updateProfesor(id, profesorDto);
-        return profesorService.getProfesorById(id);
-    }*/
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateProfesor(
+            @PathVariable int id,
+            @RequestPart("nombre") String nombre,
+            @RequestPart("apellidos") String apellidos,
+            @RequestPart("email") String email,
+            @RequestPart("password") String password,
+            @RequestPart("rol") String rol,
+            @RequestPart(value = "imagen", required = false) MultipartFile imagen) {
+        try {
+            ProfesorDto profesorDto = new ProfesorDto();
+            profesorDto.setNombre(nombre);
+            profesorDto.setApellidos(apellidos);
+            profesorDto.setEmail(email);
+            profesorDto.setPassword(password);
+            profesorDto.setRol(rol);
 
+            if (imagen != null && !imagen.isEmpty()) {
+                byte[] bytesImagen = imagen.getBytes();
+                profesorDto.setImg(bytesImagen);
+                System.out.println("Imagen cargada correctamente: " + imagen.getOriginalFilename());
+            }
 
-    @PutMapping("/{id}")
-    public Optional<Profesor> updateProfesor(@PathVariable int id,
-                                             @RequestPart("nombre") String nombre,
-                                             @RequestPart("apellidos") String apellidos,
-                                             @RequestPart("email") String email,
-                                             @RequestPart("password") String password,
-                                             @RequestPart("rol") String rol,
-                                             @RequestPart(value = "imagen", required = false) MultipartFile imagen) throws IOException {
-        ProfesorDto profesorDto = new ProfesorDto();
-        profesorDto.setNombre(nombre);
-        profesorDto.setApellidos(apellidos);
-        profesorDto.setEmail(email);
-        profesorDto.setPassword(password);
-        profesorDto.setRol(rol);
-        if (imagen != null && !imagen.isEmpty()) {
-            byte[] bytesImagen = imagen.getBytes();
-            profesorDto.setImg(bytesImagen);
+            profesorService.updateProfesor(id, profesorDto);
+            return ResponseEntity.ok(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al actualizar profesor: " + e.getMessage());
         }
-        profesorService.updateProfesor(id, profesorDto);
-        return profesorService.getProfesorById(id);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProfesor(@PathVariable int id){

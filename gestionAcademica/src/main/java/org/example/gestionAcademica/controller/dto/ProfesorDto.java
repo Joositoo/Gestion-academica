@@ -51,12 +51,13 @@ public class ProfesorDto {
         this.img = img;
     }
 
-    public ProfesorDto(String nombre, String apellidos, String email, String password, String rol) {
+    public ProfesorDto(String nombre, String apellidos, String email, String password, String rol, byte[] img) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.email = email;
         this.password = password;
         this.rol = rol;
+        this.img = img;
     }
 
     public ProfesorDto(String email, String password) {

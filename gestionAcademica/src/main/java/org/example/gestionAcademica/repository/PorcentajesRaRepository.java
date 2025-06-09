@@ -11,4 +11,12 @@ public interface PorcentajesRaRepository extends CrudRepository<PorcentajesRa, I
     PorcentajesRa findPorcentajesRaByModulo(Modulo modulo);
 
     boolean existsPorcentajesRaByModulo(Modulo modulo);
+
+    boolean existsPorcentajesRaById(Integer id);
+
+    PorcentajesRa findPorcentajesRaById(Integer id);
+
+    PorcentajesRa findPorcentajesRaByDescripcion(String descripcion);
+
+    boolean existsPorcentajesRaByDescripcion(String descripcion);
 }

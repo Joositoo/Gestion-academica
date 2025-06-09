@@ -2,14 +2,12 @@ package org.example.gestionAcademica.service;
 
 import org.example.gestionAcademica.controller.dto.CalificacionDto;
 import org.example.gestionAcademica.controller.mapper.CalificacionMapper;
-import org.example.gestionAcademica.modelo.Alumno;
-import org.example.gestionAcademica.modelo.Calificacion;
-import org.example.gestionAcademica.modelo.Matricula;
-import org.example.gestionAcademica.modelo.Modulo;
+import org.example.gestionAcademica.modelo.*;
 import org.example.gestionAcademica.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,14 +19,16 @@ public class CalificacionesService {
     private final ModuloRepository moduloRepository;
     private final AlumnoRepository alumnoRepository;
     private final MatriculaRepository matriculaRepository;
+    private final PorcentajesRaRepository porcentajesRaRepository;
 
     @Autowired
-    public CalificacionesService(CalificacionRepository calificacionesRepository, CalificacionMapper calificacionMapper, ModuloRepository moduloRepository, AlumnoRepository alumnoRepository, CicloRepository cicloRepository, MatriculaRepository matriculaRepository) {
+    public CalificacionesService(CalificacionRepository calificacionesRepository, CalificacionMapper calificacionMapper, ModuloRepository moduloRepository, AlumnoRepository alumnoRepository, CicloRepository cicloRepository, MatriculaRepository matriculaRepository, PorcentajesRaRepository porcentajesRaRepository) {
         this.calificacionesRepository = calificacionesRepository;
         this.calificacionMapper = calificacionMapper;
         this.moduloRepository = moduloRepository;
         this.alumnoRepository = alumnoRepository;
         this.matriculaRepository = matriculaRepository;
+        this.porcentajesRaRepository = porcentajesRaRepository;
     }
 
     public List<CalificacionDto> getCalificaciones() {
@@ -55,29 +55,39 @@ public class CalificacionesService {
     }
 
     public void updateCalificacion(int id, CalificacionDto calificacionDto) {
-        Calificacion calificacion = calificacionesRepository.findById(id).get();
+        Optional<Calificacion> optCalificacion = calificacionesRepository.findById(id);
+        if (optCalificacion.isPresent()) {
+            Calificacion calificacion = optCalificacion.get();
 
-        if (calificacionDto.getEmailAlumno() != null && calificacionDto.getNombreModulo() != null) {
-            if (moduloRepository.existsModuloByNombre(calificacionDto.getNombreModulo()) && alumnoRepository.existsAlumnoByEmail(calificacionDto.getEmailAlumno())) {
-                calificacion.setIdAlumno(alumnoRepository.findAlumnoByEmail(calificacionDto.getEmailAlumno()));
+            if (!calificacionDto.getNombreModulo().isBlank() && calificacionDto.getNombreModulo() !=null && moduloRepository.existsModuloByNombre(calificacionDto.getNombreModulo())) {
                 calificacion.setIdModulo(moduloRepository.findModuloByNombre(calificacionDto.getNombreModulo()));
-
-                if (calificacionDto.getRa1() != null) calificacion.setRa1(calificacionDto.getRa1());
-                if (calificacionDto.getRa2() != null) calificacion.setRa2(calificacionDto.getRa2());
-                if (calificacionDto.getRa3() != null) calificacion.setRa3(calificacionDto.getRa3());
-                if (calificacionDto.getRa4() != null) calificacion.setRa4(calificacionDto.getRa4());
-                if (calificacionDto.getRa5() != null) calificacion.setRa5(calificacionDto.getRa5());
-                if (calificacionDto.getRa6() != null) calificacion.setRa6(calificacionDto.getRa6());
-                if (calificacionDto.getRa7() != null) calificacion.setRa7(calificacionDto.getRa7());
-                if (calificacionDto.getRa8() != null) calificacion.setRa8(calificacionDto.getRa8());
-                if (calificacionDto.getRa9() != null) calificacion.setRa9(calificacionDto.getRa9());
             }
             else{
-                throw new RuntimeException("Modulo y/o alumno no encontrado");
+                throw new RuntimeException("Modulo no encontrado");
             }
-        }
+            if (!calificacionDto.getEmailAlumno().isBlank() && calificacionDto.getEmailAlumno() != null && alumnoRepository.existsAlumnoByEmail(calificacionDto.getEmailAlumno())) {
+                calificacion.setIdAlumno(alumnoRepository.findAlumnoByEmail(calificacionDto.getEmailAlumno()));
+            }
+            else{
+                throw new RuntimeException("Alumno no encontrado");
+            }
+            if (porcentajesRaRepository.existsPorcentajesRaById(calificacionDto.getIdRa())){
+                calificacion.setIdRa(porcentajesRaRepository.findPorcentajesRaById((calificacionDto.getIdRa())));
+            }
+            else{
+                throw new RuntimeException("RA no encontrado");
+            }
+            if (calificacionDto.getNota() == null ||
+                calificacionDto.getNota().compareTo(BigDecimal.ZERO) < 0 ||
+                calificacionDto.getNota().compareTo(new BigDecimal("10")) > 0) {
+                throw new RuntimeException("La nota debe estar comprendida entre 0 y 10");
+            }
+            else{
+                calificacion.setNota(calificacionDto.getNota());
+            }
 
-        calificacionesRepository.save(calificacion);
+            calificacionesRepository.save(calificacion);
+        }
     }
 
     public void deleteCalificacionById(int id) {
@@ -97,16 +107,8 @@ public class CalificacionesService {
                 Calificacion calificacion = new Calificacion();
                 calificacion.setIdAlumno(alumnoRepository.findAlumnoByEmail(calificacionDto.getEmailAlumno()));
                 calificacion.setIdModulo(moduloRepository.findModuloByNombre(calificacionDto.getNombreModulo()));
-                calificacion.setRa1(calificacionDto.getRa1());
-                calificacion.setRa2(calificacionDto.getRa2());
-                calificacion.setRa3(calificacionDto.getRa3());
-                calificacion.setRa4(calificacionDto.getRa4());
-                calificacion.setRa5(calificacionDto.getRa5());
-                calificacion.setRa6(calificacionDto.getRa6());
-                calificacion.setRa7(calificacionDto.getRa7());
-                calificacion.setRa8(calificacionDto.getRa8());
-                calificacion.setRa9(calificacionDto.getRa9());
-
+                calificacion.setIdRa(porcentajesRaRepository.findPorcentajesRaByModulo(moduloRepository.findModuloByNombre(calificacionDto.getNombreModulo())));
+                calificacion.setNota(calificacionDto.getNota());
                 return calificacion;
             }
             else{
@@ -122,14 +124,27 @@ public class CalificacionesService {
     public boolean validaLista(List<CalificacionDto> listaCalificaciones) {
         for (CalificacionDto calificacionDto : listaCalificaciones) {
             if(!moduloRepository.existsModuloByNombre(calificacionDto.getNombreModulo()) ||
-               !alumnoRepository.existsAlumnoByEmail(calificacionDto.getEmailAlumno())){
+               !alumnoRepository.existsAlumnoByEmail(calificacionDto.getEmailAlumno()) ||
+               !porcentajesRaRepository.existsPorcentajesRaByDescripcion(calificacionDto.getDescripcionRa())){
                 return false;
             }
 
             Alumno alumno = alumnoRepository.findAlumnoByEmail(calificacionDto.getEmailAlumno());
             Modulo modulo = moduloRepository.findModuloByNombre(calificacionDto.getNombreModulo());
-            if (calificacionesRepository.existsCalificacionByIdAlumnoAndIdModulo(alumno, modulo)){
-                return false;
+            PorcentajesRa porcentajesRa = porcentajesRaRepository.findPorcentajesRaByDescripcion(calificacionDto.getDescripcionRa());
+
+            Ciclo ciclo = modulo.getIdCiclo();
+
+            if (porcentajesRa.getModulo() != modulo) {
+                throw new RuntimeException("Estás asignando una nota a un RA que no pertence al módulo " +calificacionDto.getNombreModulo());
+            }
+
+            if (!matriculaRepository.existsMatriculaByIdAlumnoAndIdCiclo(alumno,ciclo)){
+                throw new RuntimeException("Alumno no matriculado en el ciclo " +ciclo.getNombre());
+            }
+
+            if (calificacionesRepository.existsCalificacionByIdAlumnoAndIdRa(alumno, porcentajesRa)){
+                throw new RuntimeException("ya existe una nota para " +calificacionDto.getEmailAlumno()+ " en el RA" + calificacionDto.getDescripcionRa());
             }
         }
         return true;
@@ -140,15 +155,8 @@ public class CalificacionesService {
             Calificacion calificacion = new Calificacion();
             calificacion.setIdModulo(moduloRepository.findModuloByNombre(calificacionDto.getNombreModulo()));
             calificacion.setIdAlumno(alumnoRepository.findAlumnoByEmail(calificacionDto.getEmailAlumno()));
-            calificacion.setRa1(calificacionDto.getRa1());
-            calificacion.setRa2(calificacionDto.getRa2());
-            calificacion.setRa3(calificacionDto.getRa3());
-            calificacion.setRa4(calificacionDto.getRa4());
-            calificacion.setRa5(calificacionDto.getRa5());
-            calificacion.setRa6(calificacionDto.getRa6());
-            calificacion.setRa7(calificacionDto.getRa7());
-            calificacion.setRa8(calificacionDto.getRa8());
-            calificacion.setRa9(calificacionDto.getRa9());
+            calificacion.setIdRa(porcentajesRaRepository.findPorcentajesRaByDescripcion(calificacionDto.getDescripcionRa()));
+            calificacion.setNota(calificacionDto.getNota());
 
             calificacionesRepository.save(calificacion);
         }

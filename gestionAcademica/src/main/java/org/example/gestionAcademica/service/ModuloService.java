@@ -116,7 +116,6 @@ public class ModuloService {
             modulo.setNombre(moduloDto.getNombre());
 
             moduloRepository.save(modulo);
-            creaYGuardaPorcentaje(modulo);
         }
     }
 
@@ -132,28 +131,6 @@ public class ModuloService {
         return listaModulosDto;
     }
 
-    private void creaYGuardaPorcentaje(Modulo modulo){
-        PorcentajesRa porcentajesRa = new PorcentajesRa();
-        porcentajesRa.setModulo(modulo);
-        porcentajesRa.setRa1((byte) 0);
-        porcentajesRa.setRa2((byte) 0);
-        porcentajesRa.setRa3((byte) 0);
-        porcentajesRa.setRa4((byte) 0);
-        porcentajesRa.setRa5((byte) 0);
-        porcentajesRa.setRa6((byte) 0);
-        porcentajesRa.setRa7((byte) 0);
-        porcentajesRa.setRa8((byte) 0);
-        porcentajesRa.setRa9((byte) 0);
-
-        porcentajesRaRepository.save(porcentajesRa);
-    }
-
-
-
-
-
-
-
     public Modulo getModuloByDto(ModuloDto moduloDto) {
         if (cicloRepository.existsCicloByNombre(moduloDto.getNombreCiclo()) && profesorRepository.existsProfesorByEmail(moduloDto.getEmailProfesor())){
             Modulo modulo = new Modulo();
@@ -167,6 +144,4 @@ public class ModuloService {
             throw new RuntimeException("Ciclo y/o profesor no encontrado");
         }
     }
-
-
 }
